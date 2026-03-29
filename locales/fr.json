@@ -1,0 +1,41 @@
+{
+  "actions": {
+    "save": "[TODO] Guardar",
+    "saving": "[TODO] Guardando...",
+    "cancel": "[TODO] Cancelar",
+    "discard": "[TODO] Descartar",
+    "confirm": "[TODO] Confirmar",
+    "close": "[TODO] Cerrar",
+    "edit": "[TODO] Editar",
+    "delete": "[TODO] Eliminar",
+    "back": "[TODO] Volver"
+  },
+  "messages": {
+    "saveSuccess": "[TODO] Guardado correctamente",
+    "saveError": "[TODO] Error al guardar",
+    "loadError": "[TODO] Error al cargar los datos",
+    "loading": "[TODO] Cargando..."
+  },
+  "unsavedChanges": {
+    "title": "[TODO] Cambios sin guardar",
+    "description": "[TODO] Tienes cambios sin guardar. ¿Qué deseas hacer?"
+  },
+  "profile": {
+    "aboutme": {
+      "title": "[TODO] Sobre mí",
+      "description": "[TODO] Actualiza tu información personal y preferencias.",
+      "brand": "Marque",
+      "brand_jewelry": "Bijouterie",
+      "brand_fashion": "Mode",
+      "brand_product": "Produit",
+      "brand_other": "Autre"
+    },
+    "privacySettings": {
+      "label": {
+        "privacy_accepted_at": "[TODO] Acepto la política de privacidad",
+        "email_notifications": "[TODO] Recibir notificaciones por correo electrónico",
+        "newsletter_subscribed_at": "[TODO] Suscribirse al boletín informativo"
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "actions": {
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "cancel": "Cancelar",
+    "discard": "Descartar",
+    "confirm": "Confirmar",
+    "close": "Cerrar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "back": "Volver"
+  },
+  "messages": {
+    "saveSuccess": "Guardado correctamente",
+    "saveError": "Error al guardar",
+    "loadError": "Error al cargar los datos",
+    "loading": "Cargando..."
+  },
+  "unsavedChanges": {
+    "title": "Cambios sin guardar",
+    "description": "Tienes cambios sin guardar. ¿Qué deseas hacer?"
+  },
+  "profile": {
+    "aboutme":{
+      "title": "Sobre mí",
+      "description": "Actualiza tu información personal y preferencias.",
+      "brand": "Marca",
+      "brand_jewelry": "Joyería",
+      "brand_fashion": "Moda",
+      "brand_product": "Producto",
+      "brand_other": "Otros",
+      "photografer": "Fotógrafo"
+    },
+    "privacySettings": {
+      "label": {
+        "privacy_accepted_at": "Acepto la política de privacidad",
+        "email_notifications": "Recibir notificaciones por correo electrónico",
+        "newsletter_subscribed_at": "Suscribirse al boletín informativo"
+      }
+    }
+  }
+}

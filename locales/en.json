@@ -1,0 +1,41 @@
+{
+  "actions": {
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "discard": "Discard",
+    "confirm": "Confirm",
+    "close": "Close",
+    "edit": "Edit",
+    "delete": "Delete",
+    "back": "Back"
+  },
+  "messages": {
+    "saveSuccess": "Saved successfully",
+    "saveError": "Error saving",
+    "loadError": "Error loading data",
+    "loading": "Loading..."
+  },
+  "unsavedChanges": {
+    "title": "Unsaved changes",
+    "description": "You have unsaved changes. What would you like to do?"
+  },
+  "profile": {
+    "privacySettings": {
+      "label": {
+        "privacy_accepted_at": "I accept the privacy policy",
+        "email_notifications": "Receive email notifications",
+        "newsletter_subscribed_at": "Subscribe to newsletter"
+      }
+    },
+    "aboutme": {
+      "title": "About me",
+      "description": "Update your personal information and preferences.",
+      "brand": "Brand",
+      "brand_jewelry": "Jewelry",
+      "brand_fashion": "Fashion",
+      "brand_product": "Product",
+      "brand_other": "Other"
+    }
+  }
+}
