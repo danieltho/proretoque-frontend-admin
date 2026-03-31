@@ -26,5 +26,5 @@ export interface OrderAdmin {
 export interface OrdersAdminListResponse {
   orders: OrderAdmin[]
   count: number
-  page: number
+  pages: number
 }

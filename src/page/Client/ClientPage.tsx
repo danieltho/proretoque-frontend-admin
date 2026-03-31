@@ -6,6 +6,8 @@ import { TitleSection } from '@/app/shared/ui/TitleSection'
 import { Pagination } from '@/app/shared/ui/Pagination'
 import { Skeleton } from '@/app/components/ui/skeleton'
 import Template from '@/app/components/Template'
+import { calculateTotalPage } from '@/app/shared/utils/pagination'
+import { useTranslation } from 'react-i18next'
 
 export default function ClientPage() {
   const [currentPage, setCurrentPage] = useState(1)
@@ -18,7 +20,9 @@ export default function ClientPage() {
 
   const clients = data?.customers ?? []
   const totalCount = data?.count ?? 0
-  const totalPages = Math.max(1, Math.floor(totalCount / data?.pages))
+  const totalPages = calculateTotalPage(totalCount, data?.pages)
+
+  const {t} = useTranslation()
 
   const handleDelete = async (id: number) => {
     await deleteClientApi(id).send()
@@ -33,7 +37,6 @@ export default function ClientPage() {
     <Template>
       <div className="flex flex-col gap-4 font-raleway">
         <TitleSection
-          breadcrumbs={[{ label: 'Usuarios' }]}
           title="Clientes"
         />
 
@@ -49,7 +52,7 @@ export default function ClientPage() {
           </div>
         ) : clients.length === 0 ? (
           <p className="py-8 text-center text-muted-foreground">
-            No hay clientes registrados.
+            {t('tables.empty')}
           </p>
         ) : (
           <div className="flex flex-col items-center gap-6">

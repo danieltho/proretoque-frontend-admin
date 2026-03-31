@@ -16,6 +16,9 @@
     "loadError": "[TODO] Error al cargar los datos",
     "loading": "[TODO] Cargando..."
   },
+  "tables": {
+    "empty": "Não temos informações para exibir."
+  },
   "pagination": {
     "previous": "Anterior",
     "next": "Próximo"

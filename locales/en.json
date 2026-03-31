@@ -16,6 +16,9 @@
     "loadError": "Error loading data",
     "loading": "Loading..."
   },
+  "tables": {
+    "empty": "We have no information to display."
+  },
   "pagination": {
     "previous": "Previous",
     "next": "Next"

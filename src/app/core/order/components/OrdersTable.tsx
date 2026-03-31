@@ -17,7 +17,7 @@ import type { OrderAdmin } from '../types/orderAdmin'
 import { OrderAdminStatusBadge } from './OrderAdminStatusBadge'
 import { OrderAdminActionBadge } from './OrderAdminActionBadge'
 
-interface OrdersAdminTableProps {
+interface OrdersTableProps {
   orders: OrderAdmin[]
 }
 
@@ -29,7 +29,7 @@ function formatCurrency(amount: number | null): string {
   }).format(amount / 100)
 }
 
-export function OrdersAdminTable({ orders }: OrdersAdminTableProps) {
+export function OrdersTable({ orders }: OrdersTableProps) {
   const navigate = useNavigate()
 
   return (

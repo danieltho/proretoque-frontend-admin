@@ -1,25 +1,26 @@
 import alovaInstance from '@/app/shared/api/alovaInstance'
 import type { Order } from '../types/order'
+import type { OrderAdmin } from '../types/orderAdmin'
 
 export interface OrdersListResponse {
-  orders: Order[]
+  orders: OrderAdmin[]
   count: number
-  page: number
+  pages: number
 }
 
-export const getOrdersApi = (page = 1, limit = 20) =>
-  alovaInstance.Get<OrdersListResponse>('/orders', {
-    params: { page, limit },
+export const getOrdersApi = (page = 1) =>
+  alovaInstance.Get<OrdersListResponse>('/backend/orders', {
+    params: { page },
     cacheFor: 0,
   })
 
 export const getOrderApi = (id: number) =>
-  alovaInstance.Get<Order>(`/orders/${id}`, { cacheFor: 0 })
+  alovaInstance.Get<Order>(`/backend/orders/${id}`, { cacheFor: 0 })
 
 export const createOrderApi = (data: { name: string; conversation_id?: string | null }) =>
-  alovaInstance.Post<Order>('/orders', data)
+  alovaInstance.Post<Order>('/backend/orders', data)
 
 export const updateOrderApi = (id: number, data: Partial<Order>) =>
-  alovaInstance.Put<Order>(`/orders/${id}`, data)
+  alovaInstance.Put<Order>(`/backend/orders/${id}`, data)
 
 export const deleteOrderApi = (id: number) => alovaInstance.Delete<void>(`/orders/${id}`)

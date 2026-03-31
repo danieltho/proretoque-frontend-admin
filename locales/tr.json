@@ -16,6 +16,9 @@
     "loadError": "[TODO] Error al cargar los datos",
     "loading": "[TODO] Cargando..."
   },
+  "tables": {
+    "empty": "Görüntülenecek bilgi bulunmamaktadır."
+  },
   "pagination": {
     "previous": "Önceki",
     "next": "Sonraki"
