@@ -1,4 +1,4 @@
-import alovaInstance from '@/shared/api/alovaInstance'
+import alovaInstance from '@/app/shared/api/alovaInstance'
 
 export interface Proforma {
   id: number

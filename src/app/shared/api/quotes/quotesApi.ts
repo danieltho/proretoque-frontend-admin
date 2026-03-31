@@ -1,4 +1,4 @@
-import alovaInstance from '@/shared/api/alovaInstance'
+import alovaInstance from '@/app/shared/api/alovaInstance'
 import type { Quote, QuoteDetail, QuotesListResponse } from '../../types/quote'
 import type { QuotePayload } from '@/application/quote/creation/hooks/useQuoteSubmit'
 

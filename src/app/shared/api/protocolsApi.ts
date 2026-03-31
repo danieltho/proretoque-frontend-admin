@@ -1,4 +1,4 @@
-import alovaInstance from '@/shared/api/alovaInstance'
+import alovaInstance from '@/app/shared/api/alovaInstance'
 import type { Protocol, ProtocolMedia, TempMedia } from '@/shared/types/protocol'
 
 export type { Protocol, ProtocolMedia, TempMedia }

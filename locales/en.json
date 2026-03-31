@@ -16,6 +16,10 @@
     "loadError": "Error loading data",
     "loading": "Loading..."
   },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  },
   "unsavedChanges": {
     "title": "Unsaved changes",
     "description": "You have unsaved changes. What would you like to do?"

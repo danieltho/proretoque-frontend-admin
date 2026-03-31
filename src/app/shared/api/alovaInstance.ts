@@ -8,7 +8,7 @@ const alovaInstance = createAlova({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   requestAdapter: adapterFetch(),
   beforeRequest(method) {
-    const token = localStorage.getItem('auth-token')
+    const token = localStorage.getItem('token')
     if (token) {
       method.config.headers['Authorization'] = `Bearer ${token}`
     }
@@ -16,7 +16,7 @@ const alovaInstance = createAlova({
   responded: {
     onSuccess: async (response, method) => {
       if (response.status === 401) {
-        localStorage.removeItem('auth-token')
+        localStorage.removeItem('token')
         window.location.href = '/login'
         throw new Error('No autorizado')
       }
