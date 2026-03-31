@@ -13,11 +13,15 @@ export type OrderAdminAction =
 export interface OrderAdmin {
   id: number
   number: string
-  customer_name: string
+  name: string
+  client_name: string
+  total_file: number | null
+  total_size: number | null
   subtotal: number | null
   iva: number | null
   total: number | null
   created_at: string
+  deadline: string
   status: OrderAdminStatus
   status_date: string | null
   action: OrderAdminAction | null

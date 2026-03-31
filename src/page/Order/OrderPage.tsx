@@ -37,11 +37,12 @@ export default function OrderPage() {
     <Template>
       <div className="flex flex-col gap-4 font-raleway">
         <TitleSection
-          title="Presupuestos"
+          title="Pedidos"
           action={{
             label: 'Crear Nuevo',
             icon: PlusCircleIcon,
             onClick: () => navigate('/orders/new'),
+            variant: 'blue'
           }}
         />
 

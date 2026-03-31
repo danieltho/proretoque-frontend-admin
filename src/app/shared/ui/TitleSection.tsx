@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { CaretLeftIcon, CaretRightIcon, type Icon } from '@phosphor-icons/react'
 import { cn } from '@/app/shared/utils/utils'
-import { Button } from '@/app/components/ui/button'
+import { Button, type ButtonVariant } from '@/app/components/ui/button'
 
 export interface BreadcrumbItem {
   label: string
@@ -16,12 +16,13 @@ interface TitleSectionProps {
     label: string
     icon?: Icon
     onClick: () => void
+    variant?: ButtonVariant['variant']
   }
   actions?: {
     label: string
     icon?: Icon
     onClick: () => void
-    variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
+    variant?: ButtonVariant['variant']
   }[]
   description?: ReactNode
   className?: string
@@ -44,11 +45,11 @@ export function TitleSection({
             const isLast = index === breadcrumbs.length - 1
             return (
               <span key={item.label} className="flex items-center gap-1.5">
-                {index > 0 && <CaretRightIcon className="size-3.5 text-neutral-300" />}
+                {index > 0 && <CaretRightIcon className="size-3.5 text-muted-foreground" />}
                 <span
                   className={cn(
                     'text-footer',
-                    isLast ? 'font-medium text-neutral-600' : 'text-neutral-300',
+                    isLast ? 'font-medium text-neutral-600' : 'text-muted-foreground',
                   )}
                 >
                   {item.label}
@@ -78,7 +79,7 @@ export function TitleSection({
           <div className="ml-2 flex items-center gap-2">
             {action && (
               <Button
-                variant="ghost"
+                variant={action.variant ?? 'ghost'}
                 size="sm"
                 onClick={action.onClick}
                 className="gap-2 text-base font-medium"
@@ -104,7 +105,7 @@ export function TitleSection({
       </div>
 
       {description && (
-        <div className="flex items-center gap-6 text-body text-neutral-300">{description}</div>
+        <div className="flex items-center gap-4 text-body text-neutral-600">{description}</div>
       )}
     </div>
   )

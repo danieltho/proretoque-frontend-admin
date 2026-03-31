@@ -60,7 +60,7 @@ export function OrderAdminStatusBadge({ status, date }: OrderAdminStatusBadgePro
         config.textColor,
       )}
     >
-      <Icon className="size-3 shrink-0" />
+      <Icon className="shrink-0" />
       <span className="flex flex-col">
         <span>{config.label}</span>
         {showDate && (

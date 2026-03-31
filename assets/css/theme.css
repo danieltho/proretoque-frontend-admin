@@ -67,6 +67,7 @@
   --font-raleway: 'Raleway', sans-serif;
 
   /* Figma — Type Scale */
+  --text-base: 14px;
   --text-h1: 24px;
   --text-h1--line-height: 48px;
   --text-h2: 18px;
