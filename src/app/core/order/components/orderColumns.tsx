@@ -37,12 +37,20 @@ export function getOrderColumns({
       size: 30,
     },
     {
+      accessorKey: 'name',
+      header: () => <span className="text-footer font-medium text-blue-200">NOMBRE</span>,
+      cell: ({ row }) => (
+        <span className="text-footer text-neutral-600">{row.original.name}</span>
+      ),
+      size: 300,
+    },
+    {
       accessorKey: 'customer_name',
       header: () => <span className="text-footer font-medium text-blue-200">CLIENTE</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">{row.original.client_name}</span>
       ),
-      size: 300,
+      size: 30,
     },
     {
       accessorKey: 'total_file',

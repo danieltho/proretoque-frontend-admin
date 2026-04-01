@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useWatcher } from 'alova/client'
-import { getClientsApi, deleteClientApi } from '@/app/core/client/api/clientsApi'
+import { getClients, deleteClientApi } from '@/app/core/client/api/clientsApi'
 import { ClientsTable } from '@/app/core/client/components/ClientsTable'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
 import { Pagination } from '@/app/shared/ui/Pagination'
@@ -13,7 +13,7 @@ export default function ClientPage() {
   const [currentPage, setCurrentPage] = useState(1)
 
   const { data, loading, error, send } = useWatcher(
-    () => getClientsApi(currentPage),
+    () => getClients(currentPage),
     [currentPage],
     { immediate: true, force: true },
   )

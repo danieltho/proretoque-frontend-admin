@@ -1,9 +1,9 @@
 import alovaInstance from '@/app/shared/api/alovaInstance'
 import type { Client, ClientsListResponse } from '../types/client'
 
-export const getClientsApi = (page = 1) =>
+export const getClients = (page = 1, search = '') =>
   alovaInstance.Get<ClientsListResponse>('/backend/clients', {
-    params: { page },
+    params: { page, ...(search ? { search } : {}) },
     cacheFor: 0,
   })
 
