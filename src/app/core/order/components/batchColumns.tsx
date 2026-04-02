@@ -26,6 +26,10 @@ function EditableNameCell({ value, onSave }: { value: string; onSave: (name: str
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    setName(value)
+  }, [value])
+
+  useEffect(() => {
     if (editing) inputRef.current?.focus()
   }, [editing])
 
