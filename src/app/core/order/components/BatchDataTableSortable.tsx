@@ -5,9 +5,25 @@ import { Pagination } from '@/app/shared/ui/Pagination'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
 import { PlusCircleIcon } from '@phosphor-icons/react'
 import { UploadFilesModal, type TempMediaEntry } from '../modal/UploadFilesModal'
-import { getBatchMediaApi, deleteBatchMediaApi, saveBatchMediaApi } from '../api/orderApi'
+import {
+  getBatchMediaApi,
+  deleteBatchMediaApi,
+  saveBatchMediaApi,
+  type BatchMediaFile,
+} from '../api/orderApi'
 import type { MediaCollection } from '@/app/shared/types/protocol'
 import type { MediaItem } from '@/app/shared/types/media'
+
+function mapToMediaItem(file: BatchMediaFile): MediaItem {
+  return {
+    id: file.id,
+    src: file.preview_url ?? file.url,
+    name: file.file_name,
+    fileName: file.file_name,
+    mimeType: file.mime_type,
+    size: file.size,
+  }
+}
 
 export default function BatchDataTableSortable() {
   const [uploadBatchId, setUploadBatchId] = useState<number | null>(null)
@@ -16,8 +32,16 @@ export default function BatchDataTableSortable() {
   >({})
 
   const loadBatchMedia = useCallback(async (batchId: number) => {
-    const data = await getBatchMediaApi(batchId).send()
-    setExistingFiles(data)
+    try {
+      const data = await getBatchMediaApi(batchId).send()
+      const mapped: Partial<Record<MediaCollection, MediaItem[]>> = {}
+      for (const key of Object.keys(data) as MediaCollection[]) {
+        mapped[key] = data[key].map(mapToMediaItem)
+      }
+      setExistingFiles(mapped)
+    } catch {
+      setExistingFiles({})
+    }
   }, [])
 
   const handleOpenUpload = useCallback(
