@@ -50,6 +50,19 @@ export const saveBatchMediaApi = (
   tempMedia: { temp_id: string; file_name: string; collection: MediaCollection }[],
 ) => alovaInstance.Post(`/backend/orders/batch/${batchId}/media`, { media: tempMedia })
 
+export interface OrderProvidersResponse {
+  providers: import('../types/orderDetailType').OrderAdminProvider[]
+}
+
+export const getOrderProvidersApi = (orderId: number) =>
+  alovaInstance.Get<OrderProvidersResponse>(`/backend/orders/${orderId}/providers`, { cacheFor: 0 })
+
+export const addOrderProviderApi = (orderId: number, providerId: number) =>
+  alovaInstance.Post(`/backend/orders/${orderId}/providers`, { provider_id: providerId })
+
+export const removeOrderProviderApi = (orderId: number, providerId: number) =>
+  alovaInstance.Delete(`/backend/orders/${orderId}/providers/${providerId}`)
+
 export const updateOrderAdminApi = (
   id: number,
   data: {
