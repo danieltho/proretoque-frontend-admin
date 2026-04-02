@@ -7,9 +7,10 @@ import type { OrderAdminBatch } from '../types/orderDetailType'
 
 interface UseOrderAdminBatchesOptions {
   onUploadFiles?: (batchId: number) => void
+  onRetouches?: (batchId: number) => void
 }
 
-export function useOrderAdminBatches({ onUploadFiles }: UseOrderAdminBatchesOptions = {}) {
+export function useOrderAdminBatches({ onUploadFiles, onRetouches }: UseOrderAdminBatchesOptions = {}) {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
@@ -39,8 +40,9 @@ export function useOrderAdminBatches({ onUploadFiles }: UseOrderAdminBatchesOpti
         onDelete: () => {},
         onRename: handleRename,
         onUploadFiles,
+        onRetouches,
       }),
-    [navigate, handleRename, onUploadFiles],
+    [navigate, handleRename, onUploadFiles, onRetouches],
   )
 
   const totalPages = data.pages
