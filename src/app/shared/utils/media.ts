@@ -1,4 +1,4 @@
-import type { MediaItem } from '@/shared/types/media'
+import type { MediaItem } from '@/app/shared/types/media'
 
 export function fileToMediaItem(file: File, preview: string): MediaItem {
   return {

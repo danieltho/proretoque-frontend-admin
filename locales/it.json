@@ -23,6 +23,12 @@
     "previous": "Precedente",
     "next": "Successivo"
   },
+  "searchableSelect": {
+    "placeholder": "Selezionare...",
+    "search": "Cercare...",
+    "empty": "Nessun risultato",
+    "loading": "Caricamento..."
+  },
   "unsavedChanges": {
     "title": "[TODO] Cambios sin guardar",
     "description": "[TODO] Tienes cambios sin guardar. ¿Qué deseas hacer?"
@@ -44,5 +50,9 @@
         "newsletter_subscribed_at": "[TODO] Suscribirse al boletín informativo"
       }
     }
+  },
+  "order": {
+    "create": "Nuovo ordine",
+    "detail": "Dettaglio dell'ordine"
   }
 }
