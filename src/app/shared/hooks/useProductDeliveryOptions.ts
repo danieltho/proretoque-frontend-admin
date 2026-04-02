@@ -1,5 +1,5 @@
 import { useRequest } from 'alova/client'
-import { getDeliveryOptionsApi, type DeliveryOptionsResponse } from '@/shared/api/productApi'
+import { getDeliveryOptionsApi, type DeliveryOptionsResponse } from '@/app/shared/api/productApi'
 
 const INITIAL_DATA: DeliveryOptionsResponse = {
   delivery_times: [],

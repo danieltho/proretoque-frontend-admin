@@ -50,6 +50,40 @@ export const saveBatchMediaApi = (
   tempMedia: { temp_id: string; file_name: string; collection: MediaCollection }[],
 ) => alovaInstance.Post(`/backend/orders/batch/${batchId}/media`, { media: tempMedia })
 
+export const getBatchProductsApi = (batchId: number) =>
+  alovaInstance.Get<{ product_item_ids: number[] }>(`/backend/orders/batch/${batchId}/products`, {
+    cacheFor: 0,
+  })
+
+export const saveBatchProductsApi = (batchId: number, productItemIds: number[]) =>
+  alovaInstance.Post(`/backend/orders/batch/${batchId}/products`, {
+    product_item_ids: productItemIds,
+  })
+
+export interface BatchDeliveryOptionsPayload {
+  delivery_time?: string
+  format?: string
+  embed_profile?: string
+  bit_depth?: string
+  color_mode?: string
+  resolution?: string
+  dimension?: { width: string; height: string } | null
+  preserve_mask?: boolean
+  preserve_layers?: boolean
+  preserve_original_layer?: boolean
+}
+
+export const getBatchDeliveryOptionsApi = (batchId: number) =>
+  alovaInstance.Get<BatchDeliveryOptionsPayload>(
+    `/backend/orders/batch/${batchId}/delivery-options`,
+    { cacheFor: 0 },
+  )
+
+export const saveBatchDeliveryOptionsApi = (
+  batchId: number,
+  data: BatchDeliveryOptionsPayload,
+) => alovaInstance.Put(`/backend/orders/batch/${batchId}/delivery-options`, data)
+
 export const updateOrderAdminApi = (
   id: number,
   data: {
