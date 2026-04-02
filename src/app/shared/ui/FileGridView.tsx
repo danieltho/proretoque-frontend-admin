@@ -1,6 +1,6 @@
 import { X } from '@phosphor-icons/react'
-import { formatSize } from '@/customers/orders/types/batch'
-import type { MediaItem } from '@/shared/types/media'
+import { formatFileSize } from '@/app/shared/utils/fileSize'
+import type { MediaItem } from '@/app/shared/types/media'
 
 interface FileGridViewProps {
   items: MediaItem[]
@@ -31,7 +31,7 @@ export default function FileGridView({ items, onRemove, onClick }: FileGridViewP
             </button>
           )}
           <div className="absolute right-0 bottom-0 left-0 truncate bg-black/60 px-1 py-0.5 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
-            {formatSize(item.size)}
+            {formatFileSize(item.size)}
           </div>
         </div>
       ))}

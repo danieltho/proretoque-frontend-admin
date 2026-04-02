@@ -1,8 +1,8 @@
 import { XIcon, NotePencilIcon } from '@phosphor-icons/react'
 import { Button } from '@/app/components/ui/button'
-import { formatSize } from '@/customers/orders/types/batch'
-import { isImageFile, getFileExtLabel, getFileIcon } from '@/shared/utils/fileType'
-import type { MediaItem } from '@/shared/types/media'
+import { formatFileSize } from '@/app/shared/utils/fileSize'
+import { isImageFile, getFileExtLabel, getFileIcon } from '@/app/shared/utils/fileType'
+import type { MediaItem } from '@/app/shared/types/media'
 
 interface FileListViewProps {
   items: MediaItem[]
@@ -52,7 +52,7 @@ export default function FileListView({ items, batchName, onRemove, onEdit }: Fil
               </span>
             )}
             <span className="text-muted-foreground w-20 shrink-0 text-right text-xs">
-              {formatSize(item.size)}
+              {formatFileSize(item.size)}
             </span>
             {(onEdit || onRemove) && (
               <div className="flex w-20 shrink-0 justify-end gap-1">
