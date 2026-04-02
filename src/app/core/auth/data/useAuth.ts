@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/stores/authStore'
+import { useAuthStore } from '@/app/stores/authStore'
 
 export function useAuth() {
   const token = useAuthStore((s) => s.token)

@@ -1,6 +1,10 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { PreferencesData } from '@/application/auth/api/authApi'
+
+type PreferencesData = Record<
+  string,
+  Array<{ name: string; is_checked?: boolean; other?: string | null }>
+>
 
 // ---------------------------------------------------------------------------
 // Role & user type definitions
@@ -91,11 +95,11 @@ export const useAuthStore = create<AuthState>()(
       userType: null,
       isAuthenticated: false,
       setAuth: (user, token, role, userType) => {
-        localStorage.setItem('auth-token', token)
+        localStorage.setItem('token', token)
         set({ user, token, role, userType, isAuthenticated: true })
       },
       logout: () => {
-        localStorage.removeItem('auth-token')
+        localStorage.removeItem('token')
         set({
           user: null,
           token: null,
@@ -117,12 +121,8 @@ export const useAuthStore = create<AuthState>()(
         user: state.user,
         role: state.role,
         userType: state.userType,
+        isAuthenticated: state.isAuthenticated,
       }),
-      onRehydrateStorage: () => (state) => {
-        if (state && state.token) {
-          state.isAuthenticated = true
-        }
-      },
     },
   ),
 )

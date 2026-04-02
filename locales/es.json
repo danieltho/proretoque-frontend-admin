@@ -16,6 +16,13 @@
     "loadError": "Error al cargar los datos",
     "loading": "Cargando..."
   },
+  "tables": {
+    "empty": "No tenemos información para mostrar."
+  },
+  "pagination": {
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
   "unsavedChanges": {
     "title": "Cambios sin guardar",
     "description": "Tienes cambios sin guardar. ¿Qué deseas hacer?"

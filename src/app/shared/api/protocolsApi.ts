@@ -1,7 +1,7 @@
-import alovaInstance from '@/shared/api/alovaInstance'
-import type { Protocol, ProtocolMedia, TempMedia } from '@/shared/types/protocol'
+import alovaInstance from '@/app/shared/api/alovaInstance'
+import type { Protocol, ProtocolMedia } from '@/app/shared/types/protocol'
 
-export type { Protocol, ProtocolMedia, TempMedia }
+export type { Protocol, ProtocolMedia }
 
 export const getProtocolsApi = () =>
   alovaInstance.Get<{ protocols: Protocol[] }>('/protocols', { cacheFor: 0 })
@@ -22,6 +22,3 @@ export const uploadProtocolMediaApi = (
   _collection: 'original' | 'example' | 'resource',
   formData: FormData,
 ) => alovaInstance.Post<{ media: ProtocolMedia }>(`/protocols/${protocolId}/media`, formData)
-
-export const uploadTempMediaApi = (formData: FormData) =>
-  alovaInstance.Post<TempMedia>('/uploads/temp', formData)

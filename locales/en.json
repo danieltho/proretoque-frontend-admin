@@ -16,6 +16,13 @@
     "loadError": "Error loading data",
     "loading": "Loading..."
   },
+  "tables": {
+    "empty": "We have no information to display."
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  },
   "unsavedChanges": {
     "title": "Unsaved changes",
     "description": "You have unsaved changes. What would you like to do?"

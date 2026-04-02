@@ -1,0 +1,53 @@
+import alovaInstance from '@/app/shared/api/alovaInstance'
+import type { Batches, OrderDetailType } from '../types/orderDetailType'
+import type { OrderAdminStatus } from '../types/orderAdmin'
+import type { MediaItem } from '@/app/shared/types/media'
+import type { MediaCollection } from '@/app/shared/types/protocol'
+
+export type BatchMediaResponse = Record<MediaCollection, MediaItem[]>
+
+export const getOrderDetail = (id: number) =>
+  alovaInstance.Get<OrderDetailType>(`/backend/orders/${id}`, { cacheFor: 0 })
+
+export const createOrderAdminApi = (data: { name: string; customer_id: number }) =>
+  alovaInstance.Post<OrderDetailType>('/backend/orders', data)
+
+export const getOrderAdminBatchesApi = (
+  orderId: number,
+  page = 1,
+  sortBy = 'sort_order',
+  sortOrder = 'asc',
+) =>
+  alovaInstance.Get<Batches>(`/backend/orders/${orderId}/batches`, {
+    cacheFor: 0,
+    params: { page, sort_by: sortBy, sort_order: sortOrder },
+  })
+
+export const sortOrderAdminBatchesApi = (orderId: number, batchIds: number[]) =>
+  alovaInstance.Patch(`/backend/orders/${orderId}/batches/sort`, { batch_ids: batchIds })
+
+export const updateBatchNameApi = (batchId: number, name: string) =>
+  alovaInstance.Patch(`/backend/orders/batch/${batchId}`, { name })
+
+export const getBatchMediaApi = (batchId: number) =>
+  alovaInstance.Get<BatchMediaResponse>(`/backend/orders/batch/${batchId}/media`, { cacheFor: 0 })
+
+export const deleteBatchMediaApi = (batchId: number, mediaId: number) =>
+  alovaInstance.Delete(`/backend/orders/batch/${batchId}/media/${mediaId}`)
+
+export const saveBatchMediaApi = (
+  batchId: number,
+  tempMedia: { temp_id: string; file_name: string; collection: MediaCollection }[],
+) => alovaInstance.Post(`/backend/orders/batch/${batchId}/media`, { media: tempMedia })
+
+export const updateOrderAdminApi = (
+  id: number,
+  data: {
+    name?: string
+    customer_id?: number
+    status?: OrderAdminStatus
+    payment_method?: string
+    coupon_code?: string
+    deadline?: string
+  },
+) => alovaInstance.Put<OrderDetailType>(`/backend/orders/${id}`, data)
