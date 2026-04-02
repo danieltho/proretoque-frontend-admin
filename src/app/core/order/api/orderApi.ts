@@ -4,7 +4,17 @@ import type { OrderAdminStatus } from '../types/orderAdmin'
 import type { MediaItem } from '@/app/shared/types/media'
 import type { MediaCollection } from '@/app/shared/types/protocol'
 
-export type BatchMediaResponse = Record<MediaCollection, MediaItem[]>
+export interface BatchMediaFile {
+  id: number
+  file_name: string
+  url: string
+  preview_url: string | null
+  size: number
+  mime_type: string
+  collection: MediaCollection
+}
+
+export type BatchMediaResponse = Record<MediaCollection, BatchMediaFile[]>
 
 export const getOrderDetail = (id: number) =>
   alovaInstance.Get<OrderDetailType>(`/backend/orders/${id}`, { cacheFor: 0 })
