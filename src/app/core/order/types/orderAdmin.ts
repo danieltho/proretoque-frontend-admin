@@ -1,8 +1,9 @@
 export type OrderAdminStatus =
-  | 'pendiente'
-  | 'en_proceso'
-  | 'muestras_aceptadas'
-  | 'presupuesto_aceptado'
+  | 'created'
+  | 'pending'
+  | 'completed'
+  | 'sended'
+  | 'archived'
 
 export type OrderAdminAction =
   | 'requiere_muestras'

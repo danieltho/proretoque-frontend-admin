@@ -12,33 +12,40 @@ const STATUS_CONFIG: Record<
   OrderAdminStatus,
   { label: string; bg: string; textColor: string; dateColor: string; icon: typeof QuestionIcon }
 > = {
-  pendiente: {
-    label: 'PENDIENTE',
+  created: {
+    label: 'CREADO',
     bg: 'bg-neutral-100',
     textColor: 'text-blue-200',
     dateColor: 'text-neutral-400',
     icon: QuestionIcon,
   },
-  en_proceso: {
-    label: 'EN PROCESO',
+  pending: {
+    label: 'PENDIENTE',
     bg: 'bg-blue-50',
     textColor: 'text-white',
     dateColor: 'text-neutral-200',
     icon: ClockCounterClockwiseIcon,
   },
-  muestras_aceptadas: {
-    label: 'MUESTRAS ACEPTADAS',
+  completed: {
+    label: 'COMPLETADO',
     bg: 'bg-blue-100',
     textColor: 'text-white',
     dateColor: 'text-neutral-200',
     icon: ListChecksIcon,
   },
-  presupuesto_aceptado: {
-    label: 'PRESUPUESTO ACEPTADO',
+  sended: {
+    label: 'ENVIADO',
     bg: 'bg-blue-200',
     textColor: 'text-white',
     dateColor: 'text-neutral-400',
     icon: CheckCircleIcon,
+  },
+  archived: {
+    label: 'ARCHIVADO',
+    bg: 'bg-neutral-200',
+    textColor: 'text-neutral-600',
+    dateColor: 'text-neutral-400',
+    icon: QuestionIcon,
   },
 }
 
@@ -48,9 +55,9 @@ interface OrderAdminStatusBadgeProps {
 }
 
 export function OrderAdminStatusBadge({ status, date }: OrderAdminStatusBadgeProps) {
-  const config = STATUS_CONFIG[status] ?? STATUS_CONFIG.pendiente
+  const config = STATUS_CONFIG[status] ?? STATUS_CONFIG.created
   const Icon = config.icon
-  const showDate = status !== 'pendiente' && status !== 'en_proceso' && date
+  const showDate = status !== 'created' && status !== 'pending' && date
 
   return (
     <span
