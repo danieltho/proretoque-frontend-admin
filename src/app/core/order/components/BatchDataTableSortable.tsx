@@ -5,6 +5,8 @@ import { Pagination } from '@/app/shared/ui/Pagination'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
 import { PlusCircleIcon } from '@phosphor-icons/react'
 import { UploadFilesModal, type TempMediaEntry } from '../modal/UploadFilesModal'
+import { RetoquesModal } from '../modal/RetoquesModal'
+import { DeliveryOptionsModal } from '../modal/DeliveryOptionsModal'
 import {
   getBatchMediaApi,
   deleteBatchMediaApi,
@@ -27,6 +29,8 @@ function mapToMediaItem(file: BatchMediaFile): MediaItem {
 
 export default function BatchDataTableSortable() {
   const [uploadBatchId, setUploadBatchId] = useState<number | null>(null)
+  const [retouchesBatchId, setRetouchesBatchId] = useState<number | null>(null)
+  const [deliveryBatchId, setDeliveryBatchId] = useState<number | null>(null)
   const [existingFiles, setExistingFiles] = useState<
     Partial<Record<MediaCollection, MediaItem[]>>
   >({})
@@ -52,8 +56,12 @@ export default function BatchDataTableSortable() {
     [loadBatchMedia],
   )
 
-  const { batches, columns, page, setPage, totalPages, loading, handleReorder, refetch } =
-    useOrderAdminBatches({ onUploadFiles: handleOpenUpload })
+  const { batches, columns, page, setPage, totalPages, loading, handleReorder, handleAddBatch, refetch } =
+    useOrderAdminBatches({
+      onUploadFiles: handleOpenUpload,
+      onRetouches: setRetouchesBatchId,
+      onDeliveryOptions: setDeliveryBatchId,
+    })
 
   const handleSave = useCallback(
     async (tempMedia: TempMediaEntry[]) => {
@@ -84,7 +92,7 @@ export default function BatchDataTableSortable() {
     [uploadBatchId, existingFiles],
   )
 
-  const handleAddClick = () => 1 == 1
+  const handleAddClick = handleAddBatch
 
   /**
    * cambiar esto por un skeleton
@@ -121,6 +129,24 @@ export default function BatchDataTableSortable() {
           ]}
           existingFiles={existingFiles}
           onRemoveExisting={handleRemoveExisting}
+        />
+      )}
+
+      {retouchesBatchId && (
+        <RetoquesModal
+          open
+          batchId={retouchesBatchId}
+          onClose={() => setRetouchesBatchId(null)}
+          onSaved={refetch}
+        />
+      )}
+
+      {deliveryBatchId && (
+        <DeliveryOptionsModal
+          open
+          batchId={deliveryBatchId}
+          onClose={() => setDeliveryBatchId(null)}
+          onSaved={refetch}
         />
       )}
     </>

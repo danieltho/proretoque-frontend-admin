@@ -2,7 +2,12 @@ import { useCallback, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useWatcher } from 'alova/client'
 import { getBatchColumns } from '../components/batchColumns'
-import { getOrderAdminBatchesApi, sortOrderAdminBatchesApi, updateBatchNameApi } from '../api/orderApi'
+import {
+  getOrderAdminBatchesApi,
+  sortOrderAdminBatchesApi,
+  updateBatchNameApi,
+  createBatchAdminApi,
+} from '../api/orderApi'
 import type { OrderAdminBatch } from '../types/orderDetailType'
 
 interface UseOrderAdminBatchesOptions {
@@ -55,6 +60,14 @@ export function useOrderAdminBatches({ onUploadFiles }: UseOrderAdminBatchesOpti
     [id, send],
   )
 
+  const handleAddBatch = useCallback(async () => {
+    if (!id) return
+    const batchCount = data.batches.length
+    const name = `Lote ${batchCount + 1}`
+    await createBatchAdminApi(Number(id), name).send()
+    send()
+  }, [id, data.batches.length, send])
+
   return {
     batches: data.batches,
     columns,
@@ -63,6 +76,7 @@ export function useOrderAdminBatches({ onUploadFiles }: UseOrderAdminBatchesOpti
     totalPages,
     loading,
     handleReorder,
+    handleAddBatch,
     refetch: send,
   }
 }
