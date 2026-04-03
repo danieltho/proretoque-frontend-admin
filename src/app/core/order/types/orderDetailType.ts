@@ -15,6 +15,16 @@ export interface OrderAdminBatch {
   product_total_price: number | null
   created_at: string
   deadline: string | null
+  delivery_time: string | null
+  format: string | null
+  embed_profile: string | null
+  bit_depth: string | null
+  color_mode: string | null
+  resolution: string | null
+  dimension: { width: string; height: string } | null
+  preserve_mask: boolean
+  preserve_layers: boolean
+  preserve_original_layer: boolean
 }
 
 export type ProviderStatus = 'en_proceso' | 'finalizado'
