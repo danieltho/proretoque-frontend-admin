@@ -13,5 +13,5 @@ export interface ProductAdmin {
 export interface ProductsAdminListResponse {
   products: ProductAdmin[]
   count: number
-  page: number
+  pages: number
 }
