@@ -2,14 +2,24 @@ import { useCallback, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useWatcher } from 'alova/client'
 import { getBatchColumns } from '../components/batchColumns'
-import { getOrderAdminBatchesApi, sortOrderAdminBatchesApi, updateBatchNameApi } from '../api/orderApi'
+import {
+  getOrderAdminBatchesApi,
+  sortOrderAdminBatchesApi,
+  updateBatchNameApi,
+} from '../api/orderApi'
 import type { OrderAdminBatch } from '../types/orderDetailType'
 
 interface UseOrderAdminBatchesOptions {
   onUploadFiles?: (batchId: number) => void
+  onRetouches?: (batchId: number) => void
+  onDeliveryOptions?: (batchId: number) => void
 }
-
-export function useOrderAdminBatches({ onUploadFiles }: UseOrderAdminBatchesOptions = {}) {
+// esto es una actualizacion
+export function useOrderAdminBatches({
+  onUploadFiles,
+  onRetouches,
+  onDeliveryOptions,
+}: UseOrderAdminBatchesOptions = {}) {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
@@ -39,8 +49,10 @@ export function useOrderAdminBatches({ onUploadFiles }: UseOrderAdminBatchesOpti
         onDelete: () => {},
         onRename: handleRename,
         onUploadFiles,
+        onRetouches,
+        onDeliveryOptions,
       }),
-    [navigate, handleRename, onUploadFiles],
+    [navigate, handleRename, onUploadFiles, onRetouches, onDeliveryOptions],
   )
 
   const totalPages = data.pages
@@ -55,6 +67,14 @@ export function useOrderAdminBatches({ onUploadFiles }: UseOrderAdminBatchesOpti
     [id, send],
   )
 
+  const handleAddBatch = useCallback(async () => {
+    if (!id) return
+    const batchCount = data.batches.length
+    const name = `Lote ${batchCount + 1}`
+    await createBatchAdminApi(Number(id), name).send()
+    send()
+  }, [id, data.batches.length, send])
+
   return {
     batches: data.batches,
     columns,
@@ -63,6 +83,7 @@ export function useOrderAdminBatches({ onUploadFiles }: UseOrderAdminBatchesOpti
     totalPages,
     loading,
     handleReorder,
+    handleAddBatch,
     refetch: send,
   }
 }
