@@ -89,20 +89,6 @@ export default function OrderEditPage() {
           <BatchDataTableSortable />
         </Card>
         <Card>
-          <header>
-            <TitleSection
-              title="Asignar proveedores"
-              actions={[
-                {
-                  label: 'Asignar proveedor',
-                  onClick: handleSave,
-                  icon: PlusCircleIcon,
-                  variant: 'blue',
-                },
-              ]}
-            />
-          </header>
-
           <ProviderTaskDataTable />
         </Card>
       </div>
