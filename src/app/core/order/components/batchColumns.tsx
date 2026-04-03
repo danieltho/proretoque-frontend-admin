@@ -131,18 +131,22 @@ export function getBatchColumns({
     {
       accessorKey: 'file_count',
       header: () => <span className="text-footer font-medium text-blue-200">FOTOS</span>,
-      cell: ({ row }) =>
-        onUploadFiles ? (
+      cell: ({ row }) => {
+        const isEmpty = !row.original.file_count
+        return onUploadFiles ? (
           <span
             className="group flex cursor-pointer items-center gap-1.5"
             onClick={() => onUploadFiles(row.original.id)}
           >
             <span className="text-footer text-neutral-600">{row.original.file_count}</span>
-            <CloudArrowUpIcon className="size-4 text-blue-200 opacity-0 transition-opacity group-hover:opacity-100" />
+            <CloudArrowUpIcon
+              className={`size-4 text-blue-200 transition-opacity ${isEmpty ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+            />
           </span>
         ) : (
           <span className="text-footer text-neutral-600">{row.original.file_count}</span>
-        ),
+        )
+      },
     },
     {
       accessorKey: 'retouch_count',

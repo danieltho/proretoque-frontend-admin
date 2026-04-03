@@ -57,14 +57,12 @@ export default function BatchDataTableSortable() {
     [loadBatchMedia],
   )
 
-  const { batches, columns, page, setPage, totalPages, loading, handleReorder, refetch } =
-
+  const { batches, columns, page, setPage, totalPages, loading, handleReorder, handleAddBatch, refetch } =
     useOrderAdminBatches({
       onUploadFiles: handleOpenUpload,
       onRetouches: setRetouchesBatchId,
       onDeliveryOptions: setDeliveryBatchId,
     })
-    useOrderAdminBatches({ onUploadFiles: handleOpenUpload, onRetouches: setRetouchesBatchId })
 
   const handleSave = useCallback(
     async (tempMedia: TempMediaEntry[]) => {
@@ -95,7 +93,7 @@ export default function BatchDataTableSortable() {
     [uploadBatchId, existingFiles],
   )
 
-  const handleAddClick = () => 1 == 1
+  const handleAddClick = handleAddBatch
 
   /**
    * cambiar esto por un skeleton

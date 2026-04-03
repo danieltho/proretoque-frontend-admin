@@ -67,6 +67,14 @@ export function useOrderAdminBatches({
     [id, send],
   )
 
+  const handleAddBatch = useCallback(async () => {
+    if (!id) return
+    const batchCount = data.batches.length
+    const name = `Lote ${batchCount + 1}`
+    await createBatchAdminApi(Number(id), name).send()
+    send()
+  }, [id, data.batches.length, send])
+
   return {
     batches: data.batches,
     columns,
@@ -75,6 +83,7 @@ export function useOrderAdminBatches({
     totalPages,
     loading,
     handleReorder,
+    handleAddBatch,
     refetch: send,
   }
 }
