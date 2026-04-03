@@ -7,6 +7,7 @@ import {
   PencilSimpleIcon,
   CloudArrowUpIcon,
   ListPlusIcon,
+  StackPlusIcon,
 } from '@phosphor-icons/react'
 import { Checkbox } from '@/app/components/ui/checkbox'
 import { formatDateShort } from '@/app/shared/utils/date'
@@ -80,6 +81,7 @@ interface BatchColumnsOptions {
   onRename?: (id: number, name: string) => void
   onUploadFiles?: (batchId: number) => void
   onRetouches?: (batchId: number) => void
+  onDeliveryOptions?: (batchId: number) => void
 }
 
 export function getBatchColumns({
@@ -88,6 +90,7 @@ export function getBatchColumns({
   onRename,
   onUploadFiles,
   onRetouches,
+  onDeliveryOptions,
 }: BatchColumnsOptions): ColumnDef<OrderAdminBatch>[] {
   return [
     {
@@ -165,6 +168,52 @@ export function getBatchColumns({
           {formatFileSize(row.original.size_count ?? 0)}
         </span>
       ),
+    },
+    {
+      id: 'delivery',
+      header: () => (
+        <span className="text-footer font-medium text-blue-200">ENTREGA</span>
+      ),
+      cell: ({ row }) => {
+        const { delivery_time, format, bit_depth, color_mode } = row.original
+        const badges = [delivery_time, format, bit_depth, color_mode].filter(Boolean)
+
+        return onDeliveryOptions ? (
+          <span
+            className="group flex cursor-pointer flex-wrap items-center gap-1"
+            onClick={() => onDeliveryOptions(row.original.id)}
+          >
+            {badges.length > 0 ? (
+              badges.map((badge) => (
+                <span
+                  key={badge}
+                  className="rounded-lg bg-blue-200 px-2 py-0.5 text-[10px] font-medium text-white"
+                >
+                  {badge}
+                </span>
+              ))
+            ) : (
+              <span className="text-footer text-neutral-400">--</span>
+            )}
+            <StackPlusIcon className="size-4 text-blue-200 opacity-0 transition-opacity group-hover:opacity-100" />
+          </span>
+        ) : (
+          <span className="flex flex-wrap gap-1">
+            {badges.length > 0 ? (
+              badges.map((badge) => (
+                <span
+                  key={badge}
+                  className="rounded-lg bg-blue-200 px-2 py-0.5 text-[10px] font-medium text-white"
+                >
+                  {badge}
+                </span>
+              ))
+            ) : (
+              <span className="text-footer text-neutral-400">--</span>
+            )}
+          </span>
+        )
+      },
     },
     {
       id: 'product_total_price',

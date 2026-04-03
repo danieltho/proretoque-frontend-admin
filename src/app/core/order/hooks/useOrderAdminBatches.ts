@@ -8,6 +8,10 @@ import type { OrderAdminBatch } from '../types/orderDetailType'
 interface UseOrderAdminBatchesOptions {
   onUploadFiles?: (batchId: number) => void
   onRetouches?: (batchId: number) => void
+  onDeliveryOptions?: (batchId: number) => void
+}
+
+export function useOrderAdminBatches({ onUploadFiles, onRetouches, onDeliveryOptions }: UseOrderAdminBatchesOptions = {}) {
 }
 
 export function useOrderAdminBatches({ onUploadFiles, onRetouches }: UseOrderAdminBatchesOptions = {}) {
@@ -41,6 +45,9 @@ export function useOrderAdminBatches({ onUploadFiles, onRetouches }: UseOrderAdm
         onRename: handleRename,
         onUploadFiles,
         onRetouches,
+        onDeliveryOptions,
+      }),
+    [navigate, handleRename, onUploadFiles, onRetouches, onDeliveryOptions],
       }),
     [navigate, handleRename, onUploadFiles, onRetouches],
   )
