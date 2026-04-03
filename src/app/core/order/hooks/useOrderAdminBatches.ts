@@ -6,6 +6,7 @@ import {
   getOrderAdminBatchesApi,
   sortOrderAdminBatchesApi,
   updateBatchNameApi,
+  createBatchAdminApi,
 } from '../api/orderApi'
 import type { OrderAdminBatch } from '../types/orderDetailType'
 
