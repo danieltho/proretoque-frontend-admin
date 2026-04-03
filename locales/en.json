@@ -23,6 +23,12 @@
     "previous": "Previous",
     "next": "Next"
   },
+  "searchableSelect": {
+    "placeholder": "Select...",
+    "search": "Search...",
+    "empty": "No results",
+    "loading": "Loading..."
+  },
   "unsavedChanges": {
     "title": "Unsaved changes",
     "description": "You have unsaved changes. What would you like to do?"
@@ -44,5 +50,9 @@
       "brand_product": "Product",
       "brand_other": "Other"
     }
+  },
+  "order": {
+    "create": "New order",
+    "detail": "Order detail"
   }
 }

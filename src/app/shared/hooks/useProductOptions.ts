@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { getCategoryProductsApi } from '@/shared/api/productApi'
-import type { Category, ProductOptions } from '@/shared/types/category'
+import { getCategoryProductsApi } from '@/app/shared/api/productApi'
+import type { Category, ProductOptions } from '@/app/shared/types/category'
 
 export function useProductOptions(categories: Category[]) {
   const [productOptions, setProductOptions] = useState<Record<number, ProductOptions[]>>({})

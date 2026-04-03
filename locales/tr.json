@@ -23,6 +23,12 @@
     "previous": "Önceki",
     "next": "Sonraki"
   },
+  "searchableSelect": {
+    "placeholder": "Seçiniz...",
+    "search": "Ara...",
+    "empty": "Sonuç bulunamadı",
+    "loading": "Yükleniyor..."
+  },
   "unsavedChanges": {
     "title": "[TODO] Cambios sin guardar",
     "description": "[TODO] Tienes cambios sin guardar. ¿Qué deseas hacer?"
@@ -44,5 +50,9 @@
         "newsletter_subscribed_at": "[TODO] Suscribirse al boletín informativo"
       }
     }
+  },
+  "order": {
+    "create": "Yeni sipariş",
+    "detail": "Sipariş detayı"
   }
 }
