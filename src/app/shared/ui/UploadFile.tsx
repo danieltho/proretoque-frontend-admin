@@ -38,15 +38,39 @@ export default function UploadFile({
     }
   }, [previews])
 
+  // Combine existing + new into a single list
+  const newMediaItems = useMemo(
+    () => files.map((file, i) => fileToMediaItem(file, previews[i])),
+    [files, previews],
+  )
+  const allItems = useMemo(
+    () => [...existingMedia, ...newMediaItems],
+    [existingMedia, newMediaItems],
+  )
+
+  const handleRemove = useCallback(
+    (index: number) => {
+      if (index < existingMedia.length) {
+        onRemoveExisting?.(index)
+      } else {
+        onRemove?.(index - existingMedia.length)
+      }
+    },
+    [existingMedia.length, onRemove, onRemoveExisting],
+  )
+
   const handleEdit = useCallback(
     (index: number) => {
-      const file = files[index]
+      // Only new files can be edited (not existing media)
+      const newIndex = index - existingMedia.length
+      if (newIndex < 0) return
+      const file = files[newIndex]
       const stableUrl = URL.createObjectURL(file)
       setEditorPreview(stableUrl)
       setEditingFile(file)
       setEditorOpen(true)
     },
-    [files],
+    [files, existingMedia.length],
   )
 
   const handleEditorSave = useCallback(
@@ -74,20 +98,16 @@ export default function UploadFile({
   return (
     <>
       {!readOnly && onFilesAdded && (
-        <DropZone onFilesAdded={onFilesAdded} hasFiles={files.length > 0} />
+        <DropZone onFilesAdded={onFilesAdded} hasFiles={allItems.length > 0} />
       )}
 
-      {existingMedia.length > 0 && (
-        <FileListView items={existingMedia} onRemove={onRemoveExisting} />
-      )}
-
-      {files.length > 0 ? (
+      {allItems.length > 0 ? (
         <FileListView
-          items={files.map((file, i) => fileToMediaItem(file, previews[i]))}
-          onRemove={onRemove}
+          items={allItems}
+          onRemove={onRemove || onRemoveExisting ? handleRemove : undefined}
           onEdit={onEditSave ? handleEdit : undefined}
         />
-      ) : existingMedia.length === 0 && !onFilesAdded ? (
+      ) : !onFilesAdded ? (
         <p className="text-muted-foreground text-center text-sm">{t('tables.empty')}</p>
       ) : null}
 
