@@ -100,6 +100,48 @@ export const addOrderProviderApi = (orderId: number, providerId: number) =>
 export const removeOrderProviderApi = (orderId: number, providerId: number) =>
   alovaInstance.Delete(`/backend/orders/${orderId}/providers/${providerId}`)
 
+export interface BatchImage {
+  id: number
+  file_name: string
+  url: string
+  preview_url: string | null
+  assigned_provider_id: number | null
+}
+
+export interface BatchImagesResponse {
+  images: BatchImage[]
+  total: number
+  unassigned: number
+}
+
+export const getBatchImagesApi = (batchId: number) =>
+  alovaInstance.Get<BatchImagesResponse>(`/backend/orders/batch/${batchId}/images`, { cacheFor: 0 })
+
+export interface BatchRetouchItem {
+  id: number
+  name: string
+  type: string
+  duration: number
+}
+
+export const getBatchRetouchesApi = (batchId: number) =>
+  alovaInstance.Get<{ retouches: BatchRetouchItem[] }>(
+    `/backend/orders/batch/${batchId}/retouches`,
+    { cacheFor: 0 },
+  )
+
+export const assignProviderApi = (
+  orderId: number,
+  data: {
+    provider_id: number
+    batch_id: number
+    image_ids: number[]
+    retouch_ids: number[]
+    cost_per_photo: number | null
+    extra_cost: number | null
+  },
+) => alovaInstance.Post(`/backend/orders/${orderId}/providers/assign`, data)
+
 export const updateOrderAdminApi = (
   id: number,
   data: {

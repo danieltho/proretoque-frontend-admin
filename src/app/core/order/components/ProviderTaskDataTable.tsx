@@ -1,11 +1,14 @@
+import { useState } from 'react'
 import { PlusCircleIcon } from '@phosphor-icons/react'
 import { useOrderAdminProviders } from '../hooks/useOrderAdminProviders'
 import { ProviderGroupTable } from './ProviderGroupTable'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
 import { Skeleton } from '@/app/components/ui/skeleton'
+import { AssignProviderModal } from '../modal/AssignProviderModal'
 
 export default function ProviderTaskDataTable() {
-  const { providers, columns, loading } = useOrderAdminProviders()
+  const { providers, columns, loading, refetch } = useOrderAdminProviders()
+  const [assignOpen, setAssignOpen] = useState(false)
 
   return (
     <>
@@ -15,9 +18,7 @@ export default function ProviderTaskDataTable() {
           actions={[
             {
               label: 'Agregar Proveedores',
-              onClick: () => {
-                // TODO: open provider selector modal
-              },
+              onClick: () => setAssignOpen(true),
               icon: PlusCircleIcon,
               variant: 'outline',
             },
@@ -38,6 +39,12 @@ export default function ProviderTaskDataTable() {
       ) : (
         <ProviderGroupTable providers={providers} columns={columns} />
       )}
+
+      <AssignProviderModal
+        open={assignOpen}
+        onClose={() => setAssignOpen(false)}
+        onAssigned={refetch}
+      />
     </>
   )
 }
