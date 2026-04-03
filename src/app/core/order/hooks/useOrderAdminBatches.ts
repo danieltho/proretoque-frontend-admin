@@ -12,6 +12,9 @@ interface UseOrderAdminBatchesOptions {
 }
 
 export function useOrderAdminBatches({ onUploadFiles, onRetouches, onDeliveryOptions }: UseOrderAdminBatchesOptions = {}) {
+}
+
+export function useOrderAdminBatches({ onUploadFiles, onRetouches }: UseOrderAdminBatchesOptions = {}) {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
@@ -45,6 +48,8 @@ export function useOrderAdminBatches({ onUploadFiles, onRetouches, onDeliveryOpt
         onDeliveryOptions,
       }),
     [navigate, handleRename, onUploadFiles, onRetouches, onDeliveryOptions],
+      }),
+    [navigate, handleRename, onUploadFiles, onRetouches],
   )
 
   const totalPages = data.pages

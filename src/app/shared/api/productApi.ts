@@ -1,5 +1,5 @@
 import alovaInstance from './alovaInstance'
-import type { Category, ProductOptions } from '@/shared/types/category'
+import type { Category, ProductOptions } from '@/app/shared/types/category'
 
 interface CategoriesResponse {
   categories: Category[]

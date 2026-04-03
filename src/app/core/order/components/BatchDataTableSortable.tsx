@@ -7,6 +7,7 @@ import { PlusCircleIcon } from '@phosphor-icons/react'
 import { UploadFilesModal, type TempMediaEntry } from '../modal/UploadFilesModal'
 import { RetoquesModal } from '../modal/RetoquesModal'
 import { DeliveryOptionsModal } from '../modal/DeliveryOptionsModal'
+
 import {
   getBatchMediaApi,
   deleteBatchMediaApi,
@@ -57,11 +58,13 @@ export default function BatchDataTableSortable() {
   )
 
   const { batches, columns, page, setPage, totalPages, loading, handleReorder, refetch } =
+
     useOrderAdminBatches({
       onUploadFiles: handleOpenUpload,
       onRetouches: setRetouchesBatchId,
       onDeliveryOptions: setDeliveryBatchId,
     })
+    useOrderAdminBatches({ onUploadFiles: handleOpenUpload, onRetouches: setRetouchesBatchId })
 
   const handleSave = useCallback(
     async (tempMedia: TempMediaEntry[]) => {
@@ -149,6 +152,7 @@ export default function BatchDataTableSortable() {
           onSaved={refetch}
         />
       )}
+
     </>
   )
 }

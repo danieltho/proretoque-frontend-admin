@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { Category, ProductOptions } from '@/shared/types/category'
+import type { Category, ProductOptions } from '@/app/shared/types/category'
 
 export function useInitialCategoryId(
   categories: Category[],
