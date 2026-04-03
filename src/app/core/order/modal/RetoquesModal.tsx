@@ -18,15 +18,13 @@ export function RetoquesModal({ open, batchId, onClose, onSaved }: RetoquesModal
   const [selections, setSelections] = useState<Record<number, string>>({})
   const [savedItemIds, setSavedItemIds] = useState<number[]>([])
   const [saving, setSaving] = useState(false)
-  const hasLoadedSelections = useRef(false)
+  const selectionsRef = useRef(selections)
+  selectionsRef.current = selections
   const { productOptions, loading: loadingProducts } = useProductOptions(categories)
 
   // Load categories on open
   useEffect(() => {
-    if (!open) {
-      hasLoadedSelections.current = false
-      return
-    }
+    if (!open) return
     getCategoriesByTagApi('retoque')
       .send()
       .then((res) => setCategories(res.categories))
@@ -41,9 +39,9 @@ export function RetoquesModal({ open, batchId, onClose, onSaved }: RetoquesModal
       .catch(() => setSavedItemIds([]))
   }, [open, batchId])
 
-  // Map saved item IDs to selections once productOptions are loaded
+  // Map saved item IDs to selections every time productOptions updates
   useEffect(() => {
-    if (hasLoadedSelections.current || savedItemIds.length === 0) return
+    if (savedItemIds.length === 0) return
     if (Object.keys(productOptions).length === 0) return
 
     const map: Record<number, string> = {}
@@ -58,8 +56,7 @@ export function RetoquesModal({ open, batchId, onClose, onSaved }: RetoquesModal
       }
     }
     if (Object.keys(map).length > 0) {
-      setSelections(map)
-      hasLoadedSelections.current = true
+      setSelections((prev) => ({ ...prev, ...map }))
     }
   }, [savedItemIds, productOptions])
 
@@ -68,7 +65,8 @@ export function RetoquesModal({ open, batchId, onClose, onSaved }: RetoquesModal
   }, [])
 
   const handleClose = useCallback(async () => {
-    const itemIds = Object.values(selections)
+    const currentSelections = selectionsRef.current
+    const itemIds = Object.values(currentSelections)
       .filter(Boolean)
       .map(Number)
 
@@ -81,7 +79,7 @@ export function RetoquesModal({ open, batchId, onClose, onSaved }: RetoquesModal
     setSavedItemIds([])
     setCategories([])
     onClose()
-  }, [selections, batchId, onSaved, onClose])
+  }, [batchId, onSaved, onClose])
 
   return (
     <DialogModal open={open} onClose={handleClose} title="Retoques del lote" size="fullScreen">
