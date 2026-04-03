@@ -60,6 +60,7 @@ export const saveBatchProductsApi = (batchId: number, productItemIds: number[]) 
     product_item_ids: productItemIds,
   })
 
+
 export interface BatchDeliveryOptionsPayload {
   delivery_time?: string
   format?: string
@@ -83,9 +84,6 @@ export const saveBatchDeliveryOptionsApi = (
   batchId: number,
   data: BatchDeliveryOptionsPayload,
 ) => alovaInstance.Put(`/backend/orders/batch/${batchId}/delivery-options`, data)
-
-export const createBatchAdminApi = (orderId: number, name: string) =>
-  alovaInstance.Post<{ batch: { id: number } }>(`/backend/orders/${orderId}/batches`, { name })
 
 export const updateOrderAdminApi = (
   id: number,

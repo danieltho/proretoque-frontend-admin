@@ -7,6 +7,7 @@ import { PlusCircleIcon } from '@phosphor-icons/react'
 import { UploadFilesModal, type TempMediaEntry } from '../modal/UploadFilesModal'
 import { RetoquesModal } from '../modal/RetoquesModal'
 import { DeliveryOptionsModal } from '../modal/DeliveryOptionsModal'
+
 import {
   getBatchMediaApi,
   deleteBatchMediaApi,
@@ -149,6 +150,7 @@ export default function BatchDataTableSortable() {
           onSaved={refetch}
         />
       )}
+
     </>
   )
 }

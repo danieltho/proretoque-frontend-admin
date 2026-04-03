@@ -151,22 +151,18 @@ export function getBatchColumns({
     {
       accessorKey: 'retouch_count',
       header: () => <span className="text-footer font-medium text-blue-200">RETOQUES</span>,
-      cell: ({ row }) => {
-        const isEmpty = !row.original.product_count || row.original.product_count === '0'
-        return onRetouches ? (
+      cell: ({ row }) =>
+        onRetouches ? (
           <span
             className="group flex cursor-pointer items-center gap-1.5"
             onClick={() => onRetouches(row.original.id)}
           >
             <span className="text-footer text-neutral-600">{row.original.product_count}</span>
-            <ListPlusIcon
-              className={`size-4 text-blue-200 transition-opacity ${isEmpty ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
-            />
+            <ListPlusIcon className="size-4 text-blue-200 opacity-0 transition-opacity group-hover:opacity-100" />
           </span>
         ) : (
           <span className="text-footer text-neutral-600">{row.original.product_count}</span>
-        )
-      },
+        ),
     },
     {
       accessorKey: 'size_count',
@@ -185,7 +181,6 @@ export function getBatchColumns({
       cell: ({ row }) => {
         const { delivery_time, format, bit_depth, color_mode } = row.original
         const badges = [delivery_time, format, bit_depth, color_mode].filter(Boolean)
-        const isEmpty = badges.length === 0
 
         return onDeliveryOptions ? (
           <span
@@ -204,9 +199,7 @@ export function getBatchColumns({
             ) : (
               <span className="text-footer text-neutral-400">--</span>
             )}
-            <StackPlusIcon
-              className={`size-4 text-blue-200 transition-opacity ${isEmpty ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
-            />
+            <StackPlusIcon className="size-4 text-blue-200 opacity-0 transition-opacity group-hover:opacity-100" />
           </span>
         ) : (
           <span className="flex flex-wrap gap-1">
