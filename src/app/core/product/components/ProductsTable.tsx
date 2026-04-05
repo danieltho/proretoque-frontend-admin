@@ -1,75 +1,68 @@
+import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { NotePencilIcon, XIcon, ListIcon } from '@phosphor-icons/react'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/app/components/ui/table'
+import { MagnifyingGlassIcon } from '@phosphor-icons/react'
+import { DataTable } from '@/app/components/ui/data-table'
+import { Input } from '@/app/components/ui/input'
 import type { ProductAdmin } from '../types/product'
-import { CategoryBadge } from './CategoryBadge'
+import type { SearchableSelectOption } from '@/app/components/ui/searchable-select'
+import { SearchableSelect } from '@/app/components/ui/searchable-select'
+import { getProductColumns } from './productColumns'
 
 interface ProductsTableProps {
   products: ProductAdmin[]
+  search: string
+  onSearchChange: (value: string) => void
+  categoryOptions: SearchableSelectOption[]
+  selectedCategories: number[]
+  onCategoriesChange: (ids: number[]) => void
   onDelete: (id: number) => void
 }
 
-export function ProductsTable({ products, onDelete }: ProductsTableProps) {
+export function ProductsTable({
+  products,
+  search,
+  onSearchChange,
+  categoryOptions,
+  selectedCategories,
+  onCategoriesChange,
+  onDelete,
+}: ProductsTableProps) {
   const navigate = useNavigate()
 
+  const columns = useMemo(
+    () =>
+      getProductColumns({
+        onEdit: (id) => navigate(`/products/${id}/edit`),
+        onDelete,
+      }),
+    [navigate, onDelete],
+  )
+
   return (
-    <Table>
-      <TableHeader>
-        <TableRow className="border-b border-neutral-200">
-          <TableHead className="w-15 text-footer font-medium text-blue-200" />
-          <TableHead className="text-footer font-medium text-blue-200">NOMBRES</TableHead>
-          <TableHead className="text-footer font-medium text-blue-200">CATEGORÍAS</TableHead>
-          <TableHead className="text-footer font-medium text-blue-200">ACCIONES</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {products.map((product) => (
-          <TableRow
-            key={product.id}
-            className="border-b border-neutral-200 hover:bg-neutral-100"
-          >
-            <TableCell className="w-15 text-footer text-neutral-600">
-              <div className="flex items-center gap-1">
-                <span>{product.sort_order}</span>
-                <ListIcon className="size-4 text-neutral-400" />
-              </div>
-            </TableCell>
-            <TableCell className="text-footer text-neutral-600">{product.name}</TableCell>
-            <TableCell>
-              <div className="flex flex-wrap items-center gap-1">
-                {product.categories.map((cat) => (
-                  <CategoryBadge key={cat.id} name={cat.name} />
-                ))}
-              </div>
-            </TableCell>
-            <TableCell>
-              <div className="flex items-center gap-2.5">
-                <button
-                  type="button"
-                  className="cursor-pointer text-neutral-600 hover:text-neutral-350"
-                  onClick={() => navigate(`/products/${product.id}`)}
-                >
-                  <NotePencilIcon className="size-4" />
-                </button>
-                <button
-                  type="button"
-                  className="cursor-pointer text-neutral-600 hover:text-neutral-350"
-                  onClick={() => onDelete(product.id)}
-                >
-                  <XIcon className="size-4" />
-                </button>
-              </div>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className="flex flex-col gap-2.5">
+      {/* Search & filter bar */}
+      <div className="flex items-center gap-4">
+        <div className="relative w-86">
+          <MagnifyingGlassIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Buscar por nombre..."
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+
+        <SearchableSelect
+          multiple
+          options={categoryOptions}
+          value={selectedCategories}
+          onChange={(ids) => onCategoriesChange(ids as number[])}
+          placeholder="Categorías"
+          className="flex-1"
+        />
+      </div>
+
+      <DataTable columns={columns} data={products} />
+    </div>
   )
 }

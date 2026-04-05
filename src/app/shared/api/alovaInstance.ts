@@ -2,13 +2,14 @@ import { createAlova } from 'alova'
 import adapterFetch from 'alova/fetch'
 import reactHook from 'alova/react'
 import toast from 'react-hot-toast'
+import { useAuthStore } from '@/app/stores/authStore'
 
 const alovaInstance = createAlova({
   statesHook: reactHook,
   baseURL: import.meta.env.VITE_API_BASE_URL,
   requestAdapter: adapterFetch(),
   beforeRequest(method) {
-    const token = localStorage.getItem('token')
+    const token = useAuthStore.getState().token
     if (token) {
       method.config.headers['Authorization'] = `Bearer ${token}`
     }
@@ -16,7 +17,7 @@ const alovaInstance = createAlova({
   responded: {
     onSuccess: async (response, method) => {
       if (response.status === 401) {
-        localStorage.removeItem('token')
+        useAuthStore.getState().logout()
         window.location.href = '/login'
         throw new Error('No autorizado')
       }

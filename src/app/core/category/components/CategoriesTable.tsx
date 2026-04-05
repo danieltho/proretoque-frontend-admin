@@ -1,81 +1,127 @@
-import { useNavigate } from 'react-router-dom'
-import { NotePencilIcon, XIcon, ListIcon } from '@phosphor-icons/react'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/app/components/ui/table'
+import { useCallback, useMemo, useRef, useState } from 'react'
+import { NotePencilIcon, XIcon, ListIcon, CheckIcon } from '@phosphor-icons/react'
+import type { ColumnDef } from '@tanstack/react-table'
+import { SortableDataTable } from '@/app/components/ui/sortable-data-table'
+import { Input } from '@/app/components/ui/input'
 import type { CategoryAdmin } from '../types/category'
 
 interface CategoriesTableProps {
   categories: CategoryAdmin[]
+  onUpdate: (id: number, name: string) => void
   onDelete: (id: number) => void
+  onReorder: (reordered: CategoryAdmin[]) => void
 }
 
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(amount / 100)
-}
+export function CategoriesTable({
+  categories,
+  onUpdate,
+  onDelete,
+  onReorder,
+}: CategoriesTableProps) {
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [editValue, setEditValue] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
 
-export function CategoriesTable({ categories, onDelete }: CategoriesTableProps) {
-  const navigate = useNavigate()
+  const startEdit = useCallback((category: CategoryAdmin) => {
+    setEditingId(category.id)
+    setEditValue(category.name)
+    setTimeout(() => inputRef.current?.focus(), 0)
+  }, [])
 
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow className="border-b border-neutral-200">
-          <TableHead className="w-15 text-footer font-medium text-blue-200" />
-          <TableHead className="text-footer font-medium text-blue-200">NOMBRES</TableHead>
-          <TableHead className="text-footer font-medium text-blue-200">TIEMPO</TableHead>
-          <TableHead className="text-footer font-medium text-blue-200">PRECIO</TableHead>
-          <TableHead className="text-footer font-medium text-blue-200">ACCIONES</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {categories.map((category) => (
-          <TableRow
-            key={category.id}
-            className="border-b border-neutral-200 hover:bg-neutral-100"
-          >
-            <TableCell className="w-15 text-footer text-neutral-600">
-              <div className="flex items-center gap-1">
-                <span>{category.sort_order}</span>
-                <ListIcon className="size-4 text-neutral-400" />
+  const saveEdit = useCallback(() => {
+    if (editingId == null) return
+    const trimmed = editValue.trim()
+    if (trimmed) {
+      onUpdate(editingId, trimmed)
+    }
+    setEditingId(null)
+    setEditValue('')
+  }, [editingId, editValue, onUpdate])
+
+  const cancelEdit = useCallback(() => {
+    setEditingId(null)
+    setEditValue('')
+  }, [])
+
+  const columns: ColumnDef<CategoryAdmin>[] = useMemo(
+    () => [
+      {
+        id: 'drag',
+        header: () => <span className="text-footer font-medium text-blue-200" />,
+        cell: ({ row }) => (
+          <div className="flex items-center gap-1">
+            <span className="text-footer text-neutral-600">{row.original.sort_order}</span>
+            <ListIcon className="text-neutral-400" />
+          </div>
+        ),
+        size: 50,
+      },
+      {
+        accessorKey: 'name',
+        header: () => <span className="text-footer font-medium text-blue-200">NOMBRES</span>,
+        cell: ({ row }) => {
+          const isEditing = editingId === row.original.id
+          if (isEditing) {
+            return (
+              <div className="flex items-center gap-2">
+                <Input
+                  ref={inputRef}
+                  value={editValue}
+                  onChange={(e) => setEditValue(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') saveEdit()
+                    if (e.key === 'Escape') cancelEdit()
+                  }}
+                  onBlur={saveEdit}
+                  className="h-7 text-footer"
+                />
               </div>
-            </TableCell>
-            <TableCell className="text-footer text-neutral-600">{category.name}</TableCell>
-            <TableCell className="text-footer text-neutral-600">
-              {category.duration_task}
-            </TableCell>
-            <TableCell className="text-footer text-neutral-600">
-              {formatCurrency(category.price)}
-            </TableCell>
-            <TableCell>
-              <div className="flex items-center gap-2.5">
+            )
+          }
+          return <span className="text-footer text-neutral-600">{row.original.name}</span>
+        },
+      },
+      {
+        id: 'actions',
+        header: () => <span className="text-footer font-medium text-blue-200">ACCIONES</span>,
+        cell: ({ row }) => {
+          const isEditing = editingId === row.original.id
+          return (
+            <div className="flex items-center gap-2.5">
+              {isEditing ? (
+                <button
+                  type="button"
+                  className="cursor-pointer text-green-600 hover:text-green-500"
+                  onMouseDown={(e) => {
+                    e.preventDefault()
+                    saveEdit()
+                  }}
+                >
+                  <CheckIcon className="size-4" />
+                </button>
+              ) : (
                 <button
                   type="button"
                   className="cursor-pointer text-neutral-600 hover:text-neutral-350"
-                  onClick={() => navigate(`/categories/${category.id}`)}
+                  onClick={() => startEdit(row.original)}
                 >
                   <NotePencilIcon className="size-4" />
                 </button>
-                <button
-                  type="button"
-                  className="cursor-pointer text-neutral-600 hover:text-neutral-350"
-                  onClick={() => onDelete(category.id)}
-                >
-                  <XIcon className="size-4" />
-                </button>
-              </div>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+              )}
+              <button
+                type="button"
+                className="cursor-pointer text-neutral-600 hover:text-neutral-350"
+                onClick={() => onDelete(row.original.id)}
+              >
+                <XIcon className="size-4" />
+              </button>
+            </div>
+          )
+        },
+      },
+    ],
+    [editingId, editValue, saveEdit, cancelEdit, startEdit, onDelete],
   )
+
+  return <SortableDataTable columns={columns} data={categories} onReorder={onReorder} />
 }

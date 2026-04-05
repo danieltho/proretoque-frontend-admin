@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useRequest } from 'alova/client'
+import { useWatcher } from 'alova/client'
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react'
 import {
   getProtocolsAdminApi,
@@ -15,9 +15,10 @@ const ITEMS_PER_PAGE = 20
 export default function ProtocolPage() {
   const [currentPage, setCurrentPage] = useState(1)
 
-  const { data, loading, error, send } = useRequest(
-    getProtocolsAdminApi(currentPage, ITEMS_PER_PAGE),
-    { force: true },
+  const { data, loading, error, send } = useWatcher(
+    () => getProtocolsAdminApi(currentPage, ITEMS_PER_PAGE),
+    [currentPage],
+    { immediate: true, force: true },
   )
 
   const protocols = data?.protocols ?? []
@@ -31,9 +32,6 @@ export default function ProtocolPage() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
-    getProtocolsAdminApi(page, ITEMS_PER_PAGE)
-      .send()
-      .then(() => send())
   }
 
   const getVisiblePages = (): (number | 'ellipsis')[] => {
