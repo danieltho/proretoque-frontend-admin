@@ -1,24 +1,34 @@
 import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useWatcher } from 'alova/client'
-import { PlusCircleIcon, MagnifyingGlassIcon } from '@phosphor-icons/react'
+import { PlusCircleIcon } from '@phosphor-icons/react'
 import { getUsersApi, deleteUserApi } from '@/app/core/user/api/userApi'
 import { UsersTable } from '@/app/core/user/components/UsersTable'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
 import { Pagination } from '@/app/shared/ui/Pagination'
 import { Skeleton } from '@/app/components/ui/skeleton'
-import { Input } from '@/app/components/ui/input'
 import Template from '@/app/components/Template'
+import type { SearchableSelectOption } from '@/app/components/ui/searchable-select'
+
+const ROLE_OPTIONS: SearchableSelectOption[] = [
+  { id: 'admin', label: 'Admin' },
+  { id: 'proveedor', label: 'Proveedor' },
+]
 
 export default function UserPage() {
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
   const [search, setSearch] = useState('')
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([])
 
   const { data, loading, error, send } = useWatcher(
-    () => getUsersApi(currentPage, { name: search || undefined }),
-    [currentPage, search],
-    { immediate: true, force: true, debounce: [0, 300] },
+    () =>
+      getUsersApi(currentPage, {
+        name: search || undefined,
+        roles: selectedRoles.length > 0 ? selectedRoles : undefined,
+      }),
+    [currentPage, search, selectedRoles],
+    { immediate: true, force: true, debounce: [0, 300, 0] },
   )
 
   const users = data?.users ?? []
@@ -32,8 +42,13 @@ export default function UserPage() {
     [send],
   )
 
-  const handleSearch = useCallback((value: string) => {
+  const handleSearchChange = useCallback((value: string) => {
     setSearch(value)
+    setCurrentPage(1)
+  }, [])
+
+  const handleRolesChange = useCallback((roles: string[]) => {
+    setSelectedRoles(roles)
     setCurrentPage(1)
   }, [])
 
@@ -51,16 +66,6 @@ export default function UserPage() {
           }}
         />
 
-        <div className="relative w-full max-w-sm">
-          <MagnifyingGlassIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={search}
-            onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Buscar por nombre..."
-            className="pl-9"
-          />
-        </div>
-
         {error && <p className="text-sm text-destructive">{error.message}</p>}
 
         {loading && users.length === 0 ? (
@@ -69,12 +74,18 @@ export default function UserPage() {
               <Skeleton key={i} className="h-10 w-full" />
             ))}
           </div>
-        ) : users.length === 0 ? (
-          <p className="py-8 text-center text-muted-foreground">No hay usuarios registrados.</p>
         ) : (
           <div className="flex flex-col items-center gap-6">
             <div className="w-full rounded-2xl bg-white p-4">
-              <UsersTable users={users} onDelete={handleDelete} />
+              <UsersTable
+                users={users}
+                search={search}
+                onSearchChange={handleSearchChange}
+                roleOptions={ROLE_OPTIONS}
+                selectedRoles={selectedRoles}
+                onRolesChange={handleRolesChange}
+                onDelete={handleDelete}
+              />
             </div>
 
             <Pagination
