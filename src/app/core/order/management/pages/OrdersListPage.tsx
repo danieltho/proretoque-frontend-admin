@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useRequest } from 'alova/client'
+import { useWatcher } from 'alova/client'
 import { getOrdersApi, deleteOrderApi } from '../../api/ordersApi'
 import { formatDateShort } from '@/shared/utils/date'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
@@ -73,9 +73,11 @@ export default function OrdersListPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [mutationError, setMutationError] = useState('')
 
-  const { data, loading, error, send } = useRequest(getOrdersApi(currentPage, ITEMS_PER_PAGE), {
-    force: true,
-  })
+  const { data, loading, error, send } = useWatcher(
+    () => getOrdersApi(currentPage, ITEMS_PER_PAGE),
+    [currentPage],
+    { immediate: true, force: true },
+  )
 
   const orders = data?.orders ?? []
   const totalCount = data?.count ?? 0
@@ -90,10 +92,8 @@ export default function OrdersListPage() {
     }
   }
 
-  const handlePageChange = async (page: number) => {
+  const handlePageChange = (page: number) => {
     setCurrentPage(page)
-    await getOrdersApi(page, ITEMS_PER_PAGE).send()
-    send()
   }
 
   const getVisiblePages = (): (number | 'ellipsis')[] => {

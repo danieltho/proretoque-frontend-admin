@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useRequest } from 'alova/client'
+import { useWatcher } from 'alova/client'
 import { PlusCircleIcon } from '@phosphor-icons/react'
 import {
   getCategoriesAdminApi,
@@ -22,9 +22,10 @@ export default function CategoryPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [showCreateBar, setShowCreateBar] = useState(false)
 
-  const { data, loading, error, send } = useRequest(
-    getCategoriesAdminApi(currentPage, ITEMS_PER_PAGE),
-    { force: true },
+  const { data, loading, error, send } = useWatcher(
+    () => getCategoriesAdminApi(currentPage, ITEMS_PER_PAGE),
+    [currentPage],
+    { immediate: true, force: true },
   )
 
   const categories = data?.categories ?? []
@@ -55,9 +56,6 @@ export default function CategoryPage() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
-    getCategoriesAdminApi(page, ITEMS_PER_PAGE)
-      .send()
-      .then(() => send())
   }
 
   return (

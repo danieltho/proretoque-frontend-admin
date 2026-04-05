@@ -1,55 +1,58 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useRequest } from 'alova/client'
-import { CaretLeftIcon, CaretRightIcon, PlusCircleIcon } from '@phosphor-icons/react'
-import {
-  getProductsAdminApi,
-  deleteProductAdminApi,
-} from '@/app/core/product/api/productsAdminApi'
+import { useWatcher } from 'alova/client'
+import { PlusCircleIcon } from '@phosphor-icons/react'
+import { getProductsAdminApi, deleteProductAdminApi } from '@/app/core/product/api/productsAdminApi'
+import { getCategoriesAdminApi } from '@/app/core/category/api/categoriesAdminApi'
 import { ProductsTable } from '@/app/core/product/components/ProductsTable'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
 import { Skeleton } from '@/app/components/ui/skeleton'
 import Template from '@/app/components/Template'
-
-const ITEMS_PER_PAGE = 20
+import { Pagination } from '@/app/shared/ui/Pagination'
+import type { SearchableSelectOption } from '@/app/components/ui/searchable-select'
 
 export default function ProductPage() {
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
+  const [search, setSearch] = useState('')
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([])
+  const [categoryOptions, setCategoryOptions] = useState<SearchableSelectOption[]>([])
 
-  const { data, loading, error, send } = useRequest(
-    getProductsAdminApi(currentPage, ITEMS_PER_PAGE),
-    { force: true },
+  // Load category options for filter
+  useEffect(() => {
+    getCategoriesAdminApi(1, 100)
+      .send()
+      .then((res) => {
+        setCategoryOptions(res.categories.map((c) => ({ id: c.id, label: c.name })))
+      })
+  }, [])
+
+  const { data, loading, error, send } = useWatcher(
+    () =>
+      getProductsAdminApi(currentPage, {
+        name: search || undefined,
+        categories: selectedCategories.length > 0 ? selectedCategories : undefined,
+      }),
+    [currentPage, search, selectedCategories],
+    { immediate: true, force: true, debounce: [0, 300, 0] },
   )
 
   const products = data?.products ?? []
-  const totalCount = data?.count ?? 0
-  const totalPages = Math.max(1, Math.ceil(totalCount / ITEMS_PER_PAGE))
+  const totalPages = data?.pages ?? 1
 
   const handleDelete = async (id: number) => {
     await deleteProductAdminApi(id).send()
     send()
   }
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-    getProductsAdminApi(page, ITEMS_PER_PAGE)
-      .send()
-      .then(() => send())
+  const handleSearchChange = (value: string) => {
+    setSearch(value)
+    setCurrentPage(1)
   }
 
-  const getVisiblePages = (): (number | 'ellipsis')[] => {
-    if (totalPages <= 5) {
-      return Array.from({ length: totalPages }, (_, i) => i + 1)
-    }
-    const pages: (number | 'ellipsis')[] = [1]
-    if (currentPage > 3) pages.push('ellipsis')
-    const start = Math.max(2, currentPage - 1)
-    const end = Math.min(totalPages - 1, currentPage + 1)
-    for (let i = start; i <= end; i++) pages.push(i)
-    if (currentPage < totalPages - 2) pages.push('ellipsis')
-    if (totalPages > 1) pages.push(totalPages)
-    return pages
+  const handleCategoriesChange = (ids: number[]) => {
+    setSelectedCategories(ids)
+    setCurrentPage(1)
   }
 
   return (
@@ -59,6 +62,7 @@ export default function ProductPage() {
           breadcrumbs={[{ label: 'Administrador' }]}
           title="Productos"
           action={{
+            variant: 'blue',
             label: 'Crear Nuevo',
             icon: PlusCircleIcon,
             onClick: () => navigate('/products/new'),
@@ -67,66 +71,31 @@ export default function ProductPage() {
 
         {error && <p className="text-sm text-destructive">{error.message}</p>}
 
-        {loading ? (
+        {loading && products.length === 0 ? (
           <div className="space-y-2">
             {Array.from({ length: 5 }).map((_, i) => (
               <Skeleton key={i} className="h-10 w-full" />
             ))}
           </div>
-        ) : products.length === 0 ? (
-          <p className="py-8 text-center text-muted-foreground">
-            No hay productos registrados.
-          </p>
         ) : (
           <div className="flex flex-col items-center gap-6">
             <div className="w-full rounded-2xl bg-white p-4">
-              <ProductsTable products={products} onDelete={handleDelete} />
+              <ProductsTable
+                products={products}
+                search={search}
+                onSearchChange={handleSearchChange}
+                categoryOptions={categoryOptions}
+                selectedCategories={selectedCategories}
+                onCategoriesChange={handleCategoriesChange}
+                onDelete={handleDelete}
+              />
             </div>
 
-            {totalPages > 1 && (
-              <nav className="flex items-center gap-1">
-                <button
-                  className="flex h-9 items-center gap-1 rounded-md px-3 py-2 text-body font-medium text-neutral-600 disabled:opacity-50"
-                  disabled={currentPage === 1}
-                  onClick={() => handlePageChange(currentPage - 1)}
-                >
-                  <CaretLeftIcon className="size-4" />
-                  Previous
-                </button>
-
-                {getVisiblePages().map((page, idx) =>
-                  page === 'ellipsis' ? (
-                    <span
-                      key={`ellipsis-${idx}`}
-                      className="flex size-9 items-center justify-center text-body text-neutral-600"
-                    >
-                      ...
-                    </span>
-                  ) : (
-                    <button
-                      key={page}
-                      className={`flex size-9 items-center justify-center rounded-md text-body font-medium ${
-                        page === currentPage
-                          ? 'bg-blue-200 text-white shadow-sm'
-                          : 'text-neutral-600 hover:bg-neutral-100'
-                      }`}
-                      onClick={() => handlePageChange(page)}
-                    >
-                      {page}
-                    </button>
-                  ),
-                )}
-
-                <button
-                  className="flex h-9 items-center gap-1 rounded-md px-3 py-2 text-body font-medium text-neutral-600 disabled:opacity-50"
-                  disabled={currentPage === totalPages}
-                  onClick={() => handlePageChange(currentPage + 1)}
-                >
-                  Next
-                  <CaretRightIcon className="size-4" />
-                </button>
-              </nav>
-            )}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </div>
         )}
       </div>
