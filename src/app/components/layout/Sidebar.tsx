@@ -26,6 +26,7 @@ const navItems = [
   { to: '/categories', label: 'Categorías', icon: SquaresFourIcon },
   { to: '/products', label: 'Productos', icon: TagIcon },
   { to: '/clients', label: 'Clientes', icon: UsersIcon },
+  { to: '/roles', label: 'Roles', icon: UserGearIcon },
   { to: '/users', label: 'Usuarios', icon: UserGearIcon },
   { to: '/providers', label: 'Proveedores', icon: HandshakeIcon },
   { to: '/protocols', label: 'Protocolos', icon: ClipboardTextIcon },
