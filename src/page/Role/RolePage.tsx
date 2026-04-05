@@ -4,6 +4,7 @@ import { PlusCircleIcon } from '@phosphor-icons/react'
 import {
   getRolesApi,
   getRoleAccessListApi,
+  createRoleApi,
   updateRoleApi,
   deleteRoleApi,
 } from '@/app/core/role/api/roleApi'
@@ -42,9 +43,7 @@ export default function RolePage() {
 
   const handleCreate = useCallback(
     async (name: string, accessIds: number[]) => {
-      // Use update on a new role - but there's no create endpoint
-      // For now we'll need to handle this differently
-      // TODO: Add create endpoint when available
+      await createRoleApi({ name, access: accessIds }).send()
       setShowCreateBar(false)
       send()
     },
