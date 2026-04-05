@@ -10,6 +10,9 @@ export const getRolesApi = (page = 1) =>
 export const getRoleApi = (id: number) =>
   alovaInstance.Get<Role>(`/backend/roles/${id}/detail`, { cacheFor: 0 })
 
+export const createRoleApi = (data: { name: string; access: number[] }) =>
+  alovaInstance.Post<{ role: Role }>('/backend/roles', data)
+
 export const updateRoleApi = (id: number, data: { name: string; access: number[] }) =>
   alovaInstance.Put<{ role: Role }>(`/backend/roles/${id}`, data)
 

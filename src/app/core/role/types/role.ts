@@ -6,7 +6,7 @@ export interface RoleAccess {
 export interface Role {
   id: number
   name: string
-  access: RoleAccess[]
+  access?: RoleAccess[]
 }
 
 export interface RolesListResponse {
