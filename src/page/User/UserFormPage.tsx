@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Template from '@/app/components/Template'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
@@ -13,15 +14,20 @@ import {
 } from '@/app/components/ui/select'
 import { Skeleton } from '@/app/components/ui/skeleton'
 import { useUserForm } from '@/app/core/user/hooks/useUserForm'
-
-const USER_ROLES = [
-  { value: 'admin', label: 'Admin' },
-  { value: 'proveedor', label: 'Proveedor' },
-]
+import { getRolesApi } from '@/app/core/role/api/roleApi'
 
 export default function UserFormPage() {
   const navigate = useNavigate()
   const { isNew, form, loading, handleSave } = useUserForm()
+  const [roleOptions, setRoleOptions] = useState<{ value: string; label: string }[]>([])
+
+  useEffect(() => {
+    getRolesApi(1)
+      .send()
+      .then((res) => {
+        setRoleOptions(res.roles.map((r) => ({ value: r.name, label: r.name })))
+      })
+  }, [])
   const {
     register,
     watch,
@@ -78,7 +84,7 @@ export default function UserFormPage() {
                   <SelectValue placeholder="Seleccione un rol" />
                 </SelectTrigger>
                 <SelectContent>
-                  {USER_ROLES.map((r) => (
+                  {roleOptions.map((r) => (
                     <SelectItem key={r.value} value={r.value}>
                       {r.label}
                     </SelectItem>

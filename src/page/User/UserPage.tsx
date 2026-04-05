@@ -1,8 +1,9 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useWatcher } from 'alova/client'
 import { PlusCircleIcon } from '@phosphor-icons/react'
 import { getUsersApi, deleteUserApi } from '@/app/core/user/api/userApi'
+import { getRolesApi } from '@/app/core/role/api/roleApi'
 import { UsersTable } from '@/app/core/user/components/UsersTable'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
 import { Pagination } from '@/app/shared/ui/Pagination'
@@ -10,14 +11,18 @@ import { Skeleton } from '@/app/components/ui/skeleton'
 import Template from '@/app/components/Template'
 import type { SearchableSelectOption } from '@/app/components/ui/searchable-select'
 
-const ROLE_OPTIONS: SearchableSelectOption[] = [
-  { id: 'admin', label: 'Admin' },
-  { id: 'proveedor', label: 'Proveedor' },
-]
-
 export default function UserPage() {
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
+  const [roleOptions, setRoleOptions] = useState<SearchableSelectOption[]>([])
+
+  useEffect(() => {
+    getRolesApi(1)
+      .send()
+      .then((res) => {
+        setRoleOptions(res.roles.map((r) => ({ id: r.name, label: r.name })))
+      })
+  }, [])
   const [search, setSearch] = useState('')
   const [selectedRoles, setSelectedRoles] = useState<string[]>([])
 
@@ -81,7 +86,7 @@ export default function UserPage() {
                 users={users}
                 search={search}
                 onSearchChange={handleSearchChange}
-                roleOptions={ROLE_OPTIONS}
+                roleOptions={roleOptions}
                 selectedRoles={selectedRoles}
                 onRolesChange={handleRolesChange}
                 onDelete={handleDelete}
