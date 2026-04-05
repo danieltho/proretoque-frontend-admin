@@ -36,6 +36,7 @@ export default function ProductFormPage() {
     form,
     loading,
     items,
+    itemsError,
     categoryOptions,
     addItem,
     removeItem,
@@ -195,8 +196,8 @@ export default function ProductFormPage() {
           </div>
         </Card>
 
-        {/* Items Card - visible when a type is selected */}
-        {productType && (
+        {/* Items Card - only when type is 'choice' */}
+        {productType === 'choice' && (
           <Card>
             <TitleSection
               title="Items"
@@ -207,6 +208,10 @@ export default function ProductFormPage() {
                 icon: PlusCircleIcon,
               }}
             />
+
+            {itemsError && (
+              <span className="text-sm text-error-text">{itemsError}</span>
+            )}
 
             {items.length > 0 && (
               <SortableDataTable columns={itemColumns} data={items} onReorder={reorderItems} />
