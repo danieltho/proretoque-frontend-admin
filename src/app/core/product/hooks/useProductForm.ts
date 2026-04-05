@@ -104,8 +104,16 @@ export function useProductForm() {
     setItems((prev) => prev.map((i) => (i.id === itemId ? { ...i, [field]: value } : i)))
   }, [])
 
+  const [itemsError, setItemsError] = useState<string | null>(null)
+
   const handleSave = useCallback(() => {
     const onSubmit = async (values: ProductFormData) => {
+      if (values.type === 'choice' && items.length === 0) {
+        setItemsError('Debe agregar al menos un item')
+        return
+      }
+      setItemsError(null)
+
       const payload = {
         name: values.name,
         description: values.description,
@@ -113,18 +121,22 @@ export function useProductForm() {
         type: values.type,
         price: values.price,
         time: values.time,
-        items: items.map((item, idx) => ({
-          ...(item.id > 0 ? { id: item.id } : {}),
-          name: item.name,
-          description: item.description,
-          tooltip: item.tooltip,
-          description_provider: item.description_provider,
-          description_postpro: item.description_postpro,
-          price: item.price,
-          duration_task: item.duration_task,
-          lang: item.lang,
-          sort_order: idx + 1,
-        })),
+        ...(values.type === 'choice'
+          ? {
+              items: items.map((item, idx) => ({
+                ...(item.id > 0 ? { id: item.id } : {}),
+                name: item.name,
+                description: item.description,
+                tooltip: item.tooltip,
+                description_provider: item.description_provider,
+                description_postpro: item.description_postpro,
+                price: item.price,
+                duration_task: item.duration_task,
+                lang: item.lang,
+                sort_order: idx + 1,
+              })),
+            }
+          : {}),
       }
 
       if (isNew) {
@@ -144,6 +156,7 @@ export function useProductForm() {
     form,
     loading,
     items,
+    itemsError,
     categoryOptions,
     addItem,
     removeItem,
