@@ -28,7 +28,7 @@ function EditableRoleRow({
 }) {
   const [name, setName] = useState(role.name)
   const [selectedAccess, setSelectedAccess] = useState<number[]>(
-    role.access.map((a) => a.id),
+    (role.access ?? []).map((a) => a.id),
   )
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -102,7 +102,7 @@ export function RolesTable({
           if (editingId === row.original.id) return null
           return (
             <div className="flex flex-wrap gap-1">
-              {row.original.access.map((a) => (
+              {(row.original.access ?? []).map((a) => (
                 <Badge
                   key={a.id}
                   className="rounded-lg bg-neutral-100 px-2.5 py-0.5 text-footer font-medium text-blue-200"
