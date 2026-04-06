@@ -25,7 +25,7 @@ export default function UserFormPage() {
     getRolesApi(1)
       .send()
       .then((res) => {
-        setRoleOptions(res.roles.map((r) => ({ value: r.name, label: r.name })))
+        setRoleOptions(res.roles.map((r) => ({ value: String(r.id), label: r.name })))
       })
   }, [])
   const {
