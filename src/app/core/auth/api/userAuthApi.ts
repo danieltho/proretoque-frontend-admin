@@ -5,12 +5,22 @@ interface UserLoginData {
   password: string
 }
 
+interface RoleAccessResponse {
+  id: number
+  name: string
+}
+
+interface RoleResponse {
+  id: number
+  name: string
+  access: RoleAccessResponse
+}
+
 interface UserAuthResponse {
-    id: number
-    name: string
-    email: string
-    role: 'admin' | 'proveedor'
-    access_token: string
+  id: number
+  name: string
+  email: string
+  role: RoleResponse
 }
 
 export const userLoginApi = (data: UserLoginData) =>
