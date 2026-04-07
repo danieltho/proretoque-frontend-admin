@@ -26,17 +26,14 @@ export default function RolePage() {
     getRoleAccessListApi()
       .send()
       .then((res) => {
-        setAccessOptions(
-          res.role_access.map((a) => ({ id: a.id, label: a.name })),
-        )
+        setAccessOptions(res.role_access.map((a) => ({ id: a.id, label: a.name })))
       })
   }, [])
 
-  const { data, loading, error, send } = useWatcher(
-    () => getRolesApi(currentPage),
-    [currentPage],
-    { immediate: true, force: true },
-  )
+  const { data, loading, error, send } = useWatcher(() => getRolesApi(currentPage), [currentPage], {
+    immediate: true,
+    force: true,
+  })
 
   const roles = data?.roles ?? []
   const totalPages = data?.pages ?? 1
@@ -70,7 +67,6 @@ export default function RolePage() {
     <Template>
       <div className="flex flex-col gap-4 font-raleway">
         <TitleSection
-          breadcrumbs={[{ label: 'Administrador' }]}
           title="Roles de Usuarios"
           action={{
             label: 'Crear Nuevo',
@@ -80,9 +76,7 @@ export default function RolePage() {
           }}
         />
 
-        {showCreateBar && (
-          <RoleCreateBar accessOptions={accessOptions} onSubmit={handleCreate} />
-        )}
+        {showCreateBar && <RoleCreateBar accessOptions={accessOptions} onSubmit={handleCreate} />}
 
         {error && <p className="text-sm text-destructive">{error.message}</p>}
 

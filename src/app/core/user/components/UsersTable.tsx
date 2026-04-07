@@ -3,7 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import { MagnifyingGlassIcon } from '@phosphor-icons/react'
 import { DataTable } from '@/app/components/ui/data-table'
 import { Input } from '@/app/components/ui/input'
-import { SearchableSelect, type SearchableSelectOption } from '@/app/components/ui/searchable-select'
+import {
+  SearchableSelect,
+  type SearchableSelectOption,
+} from '@/app/components/ui/searchable-select'
 import type { User } from '../types/user'
 import { getUserColumns } from './userColumns'
 
@@ -56,7 +59,7 @@ export function UsersTable({
           value={selectedRoles}
           onChange={(ids) => onRolesChange(ids as string[])}
           placeholder="Roles"
-          className="w-40"
+          className="w-80"
         />
       </div>
 

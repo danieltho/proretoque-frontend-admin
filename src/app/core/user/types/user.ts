@@ -1,3 +1,8 @@
+export interface UserRole {
+  id: number
+  name: string
+}
+
 export interface User {
   id: number
   email: string
@@ -7,7 +12,7 @@ export interface User {
   birth_date: string | null
   hire_date: string | null
   address: string | null
-  role: string
+  role: UserRole
 }
 
 export interface UsersListResponse {

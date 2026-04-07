@@ -3,10 +3,15 @@ export interface RoleAccess {
   name: string
 }
 
+export interface RoleRestriction {
+  only_provider: boolean
+}
+
 export interface Role {
   id: number
   name: string
   access?: RoleAccess[]
+  restriction?: RoleRestriction
 }
 
 export interface RolesListResponse {

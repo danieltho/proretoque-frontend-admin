@@ -1,11 +1,21 @@
 import { useMemo, useRef, useState } from 'react'
-import { NotePencilIcon, XIcon } from '@phosphor-icons/react'
+import { useNavigate } from 'react-router-dom'
+import { FunnelIcon, NotePencilIcon, XIcon } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
 import { DataTable } from '@/app/components/ui/data-table'
 import { Input } from '@/app/components/ui/input'
 import { Badge } from '@/app/components/ui/badge'
 import { Button } from '@/app/components/ui/button'
-import { SearchableSelect, type SearchableSelectOption } from '@/app/components/ui/searchable-select'
+import {
+  SearchableSelect,
+  type SearchableSelectOption,
+} from '@/app/components/ui/searchable-select'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/app/components/ui/tooltip'
 import type { Role } from '../types/role'
 
 interface RolesTableProps {
@@ -69,12 +79,8 @@ function EditableRoleRow({
   )
 }
 
-export function RolesTable({
-  roles,
-  accessOptions,
-  onUpdate,
-  onDelete,
-}: RolesTableProps) {
+export function RolesTable({ roles, accessOptions, onUpdate, onDelete }: RolesTableProps) {
+  const navigate = useNavigate()
   const [editingId, setEditingId] = useState<number | null>(null)
 
   const columns: ColumnDef<Role>[] = useMemo(
@@ -82,9 +88,7 @@ export function RolesTable({
       {
         accessorKey: 'id',
         header: () => <span className="text-footer font-medium text-blue-200">ID</span>,
-        cell: ({ row }) => (
-          <span className="text-footer text-neutral-600">#{row.original.id}</span>
-        ),
+        cell: ({ row }) => <span className="text-footer text-neutral-600">#{row.original.id}</span>,
         size: 50,
       },
       {
@@ -94,6 +98,7 @@ export function RolesTable({
           if (editingId === row.original.id) return null
           return <span className="text-footer text-neutral-600">{row.original.name}</span>
         },
+        size: 200,
       },
       {
         id: 'access',
@@ -126,21 +131,35 @@ export function RolesTable({
                 className="cursor-pointer text-neutral-600 hover:text-neutral-350"
                 onClick={() => setEditingId(row.original.id)}
               >
-                <NotePencilIcon className="size-4" />
+                <NotePencilIcon />
               </button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      className="cursor-pointer text-neutral-600 hover:text-neutral-350"
+                      onClick={() => navigate(`/roles/${row.original.id}/restriction-access`)}
+                    >
+                      <FunnelIcon />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>Restriction Access</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
               <button
                 type="button"
                 className="cursor-pointer text-neutral-600 hover:text-neutral-350"
                 onClick={() => onDelete(row.original.id)}
               >
-                <XIcon className="size-4" />
+                <XIcon />
               </button>
             </div>
           )
         },
       },
     ],
-    [editingId, onDelete],
+    [editingId, onDelete, navigate],
   )
 
   // Custom row rendering: when editing, replace all cells with EditableRoleRow
@@ -149,35 +168,33 @@ export function RolesTable({
 
   return (
     <div className="relative">
-      <DataTable
-        columns={columns}
-        data={roles}
-      />
+      <DataTable columns={columns} data={roles} />
       {/* Overlay editing rows */}
-      {editingId && (() => {
-        const role = roles.find((r) => r.id === editingId)
-        if (!role) return null
-        const rowIndex = roles.findIndex((r) => r.id === editingId)
-        return (
-          <div
-            className="absolute left-0 right-0 flex items-center gap-4 border-b border-neutral-100 bg-white px-2 py-1"
-            style={{ top: `${48 + rowIndex * 40}px`, height: '40px' }}
-          >
-            <span className="w-[50px] shrink-0 text-footer text-neutral-600">#{role.id}</span>
-            <div className="flex flex-1 items-center gap-4">
-              <EditableRoleRow
-                role={role}
-                accessOptions={accessOptions}
-                onUpdate={(name, accessIds) => {
-                  onUpdate(role.id, name, accessIds)
-                  setEditingId(null)
-                }}
-                onCancel={() => setEditingId(null)}
-              />
+      {editingId &&
+        (() => {
+          const role = roles.find((r) => r.id === editingId)
+          if (!role) return null
+          const rowIndex = roles.findIndex((r) => r.id === editingId)
+          return (
+            <div
+              className="absolute left-0 right-0 flex items-center gap-4 border-b border-neutral-100 bg-white px-2 py-1"
+              style={{ top: `${48 + rowIndex * 40}px`, height: '40px' }}
+            >
+              <span className="w-12.5 shrink-0 text-footer text-neutral-600">#{role.id}</span>
+              <div className="flex flex-1 items-center gap-4">
+                <EditableRoleRow
+                  role={role}
+                  accessOptions={accessOptions}
+                  onUpdate={(name, accessIds) => {
+                    onUpdate(role.id, name, accessIds)
+                    setEditingId(null)
+                  }}
+                  onCancel={() => setEditingId(null)}
+                />
+              </div>
             </div>
-          </div>
-        )
-      })()}
+          )
+        })()}
     </div>
   )
 }

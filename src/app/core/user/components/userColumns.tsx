@@ -51,14 +51,14 @@ export function getUserColumns({ onEdit, onDelete }: UserColumnsOptions): Column
             className="cursor-pointer text-neutral-600 hover:text-neutral-350"
             onClick={() => onEdit(row.original.id)}
           >
-            <NotePencilIcon className="size-4" />
+            <NotePencilIcon />
           </button>
           <button
             type="button"
             className="cursor-pointer text-neutral-600 hover:text-neutral-350"
             onClick={() => onDelete(row.original.id)}
           >
-            <XIcon className="size-4" />
+            <XIcon />
           </button>
         </div>
       ),
