@@ -41,7 +41,7 @@ export function useUserForm() {
           birth_date: res.birth_date ?? '',
           hire_date: res.hire_date ?? '',
           address: res.address ?? '',
-          role: res.role ?? '',
+          role: res.role?.id ? String(res.role.id) : '',
           password: '',
           password_confirmation: '',
         })

@@ -16,8 +16,10 @@ export const createRoleApi = (data: { name: string; access: number[] }) =>
 export const updateRoleApi = (id: number, data: { name: string; access: number[] }) =>
   alovaInstance.Put<{ role: Role }>(`/backend/roles/${id}`, data)
 
-export const deleteRoleApi = (id: number) =>
-  alovaInstance.Delete<void>(`/backend/roles/${id}`)
+export const deleteRoleApi = (id: number) => alovaInstance.Delete<void>(`/backend/roles/${id}`)
 
 export const getRoleAccessListApi = () =>
   alovaInstance.Get<RoleAccessListResponse>('/backend/role-access', { cacheFor: 0 })
+
+export const createRoleRestrictionAccessApi = (roleId: number, data: { only_provider: number }) =>
+  alovaInstance.Post<void>(`/backend/roles/${roleId}/restriction-access`, data)
