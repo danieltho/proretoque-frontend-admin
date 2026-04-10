@@ -1,80 +1,79 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
 import { useWatcher } from 'alova/client'
 import { PlusCircleIcon } from '@phosphor-icons/react'
-import { getProductsAdminApi, deleteProductAdminApi } from '@/app/core/product/api/productsAdminApi'
-import { getCategoriesAdminApi } from '@/app/core/category/api/categoriesAdminApi'
-
-import { ProductsTable } from '@/app/core/product/components/ProductsTable'
+import { getUsersApi, deleteUserApi } from '@/app/core/user/api/userApi'
+import { getRolesApi } from '@/app/core/role/api/roleApi'
+import { UsersTable } from '@/app/core/user/components/UsersTable'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
 import { Pagination } from '@/app/shared/ui/Pagination'
 import { Skeleton } from '@/app/components/ui/skeleton'
 import Template from '@/app/components/Template'
-import { Pagination } from '@/app/shared/ui/Pagination'
 import type { SearchableSelectOption } from '@/app/components/ui/searchable-select'
 
-export default function ProductPage() {
+export default function UserPage() {
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
-  const [search, setSearch] = useState('')
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([])
-  const [categoryOptions, setCategoryOptions] = useState<SearchableSelectOption[]>([])
+  const [roleOptions, setRoleOptions] = useState<SearchableSelectOption[]>([])
 
-  // Load category options for filter
   useEffect(() => {
-    getCategoriesAdminApi(1, 100)
+    getRolesApi(1)
       .send()
       .then((res) => {
-        setCategoryOptions(res.categories.map((c) => ({ id: c.id, label: c.name })))
+        setRoleOptions(res.roles.map((r) => ({ id: r.name, label: r.name })))
       })
   }, [])
+  const [search, setSearch] = useState('')
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([])
 
   const { data, loading, error, send } = useWatcher(
     () =>
-      getProductsAdminApi(currentPage, {
+      getUsersApi(currentPage, {
         name: search || undefined,
-        categories: selectedCategories.length > 0 ? selectedCategories : undefined,
+        roles: selectedRoles.length > 0 ? selectedRoles : undefined,
       }),
-    [currentPage, search, selectedCategories],
+    [currentPage, search, selectedRoles],
     { immediate: true, force: true, debounce: [0, 300, 0] },
   )
 
-  const products = data?.products ?? []
+  const users = data?.users ?? []
   const totalPages = data?.pages ?? 1
 
-  const handleDelete = async (id: number) => {
-    await deleteProductAdminApi(id).send()
-    send()
-  }
+  const handleDelete = useCallback(
+    async (id: number) => {
+      await deleteUserApi(id).send()
+      send()
+    },
+    [send],
+  )
 
-  const handleSearchChange = (value: string) => {
+  const handleSearchChange = useCallback((value: string) => {
     setSearch(value)
     setCurrentPage(1)
-  }
+  }, [])
 
-  const handleCategoriesChange = (ids: number[]) => {
-    setSelectedCategories(ids)
+  const handleRolesChange = useCallback((roles: string[]) => {
+    setSelectedRoles(roles)
     setCurrentPage(1)
-  }
+  }, [])
 
   return (
     <Template>
       <div className="flex flex-col gap-4 font-raleway">
         <TitleSection
           breadcrumbs={[{ label: 'Administrador' }]}
-          title="Productos"
+          title="Usuarios"
           action={{
-            variant: 'blue',
             label: 'Crear Nuevo',
             icon: PlusCircleIcon,
-            onClick: () => navigate('/products/new'),
+            onClick: () => navigate('/users/new'),
+            variant: 'blue',
           }}
         />
 
         {error && <p className="text-sm text-destructive">{error.message}</p>}
 
-        {loading && products.length === 0 ? (
+        {loading && users.length === 0 ? (
           <div className="space-y-2">
             {Array.from({ length: 5 }).map((_, i) => (
               <Skeleton key={i} className="h-10 w-full" />
@@ -83,13 +82,13 @@ export default function ProductPage() {
         ) : (
           <div className="flex flex-col items-center gap-6">
             <div className="w-full rounded-2xl bg-white p-4">
-              <ProductsTable
-                products={products}
+              <UsersTable
+                users={users}
                 search={search}
                 onSearchChange={handleSearchChange}
-                categoryOptions={categoryOptions}
-                selectedCategories={selectedCategories}
-                onCategoriesChange={handleCategoriesChange}
+                roleOptions={roleOptions}
+                selectedRoles={selectedRoles}
+                onRolesChange={handleRolesChange}
                 onDelete={handleDelete}
               />
             </div>

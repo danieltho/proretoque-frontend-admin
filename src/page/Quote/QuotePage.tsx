@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useRequest } from 'alova/client'
+import { useWatcher } from 'alova/client'
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react'
 import { getQuotesAdminApi, deleteQuoteAdminApi } from '@/app/core/quote/api/quotesAdminApi'
 import { QuotesTable } from '@/app/core/quote/components/QuotesTable'
@@ -12,9 +12,10 @@ const ITEMS_PER_PAGE = 20
 export default function QuotePage() {
   const [currentPage, setCurrentPage] = useState(1)
 
-  const { data, loading, error, send } = useRequest(
-    getQuotesAdminApi(currentPage, ITEMS_PER_PAGE),
-    { force: true },
+  const { data, loading, error, send } = useWatcher(
+    () => getQuotesAdminApi(currentPage, ITEMS_PER_PAGE),
+    [currentPage],
+    { immediate: true, force: true },
   )
 
   const quotes = data?.quotes ?? []
@@ -28,9 +29,6 @@ export default function QuotePage() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
-    getQuotesAdminApi(page, ITEMS_PER_PAGE)
-      .send()
-      .then(() => send())
   }
 
   const getVisiblePages = (): (number | 'ellipsis')[] => {

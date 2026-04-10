@@ -2,22 +2,30 @@ import { NavLink } from 'react-router-dom'
 import {
   House,
   Package,
+  SquaresFour,
+  Tag,
+  Users,
+  Handshake,
   ClipboardText,
   FileText,
   NewspaperClipping,
-  ChatText,
+  Bell,
 } from '@phosphor-icons/react'
 import { cn } from '@/app/shared/utils/utils'
 import { useSidebarStore } from '@/app/stores/sidebarStore'
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/app/components/ui/sheet'
 
 const navItems = [
-  { to: '/home', label: 'Inicio', icon: House },
+  { to: '/', label: 'Inicio', icon: House, end: true },
   { to: '/orders', label: 'Pedidos', icon: Package },
+  { to: '/categories', label: 'Categorías', icon: SquaresFour },
+  { to: '/products', label: 'Productos', icon: Tag },
+  { to: '/clients', label: 'Clientes', icon: Users },
+  { to: '/providers', label: 'Proveedores', icon: Handshake },
   { to: '/protocols', label: 'Protocolos', icon: ClipboardText },
   { to: '/quotes', label: 'Presupuestos', icon: FileText },
   { to: '/invoices', label: 'Facturas', icon: NewspaperClipping },
-  { to: '/chat', label: 'Chat', icon: ChatText },
+  { to: '/notifications', label: 'Notificaciones', icon: Bell },
 ]
 
 export default function MobileSidebar() {
@@ -34,13 +42,14 @@ export default function MobileSidebar() {
             <NavLink
               key={item.to}
               to={item.to}
+              end={item.end}
               onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
                 cn(
                   'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                   isActive
                     ? 'bg-white/20 text-white'
-                    : 'text-white/70 hover:bg-white/10 hover:text-white',
+                    : 'text-white hover:bg-white/10',
                 )
               }
             >

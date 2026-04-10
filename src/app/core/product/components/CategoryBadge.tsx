@@ -6,7 +6,7 @@ interface CategoryBadgeProps {
 
 export function CategoryBadge({ name }: CategoryBadgeProps) {
   return (
-    <Badge variant="default" className="h-4 rounded-lg bg-blue-50 text-footer">
+    <Badge className="rounded-lg bg-blue-50 px-2 py-0.5 text-footer font-medium text-primary-foreground">
       {name.toUpperCase()}
     </Badge>
   )

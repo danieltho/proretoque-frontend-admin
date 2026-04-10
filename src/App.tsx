@@ -11,6 +11,8 @@ import OrderRoutes from '@/app/core/order/OrderRoutes'
 import ProductRoutes from '@/app/core/product/ProductRoutes'
 import CategoryRoutes from '@/app/core/category/CategoryRoutes'
 import ProviderRoutes from '@/app/core/provider/ProviderRoutes'
+import RoleRoutes from '@/app/core/role/RoleRoutes'
+import UserRoutes from '@/app/core/user/UserRoutes'
 
 export default function App() {
   return (
@@ -26,6 +28,8 @@ export default function App() {
             {ProductRoutes()}
             {CategoryRoutes()}
             {ProviderRoutes()}
+            {RoleRoutes()}
+            {UserRoutes()}
           </Route>
       </Routes>
     </div>

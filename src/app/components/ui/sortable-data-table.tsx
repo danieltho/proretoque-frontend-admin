@@ -65,7 +65,7 @@ export function SortableDataTable<TData extends { id: number }, TValue>({
   const [items, setItems] = useState(data)
 
   // Sync external data changes
-  const dataKey = data.map((d) => d.id).join(',')
+  const dataKey = JSON.stringify(data)
   const [prevKey, setPrevKey] = useState(dataKey)
   if (dataKey !== prevKey) {
     setItems(data)
