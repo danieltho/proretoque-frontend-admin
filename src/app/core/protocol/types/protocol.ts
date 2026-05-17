@@ -11,5 +11,5 @@ export interface ProtocolAdmin {
 export interface ProtocolsAdminListResponse {
   protocols: ProtocolAdmin[]
   count: number
-  page: number
+  pages: number
 }

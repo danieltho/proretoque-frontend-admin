@@ -1,18 +1,14 @@
 import { Link, useLocation } from 'react-router-dom'
 import {
-  HouseIcon,
-  PackageIcon,
   SquaresFourIcon,
   TagIcon,
-  UsersIcon,
   UserGearIcon,
-  HandshakeIcon,
-  ClipboardTextIcon,
-  FileTextIcon,
   SidebarSimpleIcon,
 } from '@phosphor-icons/react'
 import { cn } from '@/app/shared/utils/utils'
 import { useSidebarStore } from '@/app/stores/sidebarStore'
+import { useAuthStore, isAdminUser } from '@/app/stores/authStore'
+import type { RoleAccess } from '@/app/stores/authStore'
 import {
   Tooltip,
   TooltipContent,
@@ -20,22 +16,26 @@ import {
   TooltipTrigger,
 } from '@/app/components/ui/tooltip'
 
-const navItems = [
-  { to: '/', label: 'Inicio', icon: HouseIcon, end: true },
-  { to: '/orders', label: 'Pedidos', icon: PackageIcon },
-  { to: '/categories', label: 'Categorías', icon: SquaresFourIcon },
-  { to: '/products', label: 'Productos', icon: TagIcon },
-  { to: '/clients', label: 'Clientes', icon: UsersIcon },
-  { to: '/roles', label: 'Roles', icon: UserGearIcon },
-  { to: '/users', label: 'Usuarios', icon: UserGearIcon },
-  { to: '/providers', label: 'Proveedores', icon: HandshakeIcon },
-  { to: '/protocols', label: 'Protocolos', icon: ClipboardTextIcon },
-  { to: '/quotes', label: 'Presupuestos', icon: FileTextIcon },
+type NavItem = {
+  to: string
+  label: string
+  icon: React.ComponentType<{ className?: string }>
+  end?: boolean
+  access: RoleAccess
+}
+
+const navItems: NavItem[] = [
+  { to: '/categories', label: 'Categorías', icon: SquaresFourIcon, access: 'PRODUCT' },
+  { to: '/products', label: 'Productos', icon: TagIcon, access: 'PRODUCT' },
+  { to: '/roles', label: 'Roles', icon: UserGearIcon, access: 'ROLE' },
 ]
 
 export default function Sidebar() {
   const { isCollapsed, toggle } = useSidebarStore()
   const { pathname } = useLocation()
+  const user = useAuthStore((s) => s.user)
+  const accesses = isAdminUser(user) ? (user.role?.accesses ?? []) : []
+  const visibleItems = navItems.filter((item) => accesses.includes(item.access))
 
   return (
     <aside
@@ -50,7 +50,7 @@ export default function Sidebar() {
 
       <nav className={cn('flex flex-1 flex-col gap-4', isCollapsed ? 'items-center' : 'w-full')}>
         <TooltipProvider delayDuration={0}>
-          {navItems.map((item) => {
+          {visibleItems.map((item) => {
             const isActive = item.end ? pathname === item.to : pathname.startsWith(item.to)
 
             return (

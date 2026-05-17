@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/danielalbertothomannom/workspace/proretoque/proretoque-frontend-admin/src -type f \\\\\\(-name *.test.ts -o -name *.test.tsx \\\\\\))",
+      "Bash(ls:*)",
+      "Bash(wc -l /Users/danielalbertothomannom/workspace/proretoque/proretoque-frontend-admin/src/app/shared/ui copy/*.tsx)",
+      "Bash(curl -sL \"https://www.figma.com/api/mcp/asset/ac8ab081-3475-4c8a-be4a-4f1409091217\" -o /Users/danielalbertothomannom/workspace/proretoque/proretoque-frontend-admin/assets/images/logo.svg)",
+      "Bash(npx tsc:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(grep -r \"export.*clsx\\\\|export.*cn\\\\|tailwind-merge\" /Users/danielalbertothomannom/workspace/proretoque/proretoque-frontend-admin/src --include=*.ts --include=*.tsx)",
+      "Bash(grep -n \"VITE_API_BASE_URL\" /Users/danielalbertothomannom/workspace/proretoque/proretoque-frontend-admin/.env*)",
+      "mcp__figma__get_design_context",
+      "mcp__figma__get_screenshot",
+      "Bash(pnpm dlx:*)",
+      "Bash(grep -r filterOptions node_modules/@base-ui/react/ --include=*.d.ts)",
+      "Bash(grep -r filter node_modules/@base-ui/react/dist/Combobox/ --include=*.d.ts)",
+      "Bash(find node_modules/@base-ui/react -name *.d.ts -path *ombobox*)",
+      "Bash(find node_modules/@base-ui/react -name *.d.ts)",
+      "Bash(grep:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(gh pr:*)",
+      "Bash(gh api:*)",
+      "Bash(git stash:*)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(git revert:*)",
+      "Bash(git reset:*)",
+      "Bash(git log:*)",
+      "mcp__figma__get_metadata",
+      "Bash(git pull:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm dev:*)"
+    ]
+  }
+}
