@@ -1,7 +1,8 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useRequest } from 'alova/client'
 import { getBatchApi } from '../../api/batchesApi'
+import { parseRouteId } from '@/app/shared/utils/routeId'
 import { useUploadStore } from '@/app/stores/uploadStore'
 import { uploadWithProgress } from '../../utils/uploadWithProgress'
 import { Button } from '@/app/components/ui/button'
@@ -67,8 +68,19 @@ type ViewMode = 'grid' | 'list'
 export default function BatchDetailPage() {
   const { batchId } = useParams<{ batchId: string }>()
   const navigate = useNavigate()
+  const routeId = parseRouteId(batchId)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const { data, loading, error, send: refetch } = useRequest(() => getBatchApi(Number(batchId!)))
+
+  useEffect(() => {
+    if (routeId === null) navigate('/orders')
+  }, [routeId, navigate])
+
+  const {
+    data,
+    loading,
+    error,
+    send: refetch,
+  } = useRequest(() => getBatchApi(routeId ?? 0), { immediate: routeId !== null })
   const batch = data?.batch
 
   const [editMedia, setEditMedia] = useState<Media | null>(null)
@@ -311,7 +323,7 @@ export default function BatchDetailPage() {
           open={!!editMedia}
           onClose={() => setEditMedia(null)}
           media={editMedia}
-          batchId={Number(batchId)}
+          batchId={routeId ?? 0}
           onSaved={refetch}
         />
       )}
@@ -322,7 +334,7 @@ export default function BatchDetailPage() {
           open={!!deleteMedia}
           onClose={() => setDeleteMedia(null)}
           media={deleteMedia}
-          batchId={Number(batchId)}
+          batchId={routeId ?? 0}
           onDeleted={refetch}
         />
       )}

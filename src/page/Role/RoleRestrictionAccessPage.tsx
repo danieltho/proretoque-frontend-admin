@@ -9,6 +9,7 @@ import { TitleSection } from '@/app/shared/ui/TitleSection'
 import { FormFieldCard } from '@/app/shared/ui/forms/FormFieldCard'
 import Card from '@/app/shared/ui/Card'
 import Template from '@/app/components/Template'
+import { parseRouteId } from '@/app/shared/utils/routeId'
 
 const restrictionSchema = z.object({
   only_provider: z.boolean(),
@@ -19,6 +20,7 @@ type RestrictionFormData = z.infer<typeof restrictionSchema>
 export default function RoleRestrictionAccessPage() {
   const { roleId } = useParams<{ roleId: string }>()
   const navigate = useNavigate()
+  const routeId = parseRouteId(roleId)
   const [roleName, setRoleName] = useState<string>('')
   const [loading, setLoading] = useState(true)
 
@@ -33,19 +35,21 @@ export default function RoleRestrictionAccessPage() {
   })
 
   useEffect(() => {
-    if (!roleId) return
-    const id = Number(roleId)
-    Promise.all([getRoleApi(id).send()])
+    if (routeId === null) {
+      navigate('/roles')
+      return
+    }
+    Promise.all([getRoleApi(routeId).send()])
       .then(([role]) => {
         setRoleName(role.name)
         reset({ only_provider: role?.restriction?.only_provider })
       })
       .finally(() => setLoading(false))
-  }, [roleId])
+  }, [routeId, navigate, reset])
 
   const onSubmit = async (values: RestrictionFormData) => {
-    if (!roleId) return
-    await createRoleRestrictionAccessApi(Number(roleId), {
+    if (routeId === null) return
+    await createRoleRestrictionAccessApi(routeId, {
       only_provider: values.only_provider ? 1 : 0,
     }).send()
   }

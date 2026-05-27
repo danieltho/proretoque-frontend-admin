@@ -10,6 +10,7 @@ import { validateFiles } from '../../utils/validateFiles'
 import type { Order, EditableBatch } from '../../types/order'
 import type { ViewMode } from '../../types/batch'
 import type { Category, CategoryGroup } from '@/app/shared/types/category'
+import { parseRouteId } from '@/app/shared/utils/routeId'
 
 interface OrderEditContextValue {
   // Order data
@@ -74,8 +75,9 @@ export function OrderEditProvider({ children }: { children: React.ReactNode }) {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
 
-  // Sanitize: ensure id param is a valid positive integer string before passing downstream
-  const sanitizedId = id && /^\d+$/.test(id) ? id : ''
+  // Sanitize: ensure id param is a valid positive integer before passing downstream
+  const routeId = parseRouteId(id)
+  const sanitizedId = routeId === null ? '' : String(routeId)
 
   // Compose hooks for different concerns
   const { order, loading, error } = useOrderLoader(sanitizedId)

@@ -3,15 +3,17 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useRequest } from 'alova/client'
 import { getProviderColumns } from '../components/providerColumns'
 import { getOrderProvidersApi, addOrderProviderApi, removeOrderProviderApi } from '../api/orderApi'
+import { parseRouteId } from '@/app/shared/utils/routeId'
 
 export function useOrderAdminProviders() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const routeId = parseRouteId(id)
 
   const { data, loading, send } = useRequest(
-    () => getOrderProvidersApi(Number(id!)),
+    () => getOrderProvidersApi(routeId ?? 0),
     {
-      immediate: true,
+      immediate: routeId !== null,
       initialData: { providers: [] },
     },
   )
@@ -28,20 +30,20 @@ export function useOrderAdminProviders() {
 
   const handleAddProvider = useCallback(
     async (providerId: number) => {
-      if (!id) return
-      await addOrderProviderApi(Number(id), providerId).send()
+      if (routeId === null) return
+      await addOrderProviderApi(routeId, providerId).send()
       send()
     },
-    [id, send],
+    [routeId, send],
   )
 
   const handleRemoveProvider = useCallback(
     async (providerId: number) => {
-      if (!id) return
-      await removeOrderProviderApi(Number(id), providerId).send()
+      if (routeId === null) return
+      await removeOrderProviderApi(routeId, providerId).send()
       send()
     },
-    [id, send],
+    [routeId, send],
   )
 
   return {

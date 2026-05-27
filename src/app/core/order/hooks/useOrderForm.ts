@@ -8,6 +8,7 @@ import { getOrderDetail, updateOrderAdminApi } from '../api/orderApi'
 import type { OrderDetailType } from '../types/orderDetailType'
 import type { OrderAdminStatus } from '../types/orderAdmin'
 import { formatDateShort } from '@/app/shared/utils/date'
+import { parseRouteId } from '@/app/shared/utils/routeId'
 
 const ORDER_STATUSES: [OrderAdminStatus, ...OrderAdminStatus[]] = [
   'created',
@@ -36,6 +37,7 @@ export function useOrderForm() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const isNew = !id
+  const routeId = parseRouteId(id)
 
   const form = useForm<OrderFormData>({
     resolver: zodResolver(orderFormSchema),
@@ -48,12 +50,17 @@ export function useOrderForm() {
     },
   })
 
+  // Edit mode con un id inválido en la URL (ej. /orders/abc/edit) → volver al listado.
+  useEffect(() => {
+    if (!isNew && routeId === null) navigate('/orders')
+  }, [isNew, routeId, navigate])
+
   const {
     data: order,
     loading,
     error,
-  } = useRequest(() => getOrderDetail(Number(id!)), {
-    immediate: !isNew,
+  } = useRequest(() => getOrderDetail(routeId ?? 0), {
+    immediate: !isNew && routeId !== null,
     force: true,
     initialData: undefined as OrderDetailType | undefined,
   })
@@ -80,8 +87,8 @@ export function useOrderForm() {
   }, [order, form])
 
   const handleSave = form.handleSubmit(async (data) => {
-    if (isNew) return
-    await updateOrderAdminApi(Number(id), {
+    if (isNew || routeId === null) return
+    await updateOrderAdminApi(routeId, {
       name: data.name,
       customer_id: data.customer_id,
       status: data.status,

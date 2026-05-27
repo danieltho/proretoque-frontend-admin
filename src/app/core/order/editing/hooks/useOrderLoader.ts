@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getOrderApi } from '../../api/ordersApi'
 import type { Order } from '../../types/order'
+import { parseRouteId } from '@/app/shared/utils/routeId'
 
 interface UseOrderLoaderReturn {
   order: Order | null
@@ -23,9 +24,9 @@ export function useOrderLoader(orderId: string): UseOrderLoaderReturn {
     setError(null)
 
     try {
-      const numericId = Number(orderId)
+      const numericId = parseRouteId(orderId)
 
-      if (!Number.isFinite(numericId) || numericId <= 0 || !Number.isInteger(numericId)) {
+      if (numericId === null) {
         throw new Error('ID de pedido inválido')
       }
 

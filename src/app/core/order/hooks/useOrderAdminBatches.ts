@@ -9,6 +9,7 @@ import {
   createBatchAdminApi,
 } from '../api/orderApi'
 import type { OrderAdminBatch } from '../types/orderDetailType'
+import { parseRouteId } from '@/app/shared/utils/routeId'
 
 interface UseOrderAdminBatchesOptions {
   onUploadFiles?: (batchId: number) => void
@@ -23,13 +24,14 @@ export function useOrderAdminBatches({
 }: UseOrderAdminBatchesOptions = {}) {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const routeId = parseRouteId(id)
   const [page, setPage] = useState(1)
 
   const { data, loading, send } = useWatcher(
-    () => getOrderAdminBatchesApi(Number(id!), page, 'sort_order', 'asc'),
+    () => getOrderAdminBatchesApi(routeId ?? 0, page, 'sort_order', 'asc'),
     [page],
     {
-      immediate: true,
+      immediate: routeId !== null,
       force: true,
       initialData: { batches: [], count: 0, pages: 1 },
     },
@@ -60,21 +62,21 @@ export function useOrderAdminBatches({
 
   const handleReorder = useCallback(
     async (reordered: OrderAdminBatch[]) => {
-      if (!id) return
+      if (routeId === null) return
       const batchIds = reordered.map((b) => b.id)
-      await sortOrderAdminBatchesApi(Number(id), batchIds).send()
+      await sortOrderAdminBatchesApi(routeId, batchIds).send()
       send()
     },
-    [id, send],
+    [routeId, send],
   )
 
   const handleAddBatch = useCallback(async () => {
-    if (!id) return
+    if (routeId === null) return
     const batchCount = data.batches.length
     const name = `Lote ${batchCount + 1}`
-    await createBatchAdminApi(Number(id), name).send()
+    await createBatchAdminApi(routeId, name).send()
     send()
-  }, [id, data.batches.length, send])
+  }, [routeId, data.batches.length, send])
 
   return {
     batches: data.batches,
