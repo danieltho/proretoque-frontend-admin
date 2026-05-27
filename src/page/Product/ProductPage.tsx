@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import { useWatcher } from 'alova/client'
 import { PlusCircleIcon } from '@phosphor-icons/react'
 import { getProductsAdminApi, deleteProductAdminApi } from '@/app/core/product/api/productsAdminApi'
 import { getCategoriesAdminApi } from '@/app/core/category/api/categoriesAdminApi'
+
 import { ProductsTable } from '@/app/core/product/components/ProductsTable'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
+import { Pagination } from '@/app/shared/ui/Pagination'
 import { Skeleton } from '@/app/components/ui/skeleton'
 import Template from '@/app/components/Template'
-import { Pagination } from '@/app/shared/ui/Pagination'
 import type { SearchableSelectOption } from '@/app/components/ui/searchable-select'
 
 export default function ProductPage() {

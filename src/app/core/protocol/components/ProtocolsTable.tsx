@@ -1,77 +1,72 @@
+import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { NotePencilIcon, XIcon } from '@phosphor-icons/react'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/app/components/ui/table'
-import { formatDateShort } from '@/app/shared/utils/date'
+import { MagnifyingGlassIcon } from '@phosphor-icons/react'
+import { DataTable } from '@/app/components/ui/data-table'
+import { Input } from '@/app/components/ui/input'
+import { SearchableSelect } from '@/app/components/ui/searchable-select'
+import type { SearchableSelectOption } from '@/app/components/ui/searchable-select'
 import type { ProtocolAdmin } from '../types/protocol'
-import { ProtocolStatusBadge } from './ProtocolStatusBadge'
+import { getProtocolColumns } from './protocolColumns'
+
+const STATUS_OPTIONS: SearchableSelectOption[] = [
+  { id: 'creado', label: 'Creado' },
+  { id: 'en_revision', label: 'En Revisión' },
+  { id: 'aprobado', label: 'Aprobado' },
+  { id: 'aceptado', label: 'Aceptado' },
+]
 
 interface ProtocolsTableProps {
   protocols: ProtocolAdmin[]
+  search: string
+  onSearchChange: (value: string) => void
+  selectedStatus: string | null
+  onStatusChange: (status: string | null) => void
   onDelete: (id: number) => void
 }
 
-export function ProtocolsTable({ protocols, onDelete }: ProtocolsTableProps) {
+export function ProtocolsTable({
+  protocols,
+  search,
+  onSearchChange,
+  selectedStatus,
+  onStatusChange,
+  onDelete,
+}: ProtocolsTableProps) {
   const navigate = useNavigate()
 
+  const columns = useMemo(
+    () =>
+      getProtocolColumns({
+        onEdit: (id) => navigate(`/protocols/${id}`),
+        onDuplicate: (id) => navigate(`/protocols/${id}/duplicate`),
+        onDelete,
+      }),
+    [navigate, onDelete],
+  )
+
   return (
-    <Table>
-      <TableHeader>
-        <TableRow className="border-b border-neutral-200">
-          <TableHead className="w-15 text-footer font-medium text-blue-200">ID</TableHead>
-          <TableHead className="text-footer font-medium text-blue-200">NOMBRES</TableHead>
-          <TableHead className="text-footer font-medium text-blue-200">NRO. FOTOS</TableHead>
-          <TableHead className="text-footer font-medium text-blue-200">CREADO</TableHead>
-          <TableHead className="text-footer font-medium text-blue-200">ESTADO</TableHead>
-          <TableHead className="text-footer font-medium text-blue-200">ACCIONES</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {protocols.map((protocol) => (
-          <TableRow
-            key={protocol.id}
-            className="border-b border-neutral-200 hover:bg-neutral-100"
-          >
-            <TableCell className="w-15 text-footer text-neutral-600">
-              #{protocol.id}
-            </TableCell>
-            <TableCell className="text-footer text-neutral-600">{protocol.name}</TableCell>
-            <TableCell className="text-right text-footer text-neutral-600">
-              {protocol.images_count}
-            </TableCell>
-            <TableCell className="text-right text-footer text-neutral-600">
-              {formatDateShort(protocol.created_at)}
-            </TableCell>
-            <TableCell>
-              <ProtocolStatusBadge status={protocol.status} />
-            </TableCell>
-            <TableCell>
-              <div className="flex items-center gap-2.5">
-                <button
-                  type="button"
-                  className="cursor-pointer text-neutral-600 hover:text-neutral-350"
-                  onClick={() => navigate(`/protocols/${protocol.id}`)}
-                >
-                  <NotePencilIcon className="size-4" />
-                </button>
-                <button
-                  type="button"
-                  className="cursor-pointer text-neutral-600 hover:text-neutral-350"
-                  onClick={() => onDelete(protocol.id)}
-                >
-                  <XIcon className="size-4" />
-                </button>
-              </div>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className="flex flex-col gap-2.5">
+      <div className="flex items-center gap-4">
+        <div className="relative w-86">
+          <MagnifyingGlassIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Buscar por título..."
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+
+        <SearchableSelect
+          options={STATUS_OPTIONS}
+          value={selectedStatus}
+          onChange={(value) => onStatusChange(value as string | null)}
+          placeholder="Estado"
+          className="w-[150px]"
+        />
+      </div>
+
+      <DataTable columns={columns} data={protocols} />
+    </div>
   )
 }

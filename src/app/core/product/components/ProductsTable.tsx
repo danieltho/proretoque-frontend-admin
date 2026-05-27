@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import { MagnifyingGlassIcon } from '@phosphor-icons/react'
 import { DataTable } from '@/app/components/ui/data-table'
 import { Input } from '@/app/components/ui/input'
@@ -65,4 +66,6 @@ export function ProductsTable({
       <DataTable columns={columns} data={products} />
     </div>
   )
+
+  return <DataTable columns={columns} data={products} />
 }

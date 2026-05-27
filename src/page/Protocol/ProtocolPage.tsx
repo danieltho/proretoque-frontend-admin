@@ -1,37 +1,46 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useWatcher } from 'alova/client'
-import {
-  getProtocolsAdminApi,
-  deleteProtocolAdminApi,
-} from '@/app/core/protocol/api/protocolsAdminApi'
+import { PlusCircleIcon } from '@phosphor-icons/react'
+import { getProtocols, deleteProtocol } from '@/app/core/protocol/api/protocolsApi'
 import { ProtocolsTable } from '@/app/core/protocol/components/ProtocolsTable'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
 import Template from '@/app/components/Template'
-import { ProtocolSkeleton } from '@/app/core/protocol/components/ProtocolSkeleton'
-import { ProtocolEmptyState } from '@/app/core/protocol/components/ProtocolEmptyState'
 import { Pagination } from '@/app/shared/ui/Pagination'
-import { calculateTotalPage } from '@/app/shared/utils/pagination'
+import ProtocolSkeleton from './ProtocolSkeleton'
 
 export default function ProtocolPage() {
+  const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
+  const [search, setSearch] = useState('')
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
 
-  const { data, loading, send } = useWatcher(
-    () => getProtocolsAdminApi(currentPage),
-    [currentPage],
-    { immediate: true, force: true },
+  const { data, loading, error, send } = useWatcher(
+    () =>
+      getProtocols(currentPage, {
+        name: search || undefined,
+        status: selectedStatus || undefined,
+      }),
+    [currentPage, search, selectedStatus],
+    { immediate: true, force: true, debounce: [0, 300, 0] },
   )
 
   const protocols = data?.protocols ?? []
-  const totalCount = data?.count ?? 0
-  const totalPages = calculateTotalPage(totalCount, data?.pages)
+  const totalPages = data?.pages ?? 1
 
   const handleDelete = async (id: number) => {
-    await deleteProtocolAdminApi(id).send()
+    await deleteProtocol(id).send()
     send()
   }
 
-  const onPageChange = (page: number) => {
-    setCurrentPage(page)
+  const handleSearchChange = (value: string) => {
+    setSearch(value)
+    setCurrentPage(1)
+  }
+
+  const handleStatusChange = (status: string | null) => {
+    setSelectedStatus(status)
+    setCurrentPage(1)
   }
 
   return (
@@ -39,23 +48,35 @@ export default function ProtocolPage() {
       <div className="flex flex-col gap-4 font-raleway">
         <TitleSection
           title="Protocolos"
-          action={{ variant: 'blue', label: 'Crear', onClick: () => {} }}
+          action={{
+            variant: 'blue',
+            label: 'Crear Nuevo',
+            icon: PlusCircleIcon,
+            onClick: () => navigate('/protocol/new'),
+          }}
         />
 
-        {loading ? (
+        {error && <p className="text-sm text-destructive">{error.message}</p>}
+
+        {loading && protocols.length === 0 ? (
           <ProtocolSkeleton />
-        ) : protocols.length === 0 ? (
-          <ProtocolEmptyState />
         ) : (
           <div className="flex flex-col items-center gap-6">
             <div className="w-full rounded-2xl bg-white p-4">
-              <ProtocolsTable protocols={protocols} onDelete={handleDelete} />
+              <ProtocolsTable
+                protocols={protocols}
+                search={search}
+                onSearchChange={handleSearchChange}
+                selectedStatus={selectedStatus}
+                onStatusChange={handleStatusChange}
+                onDelete={handleDelete}
+              />
             </div>
 
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={onPageChange}
+              onPageChange={setCurrentPage}
             />
           </div>
         )}
