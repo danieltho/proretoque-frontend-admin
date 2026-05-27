@@ -28,6 +28,7 @@ export default function OrderFormLayout({ children }: { children: React.ReactNod
     setOrderName,
     activeStep,
     goStep,
+    canAdvanceFromCurrentStep,
     canSubmit,
     submitting,
     handleSubmit,
@@ -56,6 +57,7 @@ export default function OrderFormLayout({ children }: { children: React.ReactNod
                   label: 'Continuar',
                   onClick: () => goStep(activeStep + 1),
                   variant: 'default' as const,
+                  disabled: !canAdvanceFromCurrentStep,
                 },
               ]
             : []),

@@ -101,8 +101,8 @@ describe('BatchTabs — renderizado de tabs', () => {
     render(<BatchTabs />)
 
     // Assert — dos botones de batch + boton "Lote"
-    expect(screen.getByText('1. Lote A')).toBeInTheDocument()
-    expect(screen.getByText('2. Lote B')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /1\. Lote A/ })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /2\. Lote B/ })).toBeInTheDocument()
   })
 
   it('should_render_single_batch_when_only_one_exists', () => {
@@ -113,7 +113,7 @@ describe('BatchTabs — renderizado de tabs', () => {
     render(<BatchTabs />)
 
     // Assert
-    expect(screen.getByText('1. Lote A')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /1\. Lote A/ })).toBeInTheDocument()
     expect(screen.queryByText('2.')).not.toBeInTheDocument()
   })
 
@@ -122,10 +122,10 @@ describe('BatchTabs — renderizado de tabs', () => {
     mockContext([BATCH_A], 'batch-a')
 
     // Act
-    render(<BatchTabs />)
+    render(<BatchTabs showAdd />)
 
     // Assert — el boton de agregar lote debe estar presente
-    expect(screen.getByText('Lote')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Lote' })).toBeInTheDocument()
   })
 })
 
@@ -142,7 +142,7 @@ describe('BatchTabs — batch activo', () => {
     render(<BatchTabs />)
 
     // Assert — el boton del batch activo debe tener bg-primary
-    const activeBatchBtn = screen.getByText('1. Lote A').closest('button')!
+    const activeBatchBtn = screen.getByRole('button', { name: /1\. Lote A/ })
     expect(activeBatchBtn).toHaveClass('bg-primary')
   })
 
@@ -154,7 +154,7 @@ describe('BatchTabs — batch activo', () => {
     render(<BatchTabs />)
 
     // Assert — el batch inactivo NO debe tener bg-primary
-    const inactiveBatchBtn = screen.getByText('2. Lote B').closest('button')!
+    const inactiveBatchBtn = screen.getByRole('button', { name: /2\. Lote B/ })
     expect(inactiveBatchBtn).not.toHaveClass('bg-primary')
   })
 
@@ -166,9 +166,9 @@ describe('BatchTabs — batch activo', () => {
     render(<BatchTabs />)
 
     // Assert
-    const activeBatchBtn = screen.getByText('2. Lote B').closest('button')!
+    const activeBatchBtn = screen.getByRole('button', { name: /2\. Lote B/ })
     expect(activeBatchBtn).toHaveClass('bg-primary')
-    const inactiveBatchBtn = screen.getByText('1. Lote A').closest('button')!
+    const inactiveBatchBtn = screen.getByRole('button', { name: /1\. Lote A/ })
     expect(inactiveBatchBtn).not.toHaveClass('bg-primary')
   })
 })
@@ -185,7 +185,7 @@ describe('BatchTabs — cambio de batch activo', () => {
     render(<BatchTabs />)
 
     // Act — hacer click en el segundo lote
-    await user.click(screen.getByText('2. Lote B'))
+    await user.click(screen.getByRole('button', { name: /2\. Lote B/ }))
 
     // Assert
     expect(mockSetActiveBatchId).toHaveBeenCalledWith('batch-b')
@@ -199,7 +199,7 @@ describe('BatchTabs — cambio de batch activo', () => {
     render(<BatchTabs />)
 
     // Act
-    await user.click(screen.getByText('1. Lote A'))
+    await user.click(screen.getByRole('button', { name: /1\. Lote A/ }))
 
     // Assert
     expect(mockSetActiveBatchId).toHaveBeenCalledWith('batch-a')
@@ -215,10 +215,10 @@ describe('BatchTabs — agregar lote', () => {
     // Arrange
     const user = userEvent.setup()
     mockContext([BATCH_A], 'batch-a')
-    render(<BatchTabs />)
+    render(<BatchTabs showAdd />)
 
     // Act
-    await user.click(screen.getByText('Lote'))
+    await user.click(screen.getByRole('button', { name: 'Lote' }))
 
     // Assert
     expect(mockAddBatch).toHaveBeenCalledTimes(1)
@@ -254,7 +254,7 @@ describe('BatchTabs — showRename', () => {
 
     // Act — el icono Pencil esta dentro del boton del batch, hacemos click en el SVG
     // El Pencil es un elemento SVG con stroke de Pencil dentro del boton
-    const batchButton = screen.getByText('1. Lote A').closest('button')!
+    const batchButton = screen.getByRole('button', { name: /1\. Lote A/ })
     const pencilSvg = batchButton.querySelector('svg') as SVGElement
     await user.click(pencilSvg)
 
@@ -290,7 +290,7 @@ describe('BatchTabs — showRemove', () => {
 
     // Act — el icono X esta dentro del boton del batch (segundo SVG)
     // Con showRename=false y showRemove=true, el unico SVG es el de X
-    const batchButton = screen.getByText('1. Lote A').closest('button')!
+    const batchButton = screen.getByRole('button', { name: /1\. Lote A/ })
     const xSvg = batchButton.querySelector('svg') as SVGElement
     await user.click(xSvg)
 
@@ -306,7 +306,7 @@ describe('BatchTabs — showRemove', () => {
     render(<BatchTabs showRemove />)
 
     // Act
-    const batchButton = screen.getByText('1. Lote A').closest('button')!
+    const batchButton = screen.getByRole('button', { name: /1\. Lote A/ })
     const xSvg = batchButton.querySelector('svg') as SVGElement
     await user.click(xSvg)
 
