@@ -12,11 +12,13 @@ import {
   createProviderApi,
   updateProviderApi,
 } from '../api/providerApi'
+import { parseRouteId } from '@/app/shared/utils/routeId'
 
 export function useProviderForm() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const isNew = id === 'new'
+  const routeId = parseRouteId(id)
   const [loading, setLoading] = useState(!isNew)
 
   const form = useForm<ProviderFormData>({
@@ -32,9 +34,13 @@ export function useProviderForm() {
   })
 
   useEffect(() => {
-    if (isNew || !id) return
+    if (isNew) return
+    if (routeId === null) {
+      navigate('/providers')
+      return
+    }
     setLoading(true)
-    getProviderApi(Number(id))
+    getProviderApi(routeId)
       .send()
       .then((res) => {
         const p = res.provider
@@ -48,7 +54,7 @@ export function useProviderForm() {
         })
       })
       .finally(() => setLoading(false))
-  }, [id, isNew, form])
+  }, [id, isNew, routeId, navigate, form])
 
   const handleSave = form.handleSubmit(async (data) => {
     if (isNew) {
@@ -61,7 +67,11 @@ export function useProviderForm() {
         password: data.password!,
       }).send()
     } else {
-      await updateProviderApi(Number(id), {
+      if (routeId === null) {
+        navigate('/providers')
+        return
+      }
+      await updateProviderApi(routeId, {
         username: data.username,
         firstname: data.firstname,
         lastname: data.lastname,

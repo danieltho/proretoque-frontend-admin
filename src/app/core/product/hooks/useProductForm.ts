@@ -12,11 +12,13 @@ import {
 import { getCategoriesAdminApi } from '@/app/core/category/api/categoriesAdminApi'
 import type { ProductItem } from '../types/product'
 import type { SearchableSelectOption } from '@/app/components/ui/searchable-select'
+import { parseRouteId } from '@/app/shared/utils/routeId'
 
 export function useProductForm() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const isNew = !id
+  const routeId = parseRouteId(id)
   const [loading, setLoading] = useState(!isNew)
   const [items, setItems] = useState<ProductItem[]>([])
   const [categoryOptions, setCategoryOptions] = useState<SearchableSelectOption[]>([])
@@ -44,9 +46,13 @@ export function useProductForm() {
 
   // Load product data for edit mode
   useEffect(() => {
-    if (isNew || !id) return
+    if (isNew) return
+    if (routeId === null) {
+      navigate('/products')
+      return
+    }
     setLoading(true)
-    getProductAdminApi(Number(id))
+    getProductAdminApi(routeId)
       .send()
       .then((res) => {
         const p = res
@@ -61,7 +67,7 @@ export function useProductForm() {
         setItems(p.items ?? [])
       })
       .finally(() => setLoading(false))
-  }, [id, isNew, form])
+  }, [id, isNew, routeId, navigate, form])
 
   const addItem = useCallback((item: Omit<ProductItem, 'id' | 'sort_order'>) => {
     setItems((prev) => [
@@ -86,14 +92,14 @@ export function useProductForm() {
       setItems(updated)
 
       // Persist order to backend if editing an existing product
-      if (!isNew && id) {
+      if (!isNew && routeId !== null) {
         const ids = updated.filter((i) => i.id > 0).map((i) => i.id)
         if (ids.length > 0) {
-          sortProductItemsApi(Number(id), ids).send()
+          sortProductItemsApi(routeId, ids).send()
         }
       }
     },
-    [id, isNew],
+    [routeId, isNew],
   )
 
   const updateItem = useCallback((itemId: number, data: Omit<ProductItem, 'id' | 'sort_order'>) => {
@@ -142,13 +148,17 @@ export function useProductForm() {
       if (isNew) {
         await createProductAdminApi(payload).send()
       } else {
-        await updateProductAdminApi(Number(id), payload).send()
+        if (routeId === null) {
+          navigate('/products')
+          return
+        }
+        await updateProductAdminApi(routeId, payload).send()
       }
       navigate('/products')
     }
 
     form.handleSubmit(onSubmit as never)()
-  }, [id, isNew, form, navigate, items])
+  }, [routeId, isNew, form, navigate, items])
 
   return {
     id,

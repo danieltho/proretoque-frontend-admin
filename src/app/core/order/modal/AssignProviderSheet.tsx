@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { CaretLeftIcon } from '@phosphor-icons/react'
+import { parseRouteId } from '@/app/shared/utils/routeId'
 import {
   Sheet,
   SheetContent,
@@ -47,6 +48,7 @@ export function AssignProviderSheet({
   onAssigned,
 }: AssignProviderSheetProps) {
   const { id: orderId } = useParams<{ id: string }>()
+  const routeOrderId = parseRouteId(orderId)
   const [providers, setProviders] = useState<ProviderOption[]>([])
   const [selectedProviderId, setSelectedProviderId] = useState('')
   const [costPerPhoto, setCostPerPhoto] = useState('')
@@ -100,9 +102,9 @@ export function AssignProviderSheet({
   }, [retouches, selectedRetouchIds.size])
 
   const handleConfirm = useCallback(async () => {
-    if (!orderId || !selectedProviderId) return
+    if (routeOrderId === null || !selectedProviderId) return
     setSaving(true)
-    await assignProviderApi(Number(orderId), {
+    await assignProviderApi(routeOrderId, {
       provider_id: Number(selectedProviderId),
       batch_id: batchId,
       image_ids: selectedImageIds,
@@ -117,7 +119,7 @@ export function AssignProviderSheet({
     setSelectedRetouchIds(new Set())
     onAssigned()
   }, [
-    orderId,
+    routeOrderId,
     selectedProviderId,
     batchId,
     selectedImageIds,

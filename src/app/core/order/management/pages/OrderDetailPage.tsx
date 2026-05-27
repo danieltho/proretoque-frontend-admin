@@ -1,6 +1,8 @@
+import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useRequest } from 'alova/client'
 import { getOrderApi } from '../../api/ordersApi'
+import { parseRouteId } from '@/app/shared/utils/routeId'
 import { formatDateShort } from '@/app/shared/utils/date'
 import { Button } from '@/app/components/ui/button'
 import { Badge } from '@/app/components/ui/badge'
@@ -29,7 +31,17 @@ function BatchStatusIcon({ status }: { status: string }) {
 export default function OrderDetailPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { data: order, loading, error } = useRequest(() => getOrderApi(Number(id!)))
+  const routeId = parseRouteId(id)
+
+  useEffect(() => {
+    if (routeId === null) navigate('/orders')
+  }, [routeId, navigate])
+
+  const {
+    data: order,
+    loading,
+    error,
+  } = useRequest(() => getOrderApi(routeId ?? 0), { immediate: routeId !== null })
 
   if (loading) {
     return (

@@ -6,6 +6,7 @@ import { uploadWithProgress } from '@/app/core/order/utils/uploadWithProgress'
 import { setBatchProductsApi } from '@/app/core/order/api/batchesApi'
 import { validateFiles, sanitizeFileName } from '@/app/core/order/utils/validateFiles'
 import type { Category, CategoryGroup } from '@/app/shared/types/category'
+import { parseRouteId } from '@/app/shared/utils/routeId'
 
 export interface UseBatchCreateReturn {
   currentStep: 1 | 2
@@ -119,11 +120,12 @@ export function useBatchCreate(orderId: string | undefined): UseBatchCreateRetur
     let navigatePath = '/orders/'
 
     if (orderId) {
-      id = parseInt(orderId, 10)
-      if (isNaN(id) || id < 1) {
+      const parsed = parseRouteId(orderId)
+      if (parsed === null) {
         console.error('Invalid orderId:', orderId)
         return
       }
+      id = parsed
       navigatePath = `/orders/${id}`
     }
 

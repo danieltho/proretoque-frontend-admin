@@ -4,11 +4,13 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { userSchema, userCreateSchema, type UserFormData } from '../schema/userSchema'
 import { getUserApi, createUserApi, updateUserApi } from '../api/userApi'
+import { parseRouteId } from '@/app/shared/utils/routeId'
 
 export function useUserForm() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const isNew = !id
+  const routeId = parseRouteId(id)
   const [loading, setLoading] = useState(!isNew)
 
   const form = useForm<UserFormData>({
@@ -28,9 +30,13 @@ export function useUserForm() {
   })
 
   useEffect(() => {
-    if (isNew || !id) return
+    if (isNew) return
+    if (routeId === null) {
+      navigate('/users')
+      return
+    }
     setLoading(true)
-    getUserApi(Number(id))
+    getUserApi(routeId)
       .send()
       .then((res) => {
         form.reset({
@@ -47,7 +53,7 @@ export function useUserForm() {
         })
       })
       .finally(() => setLoading(false))
-  }, [id, isNew, form])
+  }, [id, isNew, routeId, navigate, form])
 
   const handleSave = useCallback(() => {
     const onSubmit = async (values: UserFormData) => {
@@ -79,13 +85,17 @@ export function useUserForm() {
           payload.password = values.password
           payload.password_confirmation = values.password_confirmation
         }
-        await updateUserApi(Number(id), payload).send()
+        if (routeId === null) {
+          navigate('/users')
+          return
+        }
+        await updateUserApi(routeId, payload).send()
       }
       navigate('/users')
     }
 
     form.handleSubmit(onSubmit as never)()
-  }, [id, isNew, form, navigate])
+  }, [routeId, isNew, form, navigate])
 
   return { id, isNew, form, loading, handleSave }
 }

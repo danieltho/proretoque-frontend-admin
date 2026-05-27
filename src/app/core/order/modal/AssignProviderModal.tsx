@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import DialogModal from '@/app/shared/ui/DialogModal'
+import { parseRouteId } from '@/app/shared/utils/routeId'
 import {
   Select,
   SelectContent,
@@ -25,6 +26,7 @@ interface AssignProviderModalProps {
 
 export function AssignProviderModal({ open, onClose, onAssigned }: AssignProviderModalProps) {
   const { id: orderId } = useParams<{ id: string }>()
+  const routeOrderId = parseRouteId(orderId)
   const [batches, setBatches] = useState<OrderAdminBatch[]>([])
   const [selectedBatchId, setSelectedBatchId] = useState<string>('')
   const [images, setImages] = useState<BatchImage[]>([])
@@ -36,8 +38,8 @@ export function AssignProviderModal({ open, onClose, onAssigned }: AssignProvide
 
   // Load batches on open
   useEffect(() => {
-    if (!open || !orderId) return
-    getOrderAdminBatchesApi(Number(orderId), 1, 'sort_order', 'asc')
+    if (!open || routeOrderId === null) return
+    getOrderAdminBatchesApi(routeOrderId, 1, 'sort_order', 'asc')
       .send()
       .then((res) => {
         setBatches(res.batches)
@@ -45,7 +47,7 @@ export function AssignProviderModal({ open, onClose, onAssigned }: AssignProvide
           setSelectedBatchId(String(res.batches[0].id))
         }
       })
-  }, [open, orderId])
+  }, [open, routeOrderId])
 
   // Load images when batch changes
   useEffect(() => {
