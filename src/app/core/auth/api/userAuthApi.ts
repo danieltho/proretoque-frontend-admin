@@ -5,22 +5,22 @@ interface UserLoginData {
   password: string
 }
 
-interface RoleAccessResponse {
-  id: number
-  name: string
-}
+export type RoleAccess = 'PRODUCT' | 'ROLE' | (string & {})
 
 interface RoleResponse {
-  id: number
   name: string
-  access: RoleAccessResponse
+  accesses: RoleAccess[]
 }
 
 interface UserAuthResponse {
   id: number
   name: string
   email: string
+  lang: string
   role: RoleResponse
+  access_token: string
+  token_type: string
+  expires_in: number
 }
 
 export const userLoginApi = (data: UserLoginData) =>
@@ -28,4 +28,4 @@ export const userLoginApi = (data: UserLoginData) =>
 
 export const userLogoutApi = () => alovaInstance.Post<void>('/logout')
 
-export const userMeApi = () => alovaInstance.Get<{ data: UserAuthResponse['data'] }>('/users/me')
+export const userMeApi = () => alovaInstance.Get<UserAuthResponse>('/users/me')

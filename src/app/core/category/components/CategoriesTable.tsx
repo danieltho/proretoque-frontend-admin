@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
-import { NotePencilIcon, XIcon, ListIcon, CheckIcon } from '@phosphor-icons/react'
+import { XIcon, ListIcon, CheckIcon } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
 import { SortableDataTable } from '@/app/components/ui/sortable-data-table'
 import { Input } from '@/app/components/ui/input'

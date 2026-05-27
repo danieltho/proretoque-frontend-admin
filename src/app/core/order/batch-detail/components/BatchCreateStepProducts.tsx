@@ -1,8 +1,8 @@
 import { Button } from '@/app/components/ui/button'
-import CategorySidebar from '@/customers/orders/components/CategorySidebar'
-import ProductGrid from '@/customers/orders/components/ProductGrid'
-import SelectedProductsSummary from '@/customers/orders/components/SelectedProductsSummary'
-import type { Category } from '@/shared/types/category'
+import CategorySidebar from '@/app/core/order/components/CategorySidebar'
+import ProductGrid from '@/app/core/order/components/ProductGrid'
+import SelectedProductsSummary from '@/app/core/order/components/SelectedProductsSummary'
+import type { Category } from '@/app/shared/types/category'
 
 interface BatchCreateStepProductsProps {
   categories: Category[]

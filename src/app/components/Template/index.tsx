@@ -1,8 +1,9 @@
+import type { ReactNode } from 'react'
 import Header from '../layout/Header'
 import MobileSidebar from '../layout/MobileSidebar'
 import Sidebar from '../layout/Sidebar'
 
-export default function Template({ children }) {
+export default function Template({ children }: { children: ReactNode }) {
   return (
     <>
       <div className="flex min-h-screen flex-col">

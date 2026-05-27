@@ -1,20 +1,13 @@
-import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useRequest } from 'alova/client'
 import { getOrderApi } from '../../api/ordersApi'
-import { formatDateShort } from '@/shared/utils/date'
+import { formatDateShort } from '@/app/shared/utils/date'
 import { Button } from '@/app/components/ui/button'
 import { Badge } from '@/app/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card'
 import { Separator } from '@/app/components/ui/separator'
 import { Skeleton } from '@/app/components/ui/skeleton'
-import { ArrowLeft, Plus, CheckCircle, CircleNotch, Clock, ChatCircle } from '@phosphor-icons/react'
-import { ChatPanel } from '@/customers/chat/components/ChatPanel'
-import {
-  createConversationApi,
-  getOrderConversationApi,
-} from '@/customers/chat/data/conversationsApi'
-import { useAuthStore } from '@/app/stores/authStore'
+import { ArrowLeft, Plus, CheckCircle, CircleNotch, Clock } from '@phosphor-icons/react'
 
 function formatSize(bytes: number) {
   if (bytes < 1024) return `${bytes} B`
@@ -37,29 +30,6 @@ export default function OrderDetailPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { data: order, loading, error } = useRequest(() => getOrderApi(Number(id!)))
-  const currentUser = useAuthStore((s) => s.user)
-  const [conversationId, setConversationId] = useState<string | null>(null)
-  const [startingChat, setStartingChat] = useState(false)
-
-  useEffect(() => {
-    if (!id) return
-    getOrderConversationApi(Number(id))
-      .send()
-      .then((res) => setConversationId(res.data.id))
-      .catch(() => {
-        // Orden sin conversación — mostramos botón "Iniciar chat"
-      })
-  }, [id])
-
-  async function handleStartChat() {
-    setStartingChat(true)
-    try {
-      const res = await createConversationApi().send()
-      setConversationId(res.data.id)
-    } finally {
-      setStartingChat(false)
-    }
-  }
 
   if (loading) {
     return (
@@ -83,10 +53,8 @@ export default function OrderDetailPage() {
   }
 
   return (
-    <div className="flex gap-6">
-      {/* Contenido principal */}
-      <div className="min-w-0 flex-1 space-y-6">
-        <div className="flex items-center gap-4">
+    <div className="space-y-6">
+      <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" onClick={() => navigate('/orders')}>
             <ArrowLeft className="h-4 w-4" />
           </Button>
@@ -139,33 +107,6 @@ export default function OrderDetailPage() {
             ))}
           </div>
         )}
-      </div>
-
-      {/* Panel de chat */}
-      <div className="flex w-80 shrink-0 flex-col">
-        <div className="mb-3 flex items-center gap-2">
-          <ChatCircle className="h-5 w-5" />
-          <h3 className="font-semibold">Chat</h3>
-        </div>
-
-        {conversationId ? (
-          <ChatPanel conversationId={conversationId} currentUserId={currentUser?.id ?? 0} />
-        ) : (
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={handleStartChat}
-            disabled={startingChat}
-          >
-            {startingChat ? (
-              <CircleNotch className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <ChatCircle className="mr-2 h-4 w-4" />
-            )}
-            Iniciar chat
-          </Button>
-        )}
-      </div>
     </div>
   )
 }

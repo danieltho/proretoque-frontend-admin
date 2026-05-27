@@ -1,1 +1,1 @@
-export { default } from '@/shared/ui/CategorySidebar'
+export { default } from '@/app/shared/ui/CategorySidebar'

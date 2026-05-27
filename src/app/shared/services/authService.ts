@@ -1,13 +1,37 @@
 import { userLoginApi, userLogoutApi } from '@/app/core/auth/api/userAuthApi'
 import { useAuthStore } from '@/app/stores/authStore'
-import type { UserRole } from '@/app/stores/authStore'
+import type { RoleAccess, AdminRole, AdminUser } from '@/app/stores/authStore'
 
+// Shape the backend may actually return for the login response. Kept looser than
+// the documented contract because the role can arrive as an object, a plain
+// string, or with the accesses promoted to the top level.
+interface RawLoginResponse {
+  access_token: string
+  id: number
+  name: string
+  email: string
+  role?: { name?: string; accesses?: RoleAccess[]; access?: RoleAccess[] } | string
+  access?: RoleAccess[]
+}
 
 export async function loginUser(email: string, password: string) {
-  const res = await userLoginApi({ email, password }).send()
-  const { access_token, ...user } = res
-  const role = user.role as UserRole
-  useAuthStore.getState().setAuth(user, access_token, role, 'user')
+  const res = (await userLoginApi({ email, password }).send()) as RawLoginResponse
+
+  const { access_token, role: roleRaw, access: topLevelAccess, id, name } = res
+
+  const normalizedRole: AdminRole =
+    roleRaw && typeof roleRaw === 'object'
+      ? {
+          name: roleRaw.name ?? '',
+          accesses: roleRaw.accesses ?? roleRaw.access ?? topLevelAccess ?? [],
+        }
+      : {
+          name: typeof roleRaw === 'string' ? roleRaw : '',
+          accesses: topLevelAccess ?? [],
+        }
+
+  const user: AdminUser = { id, name, email: res.email, role: normalizedRole }
+  useAuthStore.getState().setAuth(user, access_token, 'user')
   return user
 }
 
@@ -16,18 +40,16 @@ export async function logout() {
   try {
     if (userType === 'user') {
       await userLogoutApi().send()
-    } 
+    }
   } finally {
     useAuthStore.getState().logout()
   }
 }
 
-export function hasRole(role: UserRole): boolean {
-  return useAuthStore.getState().role === role
-}
-
-export function isAdmin(): boolean {
-  return hasRole('admin')
+export function hasAccess(access: RoleAccess): boolean {
+  const user = useAuthStore.getState().user
+  if (!user || !('role' in user) || typeof user.role !== 'object') return false
+  return user.role.accesses?.includes(access) ?? false
 }
 
 

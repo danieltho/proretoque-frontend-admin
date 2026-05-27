@@ -11,7 +11,6 @@ import { TitleSection } from '@/app/shared/ui/TitleSection'
 import { Pagination } from '@/app/shared/ui/Pagination'
 import { Skeleton } from '@/app/components/ui/skeleton'
 import Template from '@/app/components/Template'
-import { Pagination } from '@/app/shared/ui/Pagination'
 import type { SearchableSelectOption } from '@/app/components/ui/searchable-select'
 
 export default function ProductPage() {

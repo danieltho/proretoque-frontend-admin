@@ -10,7 +10,6 @@ type PreferencesData = Record<
 // Role & user type definitions
 // ---------------------------------------------------------------------------
 
-export type UserRole = 'customer' | 'admin' | 'proveedor'
 export type UserType = 'customer' | 'user'
 
 // ---------------------------------------------------------------------------
@@ -54,11 +53,18 @@ export interface CustomerUser {
   newsletter_subscribed_at?: string | null
 }
 
+export type RoleAccess = 'PRODUCT' | 'ROLE' | (string & {})
+
+export interface AdminRole {
+  name: string
+  accesses: RoleAccess[]
+}
+
 export interface AdminUser {
   id: number
   name: string
   email: string
-  role: 'admin' | 'proveedor'
+  role: AdminRole
 }
 
 export type AuthUser = CustomerUser | AdminUser
@@ -78,10 +84,9 @@ export function isAdminUser(user: AuthUser | null): user is AdminUser {
 interface AuthState {
   user: AuthUser | null
   token: string | null
-  role: UserRole | null
   userType: UserType | null
   isAuthenticated: boolean
-  setAuth: (user: AuthUser, token: string, role: UserRole, userType: UserType) => void
+  setAuth: (user: AuthUser, token: string, userType: UserType) => void
   logout: () => void
   updateUser: (partial: Partial<AuthUser>) => void
 }
@@ -91,19 +96,17 @@ export const useAuthStore = create<AuthState>()(
     (set, get) => ({
       user: null,
       token: null,
-      role: null,
       userType: null,
       isAuthenticated: false,
-      setAuth: (user, token, role, userType) => {
+      setAuth: (user, token, userType) => {
         localStorage.setItem('token', token)
-        set({ user, token, role, userType, isAuthenticated: true })
+        set({ user, token, userType, isAuthenticated: true })
       },
       logout: () => {
         localStorage.removeItem('token')
         set({
           user: null,
           token: null,
-          role: null,
           userType: null,
           isAuthenticated: false,
         })
@@ -119,7 +122,6 @@ export const useAuthStore = create<AuthState>()(
       partialize: (state) => ({
         token: state.token,
         user: state.user,
-        role: state.role,
         userType: state.userType,
         isAuthenticated: state.isAuthenticated,
       }),

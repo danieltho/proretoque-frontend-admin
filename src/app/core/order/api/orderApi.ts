@@ -1,7 +1,6 @@
 import alovaInstance from '@/app/shared/api/alovaInstance'
 import type { Batches, OrderDetailType } from '../types/orderDetailType'
 import type { OrderAdminStatus } from '../types/orderAdmin'
-import type { MediaItem } from '@/app/shared/types/media'
 import type { MediaCollection } from '@/app/shared/types/protocol'
 
 export interface BatchMediaFile {

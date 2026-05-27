@@ -7,29 +7,15 @@ import Card from '@/app/shared/ui/Card'
 import { FormFieldCard } from '@/app/shared/ui/forms/FormFieldCard'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
 import { useTranslation } from 'react-i18next'
-import { PlusCircleIcon } from '@phosphor-icons/react'
 import BatchDataTableSortable from '@/app/core/order/components/BatchDataTableSortable'
 import ProviderTaskDataTable from '@/app/core/order/components/ProviderTaskDataTable'
 
 export default function OrderEditPage() {
   const { t } = useTranslation()
-  const { id, isNew, order, loading, error, form, batches, loadingBatches, handleSave, navigate } =
-    useOrderForm()
+  const { isNew, order, form, handleSave, navigate } = useOrderForm()
 
   const customerId = form.watch('customer_id')
   const clientsHook = useOrderClients(customerId)
-
-  const handleOriginalFilesAdded = (files: FileList | null) => {
-    if (files) addImages('original', files)
-  }
-
-  const handleResourceFilesAdded = (files: FileList | null) => {
-    if (files) addImages('resource', files)
-  }
-
-  const handleSampleFilesAdded = (files: FileList | null) => {
-    if (files) addImages('sample', files)
-  }
 
   return (
     <Template>

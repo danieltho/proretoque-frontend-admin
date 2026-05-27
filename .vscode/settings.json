@@ -39,5 +39,21 @@
   "explorer.autoRevealExclude": {},
   "editor.fontFamily": "Hack Nerd Font Propo",
   "editor.allowVariableFonts": false,
-  "editor.fontWeight": "normal"
+  "editor.fontWeight": "normal",
+  // Fuente
+  "terminal.integrated.fontFamily": "Fira Code",
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.fontWeight": "normal",
+  "terminal.integrated.lineHeight": 1.7,
+  "terminal.integrated.letterSpacing": 1,
+
+  // Cursor
+  "terminal.integrated.cursorStyle": "block", // block | underline | line
+  "terminal.integrated.cursorBlinking": true,
+  "i18n-ally.localesPaths": [
+    "locales",
+    "public/locales",
+    "src/i18n"
+  ],
+
 }

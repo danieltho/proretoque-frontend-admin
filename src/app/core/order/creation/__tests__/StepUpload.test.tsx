@@ -125,40 +125,8 @@ beforeEach(() => {
 // ---------------------------------------------------------------------------
 
 describe('StepUpload — renderizado de componentes hijos', () => {
-  it('should_render_batch_tabs_always', () => {
-    // Arrange
-    mockContext(buildBatch())
-
-    // Act
-    render(<StepUpload />)
-
-    // Assert
-    expect(screen.getByTestId('batch-tabs')).toBeInTheDocument()
-  })
-
-  it('should_pass_showRename_true_to_batch_tabs', () => {
-    // Arrange
-    mockContext(buildBatch())
-
-    // Act
-    render(<StepUpload />)
-
-    // Assert — StepUpload pasa showRename al BatchTabs
-    const batchTabs = screen.getByTestId('batch-tabs')
-    expect(batchTabs).toHaveAttribute('data-show-rename', 'true')
-  })
-
-  it('should_pass_showRemove_true_to_batch_tabs', () => {
-    // Arrange
-    mockContext(buildBatch())
-
-    // Act
-    render(<StepUpload />)
-
-    // Assert — StepUpload pasa showRemove al BatchTabs
-    const batchTabs = screen.getByTestId('batch-tabs')
-    expect(batchTabs).toHaveAttribute('data-show-remove', 'true')
-  })
+  // Nota: BatchTabs ya no lo renderiza StepUpload (lo monta un contenedor padre),
+  // por lo que sus tests se cubren en BatchTabs.test.tsx.
 
   it('should_render_drop_zone_when_active_batch_exists', () => {
     // Arrange

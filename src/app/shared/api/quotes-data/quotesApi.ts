@@ -1,5 +1,5 @@
 import alovaInstance from '@/app/shared/api/alovaInstance'
-import type { Quote, QuotesListResponse, CreateQuotePayload } from '@/shared/types/quote'
+import type { Quote, QuotesListResponse, CreateQuotePayload } from '@/app/shared/types/quote'
 
 export const getQuotesApi = () => alovaInstance.Get<QuotesListResponse>('/quotes', { cacheFor: 0 })
 

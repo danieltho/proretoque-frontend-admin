@@ -25,7 +25,7 @@
 
 import { renderHook } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import type { Category } from '@/shared/types/category'
+import type { Category } from '@/app/shared/types/category'
 
 // ---------------------------------------------------------------------------
 // Mocks

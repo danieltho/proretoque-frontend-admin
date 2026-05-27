@@ -1,6 +1,6 @@
 import alovaInstance from '@/app/shared/api/alovaInstance'
 import { buildFilterParams, type Filters } from '@/app/shared/utils/filters'
-import type { ProductAdmin, ProductsAdminListResponse, ProductItem } from '../types/product'
+import type { ProductAdmin, ProductsAdminListResponse } from '../types/product'
 
 interface ProductItemPayload {
   id?: number
@@ -26,22 +26,21 @@ interface ProductPayload {
 }
 
 export const getProductsAdminApi = (pages = 1, filters?: Filters) =>
-  alovaInstance.Get<ProductsAdminListResponse>('/backend/products', {
+  alovaInstance.Get<ProductsAdminListResponse>('/products', {
     params: { pages, ...buildFilterParams(filters ?? {}) },
     cacheFor: 0,
   })
 
 export const getProductAdminApi = (id: number) =>
-  alovaInstance.Get<ProductAdmin>(`/backend/products/${id}`, { cacheFor: 0 })
+  alovaInstance.Get<ProductAdmin>(`/products/${id}`, { cacheFor: 0 })
 
 export const createProductAdminApi = (data: ProductPayload) =>
-  alovaInstance.Post<{ product: ProductAdmin }>('/backend/products', data)
+  alovaInstance.Post<{ product: ProductAdmin }>('/products', data)
 
 export const updateProductAdminApi = (id: number, data: ProductPayload) =>
-  alovaInstance.Put<{ product: ProductAdmin }>(`/backend/products/${id}`, data)
+  alovaInstance.Put<{ product: ProductAdmin }>(`/products/${id}`, data)
 
 export const sortProductItemsApi = (productId: number, itemIds: number[]) =>
-  alovaInstance.Patch(`/backend/products/${productId}/items/sort`, { item_ids: itemIds })
+  alovaInstance.Patch(`/products/${productId}/items/sort`, { item_ids: itemIds })
 
-export const deleteProductAdminApi = (id: number) =>
-  alovaInstance.Delete<void>(`/backend/products/${id}`)
+export const deleteProductAdminApi = (id: number) => alovaInstance.Delete<void>(`/products/${id}`)

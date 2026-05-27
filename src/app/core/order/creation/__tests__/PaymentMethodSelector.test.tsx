@@ -63,12 +63,16 @@ beforeEach(() => {
 // ---------------------------------------------------------------------------
 
 describe('PaymentMethodSelector — renderizado', () => {
-  it('should_render_heading_seleccione_metodo_de_pago', () => {
+  it('should_render_terms_and_conditions_checkbox', () => {
     // Arrange / Act
+    // El encabezado "Seleccione el metodo de pago" lo renderiza el contenedor padre
+    // (StepConfirmar); este componente renderiza las tarjetas y el check de terminos.
     renderSelector()
 
     // Assert
-    expect(screen.getByText('SELECCIONE EL MÉTODO DE PAGO')).toBeInTheDocument()
+    expect(
+      screen.getByText('He leído y aceptado los terminos y condiciones'),
+    ).toBeInTheDocument()
   })
 
   it('should_render_four_payment_method_cards_by_default', () => {

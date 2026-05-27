@@ -1,6 +1,6 @@
 import type { Icon } from '@phosphor-icons/react'
 import { QuestionIcon, ClockClockwiseIcon, CheckCircleIcon } from '@phosphor-icons/react'
-import { formatDateShort } from '@/shared/utils/date'
+import { formatDateShort } from '@/app/shared/utils/date'
 import type { QuoteStatus } from '../../types/quote'
 
 interface QuoteStatusBadgeProps {

@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 
 
 import AuthGuard from './AuthGuard'
+import AccessGuard from './AccessGuard'
 import AuthRoutes from '@/app/core/auth/AurthRoutes'
 import DashboardRoutes from '@/app/core/dashboard/DashboardRoutes'
 import ClientRoutes from '@/app/core/client/ClientRoutes'
@@ -20,16 +21,18 @@ export default function App() {
       <Routes>
           {AuthRoutes()}
           <Route element={<AuthGuard />}>
-            {DashboardRoutes()}
-            {ClientRoutes()}
-            {QuoteRoutes()}
-            {ProtocolRoutes()}
-            {OrderRoutes()}
-            {ProductRoutes()}
-            {CategoryRoutes()}
-            {ProviderRoutes()}
-            {RoleRoutes()}
-            {UserRoutes()}
+            <Route element={<AccessGuard />}>
+              {DashboardRoutes()}
+              {ClientRoutes()}
+              {QuoteRoutes()}
+              {ProtocolRoutes()}
+              {OrderRoutes()}
+              {ProductRoutes()}
+              {CategoryRoutes()}
+              {ProviderRoutes()}
+              {RoleRoutes()}
+              {UserRoutes()}
+            </Route>
           </Route>
       </Routes>
     </div>

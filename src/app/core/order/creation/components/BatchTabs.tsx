@@ -8,7 +8,7 @@ import {
 } from '@phosphor-icons/react'
 import { Button } from '@/app/components/ui/button'
 import { useOrderForm } from '../context/OrderFormContext'
-import { truncateLabel } from '@/shared/utils/string'
+import { truncateLabel } from '@/app/shared/utils/string'
 
 interface Props {
   showRename?: boolean

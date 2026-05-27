@@ -1,9 +1,7 @@
 export interface CategoryAdmin {
   id: number
   name: string
-  sort_order: number
-  duration_task: number
-  price: number
+  position: number
 }
 
 export interface CategoriesAdminListResponse {

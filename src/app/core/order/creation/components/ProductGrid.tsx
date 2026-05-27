@@ -1,4 +1,4 @@
-import SharedProductGrid from '@/shared/ui/ProductGrid'
+import SharedProductGrid from '@/app/shared/ui/ProductGrid'
 import { useOrderForm } from '../context/OrderFormContext'
 
 export default function ProductGrid() {

@@ -39,7 +39,7 @@ export default function CategoryPage() {
   }
 
   const handleUpdate = async (id: number, name: string) => {
-    await updateCategoryAdminApi(id, { name }).send()
+    await updateCategoryAdminApi(id, { translations: { es: { name } } }).send()
     send()
   }
 

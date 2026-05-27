@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useOrderForm } from '../context/OrderFormContext'
-import { useAuthStore } from '@/app/stores/authStore'
-import { ChatPanel } from '@/customers/chat/components/ChatPanel'
 import { Button } from '@/app/components/ui/button'
 import { Input } from '@/app/components/ui/input'
 import { CircleNotch, Image as ImageIcon } from '@phosphor-icons/react'
@@ -25,13 +23,12 @@ import OrderStepper from './OrderStepper'
 export default function OrderFormLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate()
   const [previewOpen, setPreviewOpen] = useState(false)
-  const [chatOrderOpen, setChatOrderOpen] = useState(false)
-  const currentUser = useAuthStore((s) => s.user)
   const {
     orderName,
     setOrderName,
     activeStep,
     goStep,
+    canAdvanceFromCurrentStep,
     canSubmit,
     submitting,
     handleSubmit,
@@ -39,7 +36,6 @@ export default function OrderFormLayout({ children }: { children: React.ReactNod
     setEditingBatch,
     renameBatch,
     blocker,
-    conversationId,
   } = useOrderForm()
 
   return (
@@ -61,6 +57,7 @@ export default function OrderFormLayout({ children }: { children: React.ReactNod
                   label: 'Continuar',
                   onClick: () => goStep(activeStep + 1),
                   variant: 'default' as const,
+                  disabled: !canAdvanceFromCurrentStep,
                 },
               ]
             : []),
@@ -122,17 +119,6 @@ export default function OrderFormLayout({ children }: { children: React.ReactNod
             <SheetTitle>Resumen</SheetTitle>
           </SheetHeader>
           <BatchSummaryPanel />
-        </SheetContent>
-      </Sheet>
-
-      <Sheet open={chatOrderOpen} onOpenChange={setChatOrderOpen}>
-        <SheetContent side="right" className="flex flex-col">
-          <SheetHeader>
-            <SheetTitle>Chat de pedido</SheetTitle>
-          </SheetHeader>
-          <div className="flex min-h-0 flex-1 flex-col">
-            <ChatPanel conversationId={conversationId} currentUserId={currentUser?.id ?? 0} />
-          </div>
         </SheetContent>
       </Sheet>
 

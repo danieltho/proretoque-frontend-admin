@@ -6,6 +6,7 @@ import {
   CaretRightIcon,
   CircleNotchIcon,
   CloudArrowUpIcon,
+  ImagesSquareIcon,
   LinkSimpleIcon,
   XIcon
 } from '@phosphor-icons/react'
@@ -19,7 +20,7 @@ import {
 } from '@/app/components/ui/dialog'
 import { Button } from '@/app/components/ui/button'
 import { getOrdersApi } from '@/app/core/order/api/ordersApi'
-import type { Order } from '@/app/core/order/types/order'
+import type { OrderAdmin } from '@/app/core/order/types/orderAdmin'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
 import Template from '@/app/components/Template'
 
@@ -43,7 +44,7 @@ const DAYS = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá']
 export default function Dashboard() {
   const navigate = useNavigate()
   const [currentDate, setCurrentDate] = useState(new Date())
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+  const [selectedOrder, setSelectedOrder] = useState<OrderAdmin | null>(null)
   const [files, setFiles] = useState<File[]>([])
   const [remoteUrl, setRemoteUrl] = useState('')
   const [isUrlLoading, setIsUrlLoading] = useState(false)
@@ -65,7 +66,7 @@ export default function Dashboard() {
   const handleNextMonth = () => setCurrentDate(new Date(year, month + 1, 1))
 
   const ordersByDay = useMemo(() => {
-    const map: Record<number, Order[]> = {}
+    const map: Record<number, OrderAdmin[]> = {}
     if (!data?.orders) return map
     for (const order of data.orders) {
       if (!order.deadline) continue
@@ -80,8 +81,8 @@ export default function Dashboard() {
   }, [data, year, month])
 
   const calendarRows = useMemo(() => {
-    const rows: { day: number; inMonth: boolean; orders: Order[] }[][] = []
-    let row: { day: number; inMonth: boolean; orders: Order[] }[] = []
+    const rows: { day: number; inMonth: boolean; orders: OrderAdmin[] }[][] = []
+    let row: { day: number; inMonth: boolean; orders: OrderAdmin[] }[] = []
 
     for (let i = 0; i < startingDayOfWeek; i++) {
       const d = prevMonthLastDay - startingDayOfWeek + 1 + i
@@ -361,7 +362,7 @@ export default function Dashboard() {
                 >
                   <div className="flex flex-1 items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <ImagesSquare className="size-6" />
+                      <ImagesSquareIcon className="size-6" />
                       <span className="text-body font-semibold text-neutral-600">
                         {file.name.split('.')[0]}
                       </span>
@@ -376,7 +377,7 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <button onClick={() => removeFile(idx)} className="opacity-80">
-                    <X className="size-4" />
+                    <XIcon className="size-4" />
                   </button>
                 </div>
               ))}
@@ -398,12 +399,8 @@ export default function Dashboard() {
                 <span className="font-medium">{selectedOrder?.status}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-neutral-300">Lotes</span>
-                <span className="font-medium">{selectedOrder?.batches?.length ?? 0}</span>
-              </div>
-              <div className="flex justify-between">
                 <span className="text-neutral-300">Imagenes</span>
-                <span className="font-medium">{selectedOrder?.count ?? 0}</span>
+                <span className="font-medium">{selectedOrder?.total_file ?? 0}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-neutral-300">Deadline</span>

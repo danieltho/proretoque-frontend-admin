@@ -32,7 +32,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import StepRetoques from '../components/StepRetoques'
-import type { Category, CategoryGroup } from '@/shared/types/category'
+import type { Category, CategoryGroup } from '@/app/shared/types/category'
 
 // ---------------------------------------------------------------------------
 // Mock del contexto
@@ -102,46 +102,8 @@ beforeEach(() => {
   vi.clearAllMocks()
 })
 
-// ---------------------------------------------------------------------------
-// Tests: Renderizado de BatchTabs
-// ---------------------------------------------------------------------------
-
-describe('StepRetoques — BatchTabs', () => {
-  it('should_render_batch_tabs', () => {
-    // Arrange
-    mockContext({})
-
-    // Act
-    render(<StepRetoques />)
-
-    // Assert
-    expect(screen.getByTestId('batch-tabs')).toBeInTheDocument()
-  })
-
-  it('should_not_pass_showRename_to_batch_tabs_in_retoques_step', () => {
-    // Arrange
-    mockContext({})
-
-    // Act
-    render(<StepRetoques />)
-
-    // Assert — en el paso de retoques no se renombran lotes
-    const batchTabs = screen.getByTestId('batch-tabs')
-    expect(batchTabs).toHaveAttribute('data-show-rename', 'false')
-  })
-
-  it('should_not_pass_showRemove_to_batch_tabs_in_retoques_step', () => {
-    // Arrange
-    mockContext({})
-
-    // Act
-    render(<StepRetoques />)
-
-    // Assert
-    const batchTabs = screen.getByTestId('batch-tabs')
-    expect(batchTabs).toHaveAttribute('data-show-remove', 'false')
-  })
-})
+// Nota: BatchTabs y BatchSummaryPanel ya no los renderiza StepRetoques (se
+// montan en otros contenedores), por lo que sus tests se cubren aparte.
 
 // ---------------------------------------------------------------------------
 // Tests: Sidebar de categorias
@@ -187,9 +149,9 @@ describe('StepRetoques — sidebar de categorias', () => {
     // Act
     render(<StepRetoques />)
 
-    // Assert — el boton de la categoria activa tiene bg-accent
+    // Assert — el boton de la categoria activa usa el variant "default" (bg-primary)
     const activeBtn = screen.getByText('Retratos').closest('button')!
-    expect(activeBtn).toHaveClass('bg-accent')
+    expect(activeBtn).toHaveClass('bg-neutral-600')
   })
 
   it('should_not_mark_inactive_category_button_with_accent_class', () => {
@@ -200,9 +162,9 @@ describe('StepRetoques — sidebar de categorias', () => {
     // Act
     render(<StepRetoques />)
 
-    // Assert — el boton de la categoria inactiva NO tiene bg-accent (solo tiene hover)
+    // Assert — el boton de la categoria inactiva usa "ghost" (sin bg-primary)
     const inactiveBtn = screen.getByText('Paisajes').closest('button')!
-    expect(inactiveBtn).not.toHaveClass('bg-accent')
+    expect(inactiveBtn).not.toHaveClass('bg-neutral-600')
   })
 
   it('should_call_setSelectedCategoryId_with_category_id_when_category_button_clicked', async () => {
@@ -265,57 +227,13 @@ describe('StepRetoques — ProductGrid', () => {
 })
 
 // ---------------------------------------------------------------------------
-// Tests: BatchSummaryPanel
-// ---------------------------------------------------------------------------
-
-describe('StepRetoques — BatchSummaryPanel', () => {
-  it('should_render_batch_summary_panel', () => {
-    // Arrange
-    mockContext({})
-
-    // Act
-    render(<StepRetoques />)
-
-    // Assert
-    expect(screen.getByTestId('batch-summary-panel')).toBeInTheDocument()
-  })
-})
-
-// ---------------------------------------------------------------------------
 // Tests: Grupos de categorías (feature #36 — Tags en categorías)
 // ---------------------------------------------------------------------------
+// StepRetoques aplana el grupo 'retoque' y pasa sus categorías a CategorySidebar
+// en modo lista (sin headers de grupo), por lo que solo se verifica el render
+// de las categorías de ese grupo.
 
 describe('StepRetoques — grupos de categorías (feature #36)', () => {
-  it('should_render_category_group_headers_in_sidebar', () => {
-    // Arrange — el contexto expone categoryGroups con sus labels
-    const categoryGroups: CategoryGroup[] = [
-      {
-        tag: 'retoque',
-        label: 'Retoques',
-        categories: [{ id: 1, name: 'Retrato' }],
-      },
-      {
-        tag: 'opciones-de-entrega',
-        label: 'Opciones de entrega',
-        categories: [{ id: 2, name: 'Express' }],
-      },
-      {
-        tag: 'tiempo-de-entrega',
-        label: 'Tiempo de entrega',
-        categories: [{ id: 3, name: '24h' }],
-      },
-    ]
-    mockContext({ categoryGroups, activeCategoryId: 1 })
-
-    // Act
-    render(<StepRetoques />)
-
-    // Assert — los headers de los 3 grupos son visibles en el sidebar
-    expect(screen.getByText('Retoques')).toBeInTheDocument()
-    expect(screen.getByText('Opciones de entrega')).toBeInTheDocument()
-    expect(screen.getByText('Tiempo de entrega')).toBeInTheDocument()
-  })
-
   it('should_select_first_category_of_first_group_by_default', () => {
     // Arrange — el contexto establece activeCategoryId al primer elemento del primer grupo
     const categoryGroups: CategoryGroup[] = [

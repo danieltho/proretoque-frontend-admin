@@ -5,11 +5,9 @@ import { PlusCircleIcon } from '@phosphor-icons/react'
 import { getProtocols, deleteProtocol } from '@/app/core/protocol/api/protocolsApi'
 import { ProtocolsTable } from '@/app/core/protocol/components/ProtocolsTable'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
-import { Skeleton } from '@/app/components/ui/skeleton'
 import Template from '@/app/components/Template'
 import { Pagination } from '@/app/shared/ui/Pagination'
 import ProtocolSkeleton from './ProtocolSkeleton'
-import { EmptyState } from './EmptyState'
 
 export default function ProtocolPage() {
   const navigate = useNavigate()

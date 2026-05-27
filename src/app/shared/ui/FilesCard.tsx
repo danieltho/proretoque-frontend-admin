@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { CloudArrowUp, ArrowSquareOut, X } from '@phosphor-icons/react'
-import { formatSize } from '@/customers/orders/types/batch'
+import { formatSize } from '@/app/core/order/types/batch'
 
 interface FilesCardProps {
   title: string

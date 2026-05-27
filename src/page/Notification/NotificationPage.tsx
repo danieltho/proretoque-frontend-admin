@@ -1,8 +1,8 @@
-import { useNotifications } from '@/application/notification/hooks/useNotifications'
-import { NotificationsFilter } from '@/application/notification/component/NotificationsFilter'
-import { NotificationsTable } from '@/application/notification/component/NotificationsTable'
-import { NotificationsTableSkeleton } from '@/application/notification/component/NotificationsTableSkeleton'
-import Template from '@/components/Template'
+import { useNotifications } from '@/app/core/notification/hooks/useNotifications'
+import { NotificationsFilter } from '@/app/core/notification/component/NotificationsFilter'
+import { NotificationsTable } from '@/app/core/notification/component/NotificationsTable'
+import { NotificationsTableSkeleton } from '@/app/core/notification/component/NotificationsTableSkeleton'
+import Template from '@/app/components/Template'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
 
 // ---------------------------------------------------------------------------

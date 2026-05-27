@@ -17,7 +17,7 @@ export default function OrderPage() {
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
 
-  const { data, loading, error, send } = useWatcher(
+  const { data, loading, error } = useWatcher(
     () => getOrdersApi(currentPage),
     [currentPage],
     { immediate: true, force: true }

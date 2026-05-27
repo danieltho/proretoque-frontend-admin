@@ -1,6 +1,6 @@
 import { useRequest } from 'alova/client'
-import { getCategoriesByTagApi } from '@/shared/api/productApi'
-import type { Category, CategoryGroup } from '@/shared/types/category'
+import { getCategoriesByTagApi } from '@/app/shared/api/productApi'
+import type { Category, CategoryGroup } from '@/app/shared/types/category'
 
 const TAG_GROUPS = [
   { tag: 'retoque', label: 'Retoques' },
