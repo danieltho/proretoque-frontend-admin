@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useWatcher } from 'alova/client'
-import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react'
 import {
   getProtocolsAdminApi,
   deleteProtocolAdminApi,

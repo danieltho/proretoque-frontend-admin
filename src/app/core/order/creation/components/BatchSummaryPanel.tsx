@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 import { useRequest } from 'alova/client'
-import { getCategoryProductsApi } from '@/shared/api/productApi'
+import { getCategoryProductsApi } from '@/app/shared/api/productApi'
 import { Button } from '@/app/components/ui/button'
 import { Trash } from '@phosphor-icons/react'
 import { formatPrice } from '../../types/batch'
 import { useOrderForm } from '../context/OrderFormContext'
-import type { Product } from '@/shared/types/category'
+import type { ProductOptions } from '@/app/shared/types/category'
 
 export default function BatchSummaryPanel() {
   const { activeBatch, activeCategoryId, clearBatchProducts } = useOrderForm()
@@ -80,9 +80,9 @@ function SelectedProductRow({
   const { data } = useRequest(() => getCategoryProductsApi(categoryId), {
     initialData: { products: [] },
   })
-  const products: Product[] = data.products
+  const products: ProductOptions[] = data.products
   const product = products.find((p) => p.id === productId)
-  const item = product?.items.find((it) => it.id === itemId)
+  const item = product?.options.find((it) => it.id === itemId)
 
   if (!product || !item) {
     return <li className="text-muted-foreground text-xs">Cargando...</li>
@@ -91,7 +91,7 @@ function SelectedProductRow({
   return (
     <li className="flex items-start justify-between gap-1 text-xs">
       <span>
-        {product.name} <span className="text-primary font-semibold">{item.name}</span>
+        {product.label} <span className="text-primary font-semibold">{item.name}</span>
       </span>
       <span className="shrink-0 font-medium">{formatPrice(item.price)}</span>
     </li>

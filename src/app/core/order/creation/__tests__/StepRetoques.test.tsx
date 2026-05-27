@@ -32,7 +32,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import StepRetoques from '../components/StepRetoques'
-import type { Category, CategoryGroup } from '@/shared/types/category'
+import type { Category, CategoryGroup } from '@/app/shared/types/category'
 
 // ---------------------------------------------------------------------------
 // Mock del contexto

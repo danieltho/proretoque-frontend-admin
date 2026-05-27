@@ -1,5 +1,5 @@
 import { useRequest } from 'alova/client'
-import { getCategoryProductsApi } from '@/shared/api/productApi'
+import { getCategoryProductsApi } from '@/app/shared/api/productApi'
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card'
 import {
   Select,
@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from '@/app/components/ui/select'
 import { Skeleton } from '@/app/components/ui/skeleton'
-import type { Product } from '@/shared/types/category'
+import type { ProductOptions } from '@/app/shared/types/category'
 
 interface Props {
   categoryId: number
@@ -32,7 +32,7 @@ export default function ProductSelector({
     initialData: { products: [] },
   })
 
-  const products: Product[] = data.products
+  const products: ProductOptions[] = data.products
 
   if (loading) {
     return (
@@ -59,12 +59,12 @@ export default function ProductSelector({
       <h3 className="text-lg font-semibold">{categoryName}</h3>
       {products.map((product) => {
         const selectedItemId = selectedItems[product.id]
-        const selectedItem = product.items.find((it) => it.id === selectedItemId)
+        const selectedItem = product.options.find((it) => it.id === selectedItemId)
 
         return (
           <Card key={product.id}>
             <CardHeader className="pb-2">
-              <CardTitle className="text-base">{product.name}</CardTitle>
+              <CardTitle className="text-base">{product.label}</CardTitle>
               <p className="text-muted-foreground text-sm">{product.description}</p>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -78,7 +78,7 @@ export default function ProductSelector({
                     <SelectValue placeholder="Seleccionar..." />
                   </SelectTrigger>
                   <SelectContent>
-                    {product.items.map((item) => (
+                    {product.options.map((item) => (
                       <SelectItem key={item.id} value={String(item.id)}>
                         {item.name} — {formatPrice(item.price)}
                       </SelectItem>

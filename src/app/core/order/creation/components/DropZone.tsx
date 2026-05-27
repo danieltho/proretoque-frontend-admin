@@ -1,5 +1,5 @@
 import { useOrderForm } from '../context/OrderFormContext'
-import SharedDropZone from '@/shared/ui/DropZone'
+import SharedDropZone from '@/app/shared/ui/DropZone'
 
 export default function DropZone() {
   const { activeBatch, handleFiles } = useOrderForm()

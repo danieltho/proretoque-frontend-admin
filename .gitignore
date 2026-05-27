@@ -1,3 +1,10 @@
 node_modules
 public
 CLAUDE.md
+
+# Environment files (keep only .env.example)
+.env
+.env.local
+.env.*.local
+# Build output
+dist

@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
 import { useUploadStore } from '@/app/stores/uploadStore'
-import { Button } from '@/app/components/ui/button'
 import {
   CheckCircleIcon,
   CircleNotchIcon,
@@ -9,44 +8,14 @@ import {
   CloudArrowUpIcon,
 } from '@phosphor-icons/react'
 import { getBatchProgressApi } from '@/app/core/order/api/batchesApi'
-import { getOrdersApi } from '@/app/core/order/api/ordersApi'
 
 export default function UploadNotifications() {
-  const { tasks, removeTask, clearCompleted, updateTask, addTask } = useUploadStore()
+  const { tasks, removeTask, clearCompleted, updateTask } = useUploadStore()
 
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
   const activeTasks = tasks.filter((t) => t.status === 'uploading' || t.status === 'processing')
-
-  // Cargar tareas pendientes de procesamiento al montar el componente
-  useEffect(() => {
-    const loadPending = async () => {
-      try {
-        const res = await getOrdersApi().send()
-        const currentTasks = useUploadStore.getState().tasks
-        for (const order of res.orders) {
-          for (const batch of order.batches) {
-            if (
-              batch.status === 'processing' &&
-              !currentTasks.some((t) => t.batchId === batch.id)
-            ) {
-              addTask({
-                id: crypto.randomUUID(),
-                batchId: batch.id,
-                name: batch.name,
-                progress: 0,
-                status: 'processing',
-              })
-            }
-          }
-        }
-      } catch {
-        // ignorar
-      }
-    }
-    loadPending()
-  }, [addTask])
 
   // Polling para cerrar el dropdown al hacer click fuera
   useEffect(() => {

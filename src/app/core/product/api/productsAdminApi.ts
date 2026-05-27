@@ -1,6 +1,6 @@
 import alovaInstance from '@/app/shared/api/alovaInstance'
 import { buildFilterParams, type Filters } from '@/app/shared/utils/filters'
-import type { ProductAdmin, ProductsAdminListResponse, ProductItem } from '../types/product'
+import type { ProductAdmin, ProductsAdminListResponse } from '../types/product'
 
 interface ProductItemPayload {
   id?: number

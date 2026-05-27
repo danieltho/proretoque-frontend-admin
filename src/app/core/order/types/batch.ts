@@ -1,4 +1,4 @@
-import { DeliveryTime, DELIVERY_TIMES } from '@/shared/types/delivery'
+import { DeliveryTime, DELIVERY_TIMES } from '@/app/shared/types/delivery'
 
 export { DeliveryTime, DELIVERY_TIMES }
 

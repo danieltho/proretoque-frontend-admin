@@ -9,7 +9,7 @@ import { hydrateEditableBatches } from '../utils/hydrateEditableBatches'
 import { validateFiles } from '../../utils/validateFiles'
 import type { Order, EditableBatch } from '../../types/order'
 import type { ViewMode } from '../../types/batch'
-import type { Category, CategoryGroup } from '@/shared/types/category'
+import type { Category, CategoryGroup } from '@/app/shared/types/category'
 
 interface OrderEditContextValue {
   // Order data

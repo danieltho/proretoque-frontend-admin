@@ -1,24 +1,25 @@
 import { userLoginApi, userLogoutApi } from '@/app/core/auth/api/userAuthApi'
 import { useAuthStore } from '@/app/stores/authStore'
-import type { RoleAccess, AdminUser } from '@/app/stores/authStore'
+import type { RoleAccess, AdminRole, AdminUser } from '@/app/stores/authStore'
 
+// Shape the backend may actually return for the login response. Kept looser than
+// the documented contract because the role can arrive as an object, a plain
+// string, or with the accesses promoted to the top level.
+interface RawLoginResponse {
+  access_token: string
+  id: number
+  name: string
+  email: string
+  role?: { name?: string; accesses?: RoleAccess[]; access?: RoleAccess[] } | string
+  access?: RoleAccess[]
+}
 
 export async function loginUser(email: string, password: string) {
-  const res = (await userLoginApi({ email, password }).send()) as unknown as Record<
-    string,
-    unknown
-  > & { access_token: string }
-  console.log('[loginUser] raw response:', res)
+  const res = (await userLoginApi({ email, password }).send()) as RawLoginResponse
 
-  const { access_token, ...rest } = res
+  const { access_token, role: roleRaw, access: topLevelAccess, id, name } = res
 
-  const roleRaw = rest.role as
-    | { name?: string; accesses?: string[]; access?: string[] }
-    | string
-    | undefined
-  const topLevelAccess = rest.access as string[] | undefined
-
-  const normalizedRole =
+  const normalizedRole: AdminRole =
     roleRaw && typeof roleRaw === 'object'
       ? {
           name: roleRaw.name ?? '',
@@ -29,8 +30,7 @@ export async function loginUser(email: string, password: string) {
           accesses: topLevelAccess ?? [],
         }
 
-  const user = { ...rest, role: normalizedRole } as unknown as AdminUser
-  console.log('[loginUser] normalized user:', user)
+  const user: AdminUser = { id, name, email: res.email, role: normalizedRole }
   useAuthStore.getState().setAuth(user, access_token, 'user')
   return user
 }
