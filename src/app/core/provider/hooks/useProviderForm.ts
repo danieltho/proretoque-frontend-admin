@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -50,30 +50,27 @@ export function useProviderForm() {
       .finally(() => setLoading(false))
   }, [id, isNew, form])
 
-  const handleSave = useCallback(
-    form.handleSubmit(async (data) => {
-      if (isNew) {
-        await createProviderApi({
-          username: data.username,
-          firstname: data.firstname,
-          lastname: data.lastname,
-          email: data.email,
-          company: data.company || undefined,
-          password: data.password!,
-        }).send()
-      } else {
-        await updateProviderApi(Number(id), {
-          username: data.username,
-          firstname: data.firstname,
-          lastname: data.lastname,
-          email: data.email,
-          company: data.company || undefined,
-        }).send()
-      }
-      navigate('/providers')
-    }),
-    [id, isNew, form, navigate],
-  )
+  const handleSave = form.handleSubmit(async (data) => {
+    if (isNew) {
+      await createProviderApi({
+        username: data.username,
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        company: data.company || undefined,
+        password: data.password!,
+      }).send()
+    } else {
+      await updateProviderApi(Number(id), {
+        username: data.username,
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        company: data.company || undefined,
+      }).send()
+    }
+    navigate('/providers')
+  })
 
   return { id, isNew, form, loading, handleSave }
 }

@@ -21,9 +21,19 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // setState síncrono dentro de un effect es un patrón intencional aquí:
+      // resets controlados por props (modales que se abren/cierran) y flags de
+      // carga (`setLoading(true)`) antes de un fetch async. Se mantiene como
+      // aviso para no ocultar usos genuinamente problemáticos.
+      'react-hooks/set-state-in-effect': 'warn',
+    },
   },
   {
-    files: ['src/components/ui/*.tsx'],
+    // Componentes shadcn (viven en src/app/components/ui) y archivos de
+    // definición de columnas exportan helpers/constantes junto a componentes;
+    // Fast Refresh no aplica a estos archivos.
+    files: ['src/app/components/ui/*.tsx', 'src/components/ui/*.tsx', '**/*Columns.tsx'],
     rules: {
       'react-refresh/only-export-components': 'off',
     },
