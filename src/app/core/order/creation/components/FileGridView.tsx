@@ -1,5 +1,5 @@
-import SharedFileGridView from '@/shared/ui/FileGridView'
-import { fileToMediaItem } from '@/shared/utils/media'
+import SharedFileGridView from '@/app/shared/ui/FileGridView'
+import { fileToMediaItem } from '@/app/shared/utils/media'
 import { useOrderForm } from '../context/OrderFormContext'
 
 export default function FileGridView() {

@@ -1,5 +1,5 @@
-import SharedFileListView from '@/shared/ui/FileListView'
-import { fileToMediaItem } from '@/shared/utils/media'
+import SharedFileListView from '@/app/shared/ui/FileListView'
+import { fileToMediaItem } from '@/app/shared/utils/media'
 import { useOrderForm } from '../context/OrderFormContext'
 
 export default function FileListView() {

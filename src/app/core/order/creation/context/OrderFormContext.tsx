@@ -1,18 +1,17 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useCategoryGroups from '../../hooks/useCategoryGroups'
 import { createOrderApi } from '../../api/ordersApi'
-import { createConversationApi } from '@/customers/chat/data/conversationsApi'
 import { setBatchProductsApi } from '../../api/batchesApi'
 import { uploadWithProgress } from '../../utils/uploadWithProgress'
 import { useUploadStore } from '@/app/stores/uploadStore'
 import { useBatchManager } from '../hooks/useBatchManager'
 import { useUnsavedGuard } from '../hooks/useUnsavedGuard'
 import type { LocalBatch, ViewMode, DeliveryOptions } from '../../types/batch'
-import type { Category, CategoryGroup } from '@/shared/types/category'
+import type { Category, CategoryGroup } from '@/app/shared/types/category'
 import type { Order } from '../../types/order'
 import type { Blocker } from 'react-router-dom'
-import type { ProtocolProductItem } from '@/shared/types/protocol'
+import type { ProtocolProductItem } from '@/app/shared/types/protocol'
 
 interface OrderFormContextValue {
   // Categories
@@ -51,9 +50,6 @@ interface OrderFormContextValue {
   viewMode: ViewMode
   setViewMode: (mode: ViewMode) => void
 
-  // Chat
-  conversationId: string | null
-
   // Submit
   submitting: boolean
   canSubmit: boolean
@@ -90,16 +86,6 @@ export function OrderFormProvider({ children }: { children: React.ReactNode }) {
   const [editingBatch, setEditingBatch] = useState<LocalBatch | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>('list')
   const [submitting, setSubmitting] = useState(false)
-  const [conversationId, setConversationId] = useState<string | null>(null)
-
-  useEffect(() => {
-    createConversationApi()
-      .send()
-      .then((res) => setConversationId(res.data.id))
-      .catch(() => {
-        // Chat is optional — form continues without it
-      })
-  }, [])
 
   // Derived
   const activeCategoryId = selectedCategoryId ?? categories[0]?.id ?? null
@@ -133,7 +119,6 @@ export function OrderFormProvider({ children }: { children: React.ReactNode }) {
       try {
         order = await createOrderApi({
           name: orderName.trim(),
-          conversation_id: conversationId,
         }).send()
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : 'Error al crear la pedido'
@@ -216,7 +201,6 @@ export function OrderFormProvider({ children }: { children: React.ReactNode }) {
     setEditingBatch,
     viewMode,
     setViewMode,
-    conversationId,
     submitting,
     canSubmit,
     handleSubmit,

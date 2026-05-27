@@ -39,6 +39,7 @@ export function getProductColumns({
     {
       id: 'actions',
       header: () => <span className="text-footer font-medium text-blue-200">ACCIONES</span>,
+
       cell: ({ row }) => (
         <div className="flex items-center gap-2.5">
           <button

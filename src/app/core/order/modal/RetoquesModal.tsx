@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import DialogModal from '@/app/shared/ui/DialogModal'
 import { RetoquesSelector } from '@/app/shared/ui/RetoquesCard'
 import { useProductOptions } from '@/app/shared/hooks/useProductOptions'
 import { getCategoriesByTagApi } from '@/app/shared/api/productApi'
 import { getBatchProductsApi, saveBatchProductsApi } from '../api/orderApi'
-import type { Category } from '@/app/shared/types/category'
+import type { Category, ProductOptions } from '@/app/shared/types/category'
 
 interface RetoquesModalProps {
   open: boolean
@@ -13,79 +13,105 @@ interface RetoquesModalProps {
   onSaved: () => void
 }
 
-export function RetoquesModal({ open, batchId, onClose, onSaved }: RetoquesModalProps) {
-  const [categories, setCategories] = useState<Category[]>([])
-  const [selections, setSelections] = useState<Record<number, string>>({})
-  const [savedItemIds, setSavedItemIds] = useState<number[]>([])
-  const [saving, setSaving] = useState(false)
-  const hasLoadedSelections = useRef(false)
-  const { productOptions, loading: loadingProducts } = useProductOptions(categories)
-
-  // Load categories on open
-  useEffect(() => {
-    if (!open) {
-      hasLoadedSelections.current = false
-      return
-    }
-    getCategoriesByTagApi('retoque')
-      .send()
-      .then((res) => setCategories(res.categories))
-  }, [open])
-
-  // Load saved product items on open
-  useEffect(() => {
-    if (!open) return
-    getBatchProductsApi(batchId)
-      .send()
-      .then((res) => setSavedItemIds(res.product_item_ids ?? []))
-      .catch(() => setSavedItemIds([]))
-  }, [open, batchId])
-
-  // Map saved item IDs to selections once productOptions are loaded
-  useEffect(() => {
-    if (hasLoadedSelections.current || savedItemIds.length === 0) return
-    if (Object.keys(productOptions).length === 0) return
-
-    const map: Record<number, string> = {}
-    for (const itemId of savedItemIds) {
-      for (const products of Object.values(productOptions)) {
-        for (const product of products) {
-          const match = product.options.find((o) => o.id === itemId)
-          if (match) {
-            map[product.id] = String(itemId)
-          }
+function mapSavedIdsToSelections(
+  savedItemIds: number[],
+  productOptions: Record<number, ProductOptions[]>,
+): Record<number, string> {
+  const map: Record<number, string> = {}
+  for (const itemId of savedItemIds) {
+    for (const products of Object.values(productOptions)) {
+      for (const product of products) {
+        if (product.options.some((o) => o.id === itemId)) {
+          map[product.id] = String(itemId)
         }
       }
     }
-    if (Object.keys(map).length > 0) {
-      setSelections(map)
-      hasLoadedSelections.current = true
+  }
+  return map
+}
+
+export function RetoquesModal({ open, batchId, onClose, onSaved }: RetoquesModalProps) {
+  const [categories, setCategories] = useState<Category[]>([])
+  const [selections, setSelections] = useState<Record<number, string>>({})
+  const [saving, setSaving] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const { productOptions, loading: loadingProducts } = useProductOptions(categories)
+
+  // Load categories + saved items, then map selections once products are ready
+  useEffect(() => {
+    if (!open) {
+      setCategories([])
+      setSelections({})
+      return
     }
-  }, [savedItemIds, productOptions])
+
+    let cancelled = false
+    setLoading(true)
+
+    Promise.all([
+      getCategoriesByTagApi('retoque').send(),
+      getBatchProductsApi(batchId).send(),
+    ])
+      .then(([catRes, productsRes]) => {
+        if (cancelled) return
+        setCategories(catRes.categories)
+        const savedIds = productsRes.product_item_ids ?? []
+        if (savedIds.length > 0) {
+          // productOptions may not be ready yet — store savedIds to map later
+          setSavedIds(savedIds)
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setCategories([])
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [open, batchId])
+
+  // Internal state to bridge async loading of saved IDs and product options
+  const [savedIds, setSavedIds] = useState<number[]>([])
+
+  // Map saved IDs → selections once ALL productOptions finish loading
+  useEffect(() => {
+    if (savedIds.length === 0 || loadingProducts) return
+    if (Object.keys(productOptions).length === 0) return
+
+    const mapped = mapSavedIdsToSelections(savedIds, productOptions)
+    if (Object.keys(mapped).length > 0) {
+      setSelections(mapped)
+    }
+    setSavedIds([])
+  }, [savedIds, productOptions, loadingProducts])
 
   const handleSelectionChange = useCallback((productId: number, optionId: string) => {
     setSelections((prev) => ({ ...prev, [productId]: optionId }))
   }, [])
 
-  const handleClose = useCallback(async () => {
+  const handleSave = useCallback(async () => {
     const itemIds = Object.values(selections)
       .filter(Boolean)
       .map(Number)
 
     setSaving(true)
-    await saveBatchProductsApi(batchId, itemIds).send()
-    setSaving(false)
-    onSaved()
-
-    setSelections({})
-    setSavedItemIds([])
-    setCategories([])
-    onClose()
+    try {
+      await saveBatchProductsApi(batchId, itemIds).send()
+      onSaved()
+      onClose()
+    } finally {
+      setSaving(false)
+    }
   }, [selections, batchId, onSaved, onClose])
 
+  const isLoading = loading || (loadingProducts && categories.length > 0)
+
   return (
-    <DialogModal open={open} onClose={handleClose} title="Retoques del lote" size="fullScreen">
-      {loadingProducts && categories.length > 0 ? (
+    <DialogModal open={open} onClose={handleSave} title="Retoques del lote" size="fullScreen">
+      {isLoading ? (
         <div className="text-footer text-neutral-400">Cargando productos...</div>
       ) : (
         <RetoquesSelector

@@ -1,5 +1,5 @@
 import { Button } from '@/app/components/ui/button'
-import type { Category, CategoryGroup } from '@/shared/types/category'
+import type { Category, CategoryGroup } from '@/app/shared/types/category'
 
 interface CategorySidebarProps {
   categoryGroups?: CategoryGroup[]

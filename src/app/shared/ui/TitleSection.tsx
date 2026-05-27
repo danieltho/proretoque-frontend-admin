@@ -17,12 +17,14 @@ interface TitleSectionProps {
     icon?: Icon
     onClick: () => void
     variant?: ButtonVariant['variant']
+    disabled?: boolean
   }
   actions?: {
     label: string
     icon?: Icon
     onClick: () => void
     variant?: ButtonVariant['variant']
+    disabled?: boolean
   }[]
   description?: ReactNode
   className?: string
@@ -82,6 +84,7 @@ export function TitleSection({
                 variant={action.variant ?? 'ghost'}
                 size="sm"
                 onClick={action.onClick}
+                disabled={action.disabled}
                 className="gap-2 text-base font-medium"
               >
                 {action.icon && <action.icon />}
@@ -94,6 +97,7 @@ export function TitleSection({
                 variant={act.variant ?? 'ghost'}
                 size="sm"
                 onClick={act.onClick}
+                disabled={act.disabled}
                 className="gap-2 text-base font-medium"
               >
                 {act.icon && <act.icon />}

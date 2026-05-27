@@ -112,7 +112,7 @@ describe('OrderFormLayout — boton Siguiente (issue #19)', () => {
     renderLayout({ activeStep: 1, canAdvanceFromCurrentStep: false })
 
     // Assert — el boton "Siguiente" debe estar deshabilitado
-    const nextButton = screen.getByRole('button', { name: /siguiente/i })
+    const nextButton = screen.getByRole('button', { name: /continuar/i })
     expect(nextButton).toBeDisabled()
   })
 
@@ -122,7 +122,7 @@ describe('OrderFormLayout — boton Siguiente (issue #19)', () => {
     renderLayout({ activeStep: 1, canAdvanceFromCurrentStep: true })
 
     // Assert — el boton "Siguiente" debe estar habilitado
-    const nextButton = screen.getByRole('button', { name: /siguiente/i })
+    const nextButton = screen.getByRole('button', { name: /continuar/i })
     expect(nextButton).not.toBeDisabled()
   })
 
@@ -131,7 +131,7 @@ describe('OrderFormLayout — boton Siguiente (issue #19)', () => {
     renderLayout({ activeStep: 2, canAdvanceFromCurrentStep: true })
 
     // Assert — boton "Siguiente" presente y habilitado
-    const nextButton = screen.getByRole('button', { name: /siguiente/i })
+    const nextButton = screen.getByRole('button', { name: /continuar/i })
     expect(nextButton).toBeInTheDocument()
     expect(nextButton).not.toBeDisabled()
   })

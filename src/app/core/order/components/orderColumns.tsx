@@ -7,7 +7,6 @@ import {
 import { formatDateShort } from '@/app/shared/utils/date'
 import type { OrderAdmin } from '../types/orderAdmin'
 import { OrderAdminStatusBadge } from './OrderAdminStatusBadge'
-import { OrderAdminActionBadge } from './OrderAdminActionBadge'
 import { formatFileSize } from '@/app/shared/utils/fileSize'
 
 function formatCurrency(amount: number | null): string {

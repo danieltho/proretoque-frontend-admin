@@ -1,4 +1,4 @@
-import SharedProductGrid from '@/shared/ui/ProductGrid'
+import SharedProductGrid from '@/app/shared/ui/ProductGrid'
 
 interface ProductGridProps {
   categoryId: number

@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react'
 import type { LocalBatch, DeliveryOptions } from '../../types/batch'
 import { createBatch } from '../../types/batch'
 import { validateFiles } from '../../utils/validateFiles'
-import type { ProtocolProductItem } from '@/shared/types/protocol'
+import type { ProtocolProductItem } from '@/app/shared/types/protocol'
 
 export function useBatchManager() {
   const [batches, setBatches] = useState<LocalBatch[]>([createBatch(1)])

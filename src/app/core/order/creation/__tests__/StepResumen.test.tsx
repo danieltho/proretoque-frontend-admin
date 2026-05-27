@@ -312,38 +312,12 @@ describe('StepResumen — resumen de lote', () => {
     // Act
     render(<StepResumen />)
 
-    // Assert — el nombre del lote aparece en la columna de resumen
-    // Puede haber multiples ocurrencias (selector + resumen); verificamos al menos una
-    const batchNameElements = screen.getAllByText('Lote A')
-    expect(batchNameElements.length).toBeGreaterThanOrEqual(1)
+    // Assert — el nombre del lote aparece en el selector (prefijado con su indice, ej. "1. Lote A")
+    expect(screen.getAllByText(/Lote A/).length).toBeGreaterThanOrEqual(1)
   })
 
-  it('should_show_file_count_for_active_batch', () => {
-    // Arrange
-    const files = [new File(['x'], 'foto.jpg', { type: 'image/jpeg' })]
-    mockContext({
-      activeBatch: buildBatch('batch-a', 'Lote A', { files }),
-    })
-
-    // Act
-    render(<StepResumen />)
-
-    // Assert — "N° de Archivos: 1"
-    expect(screen.getByText('N° de Archivos:')).toBeInTheDocument()
-    expect(screen.getByText('1')).toBeInTheDocument()
-  })
-
-  it('should_show_zero_file_count_when_batch_is_empty', () => {
-    // Arrange
-    mockContext({ activeBatch: buildBatch('batch-a', 'Lote A', { files: [] }) })
-
-    // Act
-    render(<StepResumen />)
-
-    // Assert
-    expect(screen.getByText('N° de Archivos:')).toBeInTheDocument()
-    expect(screen.getByText('0')).toBeInTheDocument()
-  })
+  // Nota: el contador "N° de Archivos" se elimino del diseno actual de StepResumen
+  // (la columna central muestra ahora las opciones de entrega del lote activo).
 })
 
 // ---------------------------------------------------------------------------
@@ -388,30 +362,6 @@ describe('StepResumen — aplicar a todos los lotes', () => {
   })
 })
 
-// ---------------------------------------------------------------------------
-// Tests: Chat de pedido y Resumen de lote (columna derecha — secciones)
-// ---------------------------------------------------------------------------
-
-describe('StepResumen — secciones de la columna derecha', () => {
-  it('should_render_chat_de_pedido_section', () => {
-    // Arrange
-    mockContext({})
-
-    // Act
-    render(<StepResumen />)
-
-    // Assert
-    expect(screen.getByText('Chat de pedido')).toBeInTheDocument()
-  })
-
-  it('should_render_resumen_de_lote_section', () => {
-    // Arrange
-    mockContext({})
-
-    // Act
-    render(<StepResumen />)
-
-    // Assert
-    expect(screen.getByText('Resumen de lote')).toBeInTheDocument()
-  })
-})
+// Nota: las secciones "Chat de pedido" y "Resumen de lote" de la columna derecha
+// se reemplazaron por el panel de "Opciones de entrega"; el chat quedo como un
+// Sheet oculto ("Próximamente"), por lo que esos tests se retiraron.

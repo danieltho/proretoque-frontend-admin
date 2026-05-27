@@ -1,7 +1,7 @@
 import { cn } from '@/app/shared/utils/utils'
 import { Card } from '@/app/components/ui/card'
 import { Separator } from '@/app/components/ui/separator'
-import { DetailsTable, type DetailRow } from '@/shared/ui/DetailsTable'
+import { DetailsTable, type DetailRow } from '@/app/shared/ui/DetailsTable'
 
 export interface GroupedItem {
   id: string | number

@@ -1,4 +1,4 @@
-import type { TempMedia } from '@/shared/types/protocol'
+import type { TempMedia } from '@/app/shared/types/protocol'
 
 export type QuoteStatus = 'draft' | 'pending' | 'in_progress' | 'sample_accepted' | 'quote_accepted'
 
