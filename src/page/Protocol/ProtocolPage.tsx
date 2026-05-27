@@ -22,7 +22,7 @@ export default function ProtocolPage() {
         status: selectedStatus || undefined,
       }),
     [currentPage, search, selectedStatus],
-    { immediate: true, force: true, debounce: [0, 300, 0] },
+    { immediate: true, debounce: [0, 300, 0] },
   )
 
   const protocols = data?.protocols ?? []

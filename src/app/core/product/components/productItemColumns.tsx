@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
 import { NotePencilIcon, XIcon, ListIcon } from '@phosphor-icons/react'
 import { Badge } from '@/app/components/ui/badge'
@@ -13,7 +13,7 @@ interface ProductItemColumnsOptions {
   onUpdateField: (itemId: number, field: EditableField, value: string | number) => void
 }
 
-function InlineCell({
+const InlineCell = memo(function InlineCell({
   value,
   type = 'text',
   onSave,
@@ -64,7 +64,7 @@ function InlineCell({
       {value}
     </span>
   )
-}
+})
 
 export function getProductItemColumns({
   onEdit,

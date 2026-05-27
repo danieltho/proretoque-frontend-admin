@@ -61,7 +61,6 @@ export function useOrderForm() {
     error,
   } = useRequest(() => getOrderDetail(routeId ?? 0), {
     immediate: !isNew && routeId !== null,
-    force: true,
     initialData: undefined as OrderDetailType | undefined,
   })
 
@@ -69,7 +68,6 @@ export function useOrderForm() {
     () => getOrderAdminBatchesApi(Number(id!)),
     {
       immediate: !isNew,
-      force: true,
       initialData: { batches: [], count: 0, pages: 0 } as Batches,
     },
   ) */

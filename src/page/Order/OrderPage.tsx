@@ -20,7 +20,7 @@ export default function OrderPage() {
   const { data, loading, error } = useWatcher(
     () => getOrdersApi(currentPage),
     [currentPage],
-    { immediate: true, force: true }
+    { immediate: true }
   )
 
   const orders = data?.orders ?? []

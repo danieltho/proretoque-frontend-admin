@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useWatcher } from 'alova/client'
+import { useCallback, useState } from 'react'
+import { useRequest, useWatcher } from 'alova/client'
 import { PlusCircleIcon } from '@phosphor-icons/react'
 import {
   getRolesApi,
@@ -19,20 +19,18 @@ import type { SearchableSelectOption } from '@/app/components/ui/searchable-sele
 export default function RolePage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [showCreateBar, setShowCreateBar] = useState(false)
-  const [accessOptions, setAccessOptions] = useState<SearchableSelectOption[]>([])
 
-  // Load access options
-  useEffect(() => {
-    getRoleAccessListApi()
-      .send()
-      .then((res) => {
-        setAccessOptions(res.role_access.map((a) => ({ id: a.id, label: a.name })))
-      })
-  }, [])
+  // Load access options for the create/edit bar
+  const { data: accessData } = useRequest(() => getRoleAccessListApi(), {
+    initialData: { role_access: [] },
+  })
+  const accessOptions: SearchableSelectOption[] = accessData.role_access.map((a) => ({
+    id: a.id,
+    label: a.name,
+  }))
 
   const { data, loading, error, send } = useWatcher(() => getRolesApi(currentPage), [currentPage], {
     immediate: true,
-    force: true,
   })
 
   const roles = data?.roles ?? []
