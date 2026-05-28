@@ -34,7 +34,7 @@
     "description": "Tienes cambios sin guardar. ¿Qué deseas hacer?"
   },
   "profile": {
-    "aboutme":{
+    "aboutme": {
       "title": "Sobre mí",
       "description": "Actualiza tu información personal y preferencias.",
       "brand": "Marca",
@@ -55,5 +55,93 @@
   "order": {
     "create": "Nuevo pedido",
     "detail": "Detalle de pedido"
+  },
+  "forms": {
+    "user": {
+      "createTitle": "Nuevo Usuario",
+      "editTitle": "Editar Usuario",
+      "label": {
+        "email": "Email",
+        "role": "Rol",
+        "firstname": "Nombre",
+        "lastname": "Apellidos",
+        "document": "Documento",
+        "address": "Dirección",
+        "birth_date": "Fecha de nacimiento",
+        "hire_date": "Fecha de contratación",
+        "password": "Contraseña",
+        "password_confirmation": "Confirmar contraseña"
+      },
+      "placeholder": {
+        "email": "email@ejemplo.com",
+        "role": "Seleccione un rol",
+        "firstname": "Nombre",
+        "lastname": "Apellidos",
+        "document": "Documento (opcional)",
+        "address": "Dirección (opcional)",
+        "password_new": "Mínimo 6 caracteres",
+        "password_keep": "Dejar vacío para no cambiar",
+        "password_confirmation": "Confirmar contraseña"
+      }
+    },
+    "product": {
+      "createTitle": "Nuevo Producto",
+      "editTitle": "Editar Producto",
+      "itemsTitle": "Items",
+      "addItem": "Agregar",
+      "label": {
+        "name": "Nombre del producto",
+        "description": "Descripcion",
+        "category": "Categoria",
+        "type": "Tipo",
+        "price": "Precio",
+        "time": "Tiempo"
+      },
+      "placeholder": {
+        "name": "Introducir nombre de producto...",
+        "description": "Escribe tus observaciones",
+        "category": "Seleccione una categoria",
+        "type": "Seleccione un tipo",
+        "price": "$0.00",
+        "time": "0"
+      }
+    },
+    "provider": {
+      "createTitle": "Nuevo Proveedor",
+      "editTitle": "Editar Proveedor",
+      "label": {
+        "username": "Username",
+        "firstname": "Nombre",
+        "lastname": "Apellidos",
+        "email": "Email",
+        "company": "Compañía",
+        "password": "Contraseña"
+      },
+      "placeholder": {
+        "username": "username",
+        "firstname": "Nombre",
+        "lastname": "Apellidos",
+        "email": "email@ejemplo.com",
+        "company": "Compañía (opcional)",
+        "password": "Mínimo 6 caracteres"
+      }
+    },
+    "role": {
+      "restrictionAccessTitle": "{{name}} — Restriction Access",
+      "label": {
+        "only_provider": "Solo proveedor"
+      }
+    },
+    "order": {
+      "label": {
+        "name": "Nombre",
+        "customer": "Cliente",
+        "deadline": "Deadline"
+      },
+      "placeholder": {
+        "name": "Pedido de Prueba 1",
+        "customer": "Selecciona un cliente"
+      }
+    }
   }
 }

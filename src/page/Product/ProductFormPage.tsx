@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { PlusCircleIcon } from '@phosphor-icons/react'
 import Template from '@/app/components/Template'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
@@ -30,6 +31,7 @@ const PRODUCT_TYPES = [
 ]
 
 export default function ProductFormPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const {
     isNew,
@@ -102,16 +104,16 @@ export default function ProductFormPage() {
     <Template>
       <div className="flex flex-col gap-4 font-raleway">
         <TitleSection
-          title={isNew ? 'Nuevo Producto' : 'Editar Producto'}
+          title={isNew ? t('forms.product.createTitle') : t('forms.product.editTitle')}
           onBack={() => navigate('/products')}
           actions={[
             {
-              label: 'Volver',
+              label: t('actions.back'),
               onClick: () => navigate('/products'),
               variant: 'ghost',
             },
             {
-              label: 'Guardar',
+              label: t('actions.save'),
               onClick: handleSave,
               variant: 'blue',
             },
@@ -123,16 +125,16 @@ export default function ProductFormPage() {
           <div className="grid grid-cols-2 gap-4">
             {/* Left column */}
             <div className="flex flex-col gap-4">
-              <FormFieldCard label="Nombre del producto">
-                <Input placeholder="Introducir nombre de producto..." {...register('name')} />
+              <FormFieldCard label={t('forms.product.label.name')}>
+                <Input placeholder={t('forms.product.placeholder.name')} {...register('name')} />
                 {errors.name && (
                   <span className="text-sm text-error-text">{errors.name.message}</span>
                 )}
               </FormFieldCard>
 
-              <FormFieldCard label="Descripcion">
+              <FormFieldCard label={t('forms.product.label.description')}>
                 <Textarea
-                  placeholder="Escribe tus observaciones"
+                  placeholder={t('forms.product.placeholder.description')}
                   className="min-h-35"
                   {...register('description')}
                 />
@@ -142,26 +144,26 @@ export default function ProductFormPage() {
             {/* Right column */}
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-2 gap-4">
-                <FormFieldCard label="Categoria">
+                <FormFieldCard label={t('forms.product.label.category')}>
                   <FormSearchableSelect<ProductFormData>
                     control={control}
                     name="category_ids"
                     multiple
                     options={categoryOptions}
-                    placeholder="Seleccione una categoria"
+                    placeholder={t('forms.product.placeholder.category')}
                   />
                   {errors.category_ids && (
                     <span className="text-sm text-error-text">{errors.category_ids.message}</span>
                   )}
                 </FormFieldCard>
 
-                <FormFieldCard label="Tipo">
+                <FormFieldCard label={t('forms.product.label.type')}>
                   <Select
                     value={watch('type')}
                     onValueChange={(val) => form.setValue('type', val, { shouldValidate: true })}
                   >
                     <SelectTrigger className="w-full" aria-invalid={!!errors.type}>
-                      <SelectValue placeholder="Seleccione un tipo" />
+                      <SelectValue placeholder={t('forms.product.placeholder.type')} />
                     </SelectTrigger>
                     <SelectContent>
                       {PRODUCT_TYPES.map((t) => (
@@ -178,15 +180,15 @@ export default function ProductFormPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <FormFieldCard label="Precio">
-                  <Input type="number" step="0.01" placeholder="$0.00" {...register('price', { valueAsNumber: true })} />
+                <FormFieldCard label={t('forms.product.label.price')}>
+                  <Input type="number" step="0.01" placeholder={t('forms.product.placeholder.price')} {...register('price', { valueAsNumber: true })} />
                   {errors.price && (
                     <span className="text-sm text-error-text">{errors.price.message}</span>
                   )}
                 </FormFieldCard>
 
-                <FormFieldCard label="Tiempo">
-                  <Input type="number" placeholder="0" {...register('time', { valueAsNumber: true })} />
+                <FormFieldCard label={t('forms.product.label.time')}>
+                  <Input type="number" placeholder={t('forms.product.placeholder.time')} {...register('time', { valueAsNumber: true })} />
                   {errors.time && (
                     <span className="text-sm text-error-text">{errors.time.message}</span>
                   )}
@@ -200,9 +202,9 @@ export default function ProductFormPage() {
         {productType === 'choice' && (
           <Card>
             <TitleSection
-              title="Items"
+              title={t('forms.product.itemsTitle')}
               action={{
-                label: 'Agregar',
+                label: t('forms.product.addItem'),
                 variant: 'outline',
                 onClick: handleOpenNewItem,
                 icon: PlusCircleIcon,

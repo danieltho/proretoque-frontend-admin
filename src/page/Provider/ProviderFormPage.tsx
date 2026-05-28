@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Template from '@/app/components/Template'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
 import Card from '@/app/shared/ui/Card'
@@ -8,6 +9,7 @@ import { Skeleton } from '@/app/components/ui/skeleton'
 import { useProviderForm } from '@/app/core/provider/hooks/useProviderForm'
 
 export default function ProviderFormPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const { isNew, form, loading, handleSave } = useProviderForm()
   const { register, formState: { errors } } = form
@@ -27,16 +29,16 @@ export default function ProviderFormPage() {
     <Template>
       <div className="flex flex-col gap-4 font-raleway">
         <TitleSection
-          title={isNew ? 'Nuevo Proveedor' : 'Editar Proveedor'}
+          title={isNew ? t('forms.provider.createTitle') : t('forms.provider.editTitle')}
           onBack={() => navigate('/providers')}
           actions={[
             {
-              label: 'Volver',
+              label: t('actions.back'),
               onClick: () => navigate('/providers'),
               variant: 'ghost',
             },
             {
-              label: 'Guardar',
+              label: t('actions.save'),
               onClick: handleSave,
               variant: 'blue',
             },
@@ -45,41 +47,41 @@ export default function ProviderFormPage() {
 
         <Card>
           <div className="grid grid-cols-2 gap-4">
-            <FormFieldCard label="Username">
-              <Input placeholder="username" {...register('username')} />
+            <FormFieldCard label={t('forms.provider.label.username')}>
+              <Input placeholder={t('forms.provider.placeholder.username')} {...register('username')} />
               {errors.username && (
                 <span className="text-sm text-error-text">{errors.username.message}</span>
               )}
             </FormFieldCard>
 
-            <FormFieldCard label="Email">
-              <Input type="email" placeholder="email@ejemplo.com" {...register('email')} />
+            <FormFieldCard label={t('forms.provider.label.email')}>
+              <Input type="email" placeholder={t('forms.provider.placeholder.email')} {...register('email')} />
               {errors.email && (
                 <span className="text-sm text-error-text">{errors.email.message}</span>
               )}
             </FormFieldCard>
 
-            <FormFieldCard label="Nombre">
-              <Input placeholder="Nombre" {...register('firstname')} />
+            <FormFieldCard label={t('forms.provider.label.firstname')}>
+              <Input placeholder={t('forms.provider.placeholder.firstname')} {...register('firstname')} />
               {errors.firstname && (
                 <span className="text-sm text-error-text">{errors.firstname.message}</span>
               )}
             </FormFieldCard>
 
-            <FormFieldCard label="Apellidos">
-              <Input placeholder="Apellidos" {...register('lastname')} />
+            <FormFieldCard label={t('forms.provider.label.lastname')}>
+              <Input placeholder={t('forms.provider.placeholder.lastname')} {...register('lastname')} />
               {errors.lastname && (
                 <span className="text-sm text-error-text">{errors.lastname.message}</span>
               )}
             </FormFieldCard>
 
-            <FormFieldCard label="Compañía">
-              <Input placeholder="Compañía (opcional)" {...register('company')} />
+            <FormFieldCard label={t('forms.provider.label.company')}>
+              <Input placeholder={t('forms.provider.placeholder.company')} {...register('company')} />
             </FormFieldCard>
 
             {isNew && (
-              <FormFieldCard label="Contraseña">
-                <Input type="password" placeholder="Mínimo 6 caracteres" {...register('password')} />
+              <FormFieldCard label={t('forms.provider.label.password')}>
+                <Input type="password" placeholder={t('forms.provider.placeholder.password')} {...register('password')} />
                 {errors.password && (
                   <span className="text-sm text-error-text">{errors.password.message}</span>
                 )}

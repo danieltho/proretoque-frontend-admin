@@ -54,5 +54,93 @@
   "order": {
     "create": "Nuovo ordine",
     "detail": "Dettaglio dell'ordine"
+  },
+  "forms": {
+    "user": {
+      "createTitle": "[TODO] Nuevo Usuario",
+      "editTitle": "[TODO] Editar Usuario",
+      "label": {
+        "email": "[TODO] Email",
+        "role": "[TODO] Rol",
+        "firstname": "[TODO] Nombre",
+        "lastname": "[TODO] Apellidos",
+        "document": "[TODO] Documento",
+        "address": "[TODO] Dirección",
+        "birth_date": "[TODO] Fecha de nacimiento",
+        "hire_date": "[TODO] Fecha de contratación",
+        "password": "[TODO] Contraseña",
+        "password_confirmation": "[TODO] Confirmar contraseña"
+      },
+      "placeholder": {
+        "email": "[TODO] email@ejemplo.com",
+        "role": "[TODO] Seleccione un rol",
+        "firstname": "[TODO] Nombre",
+        "lastname": "[TODO] Apellidos",
+        "document": "[TODO] Documento (opcional)",
+        "address": "[TODO] Dirección (opcional)",
+        "password_new": "[TODO] Mínimo 6 caracteres",
+        "password_keep": "[TODO] Dejar vacío para no cambiar",
+        "password_confirmation": "[TODO] Confirmar contraseña"
+      }
+    },
+    "product": {
+      "createTitle": "[TODO] Nuevo Producto",
+      "editTitle": "[TODO] Editar Producto",
+      "itemsTitle": "[TODO] Items",
+      "addItem": "[TODO] Agregar",
+      "label": {
+        "name": "[TODO] Nombre del producto",
+        "description": "[TODO] Descripcion",
+        "category": "[TODO] Categoria",
+        "type": "[TODO] Tipo",
+        "price": "[TODO] Precio",
+        "time": "[TODO] Tiempo"
+      },
+      "placeholder": {
+        "name": "[TODO] Introducir nombre de producto...",
+        "description": "[TODO] Escribe tus observaciones",
+        "category": "[TODO] Seleccione una categoria",
+        "type": "[TODO] Seleccione un tipo",
+        "price": "[TODO] $0.00",
+        "time": "[TODO] 0"
+      }
+    },
+    "provider": {
+      "createTitle": "[TODO] Nuevo Proveedor",
+      "editTitle": "[TODO] Editar Proveedor",
+      "label": {
+        "username": "[TODO] Username",
+        "firstname": "[TODO] Nombre",
+        "lastname": "[TODO] Apellidos",
+        "email": "[TODO] Email",
+        "company": "[TODO] Compañía",
+        "password": "[TODO] Contraseña"
+      },
+      "placeholder": {
+        "username": "[TODO] username",
+        "firstname": "[TODO] Nombre",
+        "lastname": "[TODO] Apellidos",
+        "email": "[TODO] email@ejemplo.com",
+        "company": "[TODO] Compañía (opcional)",
+        "password": "[TODO] Mínimo 6 caracteres"
+      }
+    },
+    "role": {
+      "restrictionAccessTitle": "[TODO] {{name}} — Restriction Access",
+      "label": {
+        "only_provider": "[TODO] Solo proveedor"
+      }
+    },
+    "order": {
+      "label": {
+        "name": "[TODO] Nombre",
+        "customer": "[TODO] Cliente",
+        "deadline": "[TODO] Deadline"
+      },
+      "placeholder": {
+        "name": "[TODO] Pedido de Prueba 1",
+        "customer": "[TODO] Selecciona un cliente"
+      }
+    }
   }
 }
