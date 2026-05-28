@@ -63,20 +63,17 @@ export default function UserFormPage() {
         />
 
         <Card>
-          <div className="grid grid-cols-2 gap-4">
-            <FormFieldCard label={t('forms.user.label.email')}>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <FormFieldCard label={t('forms.user.label.email')} error={errors.email?.message}>
               <Input type="email" placeholder={t('forms.user.placeholder.email')} {...register('email')} />
-              {errors.email && (
-                <span className="text-sm text-error-text">{errors.email.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label={t('forms.user.label.role')}>
+            <FormFieldCard label={t('forms.user.label.role')} error={errors.role?.message}>
               <Select
                 value={watch('role')}
                 onValueChange={(val) => setValue('role', val, { shouldValidate: true })}
               >
-                <SelectTrigger className="w-full" aria-invalid={!!errors.role}>
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder={t('forms.user.placeholder.role')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -87,23 +84,14 @@ export default function UserFormPage() {
                   ))}
                 </SelectContent>
               </Select>
-              {errors.role && (
-                <span className="text-sm text-error-text">{errors.role.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label={t('forms.user.label.firstname')}>
+            <FormFieldCard label={t('forms.user.label.firstname')} error={errors.firstname?.message}>
               <Input placeholder={t('forms.user.placeholder.firstname')} {...register('firstname')} />
-              {errors.firstname && (
-                <span className="text-sm text-error-text">{errors.firstname.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label={t('forms.user.label.lastname')}>
+            <FormFieldCard label={t('forms.user.label.lastname')} error={errors.lastname?.message}>
               <Input placeholder={t('forms.user.placeholder.lastname')} {...register('lastname')} />
-              {errors.lastname && (
-                <span className="text-sm text-error-text">{errors.lastname.message}</span>
-              )}
             </FormFieldCard>
 
             <FormFieldCard label={t('forms.user.label.document')}>
@@ -122,28 +110,20 @@ export default function UserFormPage() {
               <Input type="date" {...register('hire_date')} />
             </FormFieldCard>
 
-            <FormFieldCard label={t('forms.user.label.password')}>
+            <FormFieldCard label={t('forms.user.label.password')} error={errors.password?.message}>
               <Input
                 type="password"
                 placeholder={t(isNew ? 'forms.user.placeholder.password_new' : 'forms.user.placeholder.password_keep')}
                 {...register('password')}
               />
-              {errors.password && (
-                <span className="text-sm text-error-text">{errors.password.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label={t('forms.user.label.password_confirmation')}>
+            <FormFieldCard label={t('forms.user.label.password_confirmation')} error={errors.password_confirmation?.message}>
               <Input
                 type="password"
                 placeholder={t('forms.user.placeholder.password_confirmation')}
                 {...register('password_confirmation')}
               />
-              {errors.password_confirmation && (
-                <span className="text-sm text-error-text">
-                  {errors.password_confirmation.message}
-                </span>
-              )}
             </FormFieldCard>
           </div>
         </Card>

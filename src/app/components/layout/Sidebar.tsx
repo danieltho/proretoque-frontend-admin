@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import {
   SquaresFourIcon,
   TagIcon,
@@ -18,19 +19,20 @@ import {
 
 type NavItem = {
   to: string
-  label: string
+  labelKey: string
   icon: React.ComponentType<{ className?: string }>
   end?: boolean
   access: RoleAccess
 }
 
 const navItems: NavItem[] = [
-  { to: '/categories', label: 'Categorías', icon: SquaresFourIcon, access: 'PRODUCT' },
-  { to: '/products', label: 'Productos', icon: TagIcon, access: 'PRODUCT' },
-  { to: '/roles', label: 'Roles', icon: UserGearIcon, access: 'ROLE' },
+  { to: '/categories', labelKey: 'nav.categories', icon: SquaresFourIcon, access: 'PRODUCT' },
+  { to: '/products', labelKey: 'nav.products', icon: TagIcon, access: 'PRODUCT' },
+  { to: '/roles', labelKey: 'nav.roles', icon: UserGearIcon, access: 'ROLE' },
 ]
 
 export default function Sidebar() {
+  const { t } = useTranslation()
   const { isCollapsed, toggle } = useSidebarStore()
   const { pathname } = useLocation()
   const user = useAuthStore((s) => s.user)
@@ -44,7 +46,12 @@ export default function Sidebar() {
         isCollapsed ? 'w-18 px-4' : 'items-end w-52 px-4',
       )}
     >
-      <button type="button" onClick={toggle} className="cursor-pointer">
+      <button
+        type="button"
+        aria-label={isCollapsed ? 'Expandir barra lateral' : 'Replegar barra lateral'}
+        onClick={toggle}
+        className="cursor-pointer"
+      >
         <SidebarSimpleIcon className="shrink-0 text-white" />
       </button>
 
@@ -66,11 +73,11 @@ export default function Sidebar() {
                   >
                     <item.icon className="shrink-0 text-white" />
                     {!isCollapsed && (
-                      <span className="text-sm font-medium text-white">{item.label}</span>
+                      <span className="text-sm font-medium text-white">{t(item.labelKey)}</span>
                     )}
                   </Link>
                 </TooltipTrigger>
-                {isCollapsed && <TooltipContent side="right">{item.label}</TooltipContent>}
+                {isCollapsed && <TooltipContent side="right">{t(item.labelKey)}</TooltipContent>}
               </Tooltip>
             )
           })}

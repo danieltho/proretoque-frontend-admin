@@ -156,7 +156,7 @@ export default function BatchDetailPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+        <Button variant="ghost" size="icon" aria-label="Volver" onClick={() => navigate(-1)}>
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>
@@ -223,6 +223,8 @@ export default function BatchDetailPage() {
             <Button
               variant={viewMode === 'grid' ? 'default' : 'outline'}
               size="icon"
+              aria-label="Vista cuadrícula"
+              aria-pressed={viewMode === 'grid'}
               className="h-8 w-8"
               onClick={() => setViewMode('grid')}
             >
@@ -231,6 +233,8 @@ export default function BatchDetailPage() {
             <Button
               variant={viewMode === 'list' ? 'default' : 'outline'}
               size="icon"
+              aria-label="Vista lista"
+              aria-pressed={viewMode === 'list'}
               className="h-8 w-8"
               onClick={() => setViewMode('list')}
             >
@@ -298,6 +302,7 @@ export default function BatchDetailPage() {
                 <Button
                   variant="ghost"
                   size="icon"
+                  aria-label="Editar imagen"
                   className="h-8 w-8"
                   onClick={() => setEditMedia(media)}
                 >
@@ -306,6 +311,7 @@ export default function BatchDetailPage() {
                 <Button
                   variant="ghost"
                   size="icon"
+                  aria-label="Eliminar imagen"
                   className="text-destructive h-8 w-8"
                   onClick={() => setDeleteMedia(media)}
                 >

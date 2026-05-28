@@ -5,16 +5,18 @@ import type { Provider } from '../types/provider'
 interface ProviderColumnsOptions {
   onEdit: (id: number) => void
   onDelete?: (id: number) => void
+  t: (key: string) => string
 }
 
 export function getProviderColumns({
+  t,
   onEdit,
   onDelete,
 }: ProviderColumnsOptions): ColumnDef<Provider>[] {
   return [
     {
       accessorKey: 'id',
-      header: () => <span className="text-footer font-medium text-blue-200">ID</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.id')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">{row.original.id}</span>
       ),
@@ -22,7 +24,7 @@ export function getProviderColumns({
     },
     {
       accessorKey: 'username',
-      header: () => <span className="text-footer font-medium text-blue-200">USERNAME</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.username')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">{row.original.username}</span>
       ),
@@ -30,7 +32,7 @@ export function getProviderColumns({
     {
       id: 'fullname',
       header: () => (
-        <span className="text-footer font-medium text-blue-200">NOMBRE Y APELLIDOS</span>
+        <span className="text-footer font-medium text-blue-200">{t('columns.fullName')}</span>
       ),
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">
@@ -40,14 +42,14 @@ export function getProviderColumns({
     },
     {
       accessorKey: 'email',
-      header: () => <span className="text-footer font-medium text-blue-200">EMAIL</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.email')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">{row.original.email}</span>
       ),
     },
     {
       accessorKey: 'company',
-      header: () => <span className="text-footer font-medium text-blue-200">COMPAÑÍA</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.company')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">
           {row.original.company ?? '--'}
@@ -56,12 +58,13 @@ export function getProviderColumns({
     },
     {
       id: 'actions',
-      header: () => <span className="text-footer font-medium text-blue-200">ACCIONES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.actions')}</span>,
       cell: ({ row }) => (
         <div className="flex items-center gap-2.5">
           <button
             type="button"
             className="cursor-pointer text-neutral-600 hover:text-neutral-350"
+            aria-label="Editar"
             onClick={() => onEdit(row.original.id)}
           >
             <NotePencilIcon />
@@ -70,6 +73,7 @@ export function getProviderColumns({
             <button
               type="button"
               className="cursor-pointer text-neutral-600 hover:text-neutral-350"
+              aria-label="Eliminar"
               onClick={() => onDelete(row.original.id)}
             >
               <TrashIcon />

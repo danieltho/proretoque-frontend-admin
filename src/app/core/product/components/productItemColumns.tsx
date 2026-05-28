@@ -11,6 +11,7 @@ interface ProductItemColumnsOptions {
   onEdit: (item: ProductItem) => void
   onDelete: (id: number) => void
   onUpdateField: (itemId: number, field: EditableField, value: string | number) => void
+  t: (key: string) => string
 }
 
 const InlineCell = memo(function InlineCell({
@@ -67,6 +68,7 @@ const InlineCell = memo(function InlineCell({
 })
 
 export function getProductItemColumns({
+  t,
   onEdit,
   onDelete,
   onUpdateField,
@@ -85,7 +87,7 @@ export function getProductItemColumns({
     },
     {
       accessorKey: 'name',
-      header: () => <span className="text-footer font-medium text-blue-200">NOMBRES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.names')}</span>,
       cell: ({ row }) => (
         <InlineCell
           value={row.original.name}
@@ -95,7 +97,7 @@ export function getProductItemColumns({
     },
     {
       accessorKey: 'price',
-      header: () => <span className="text-footer font-medium text-blue-200">PRECIO</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.price')}</span>,
       cell: ({ row }) => (
         <InlineCell
           value={row.original.price}
@@ -106,7 +108,7 @@ export function getProductItemColumns({
     },
     {
       accessorKey: 'duration_task',
-      header: () => <span className="text-footer font-medium text-blue-200">TIEMPO</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.time')}</span>,
       cell: ({ row }) => (
         <InlineCell
           value={row.original.duration_task}
@@ -117,7 +119,7 @@ export function getProductItemColumns({
     },
     {
       accessorKey: 'lang',
-      header: () => <span className="text-footer font-medium text-blue-200">IDIOMA</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.language')}</span>,
       cell: ({ row }) => (
         <Badge className="rounded-lg bg-blue-200 px-2.5 py-0.5 text-footer font-medium text-white">
           {(row.original.lang || 'ES').toUpperCase()}
@@ -126,12 +128,13 @@ export function getProductItemColumns({
     },
     {
       id: 'actions',
-      header: () => <span className="text-footer font-medium text-blue-200">ACCIONES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.actions')}</span>,
       cell: ({ row }) => (
         <div className="flex items-center gap-2.5">
           <button
             type="button"
             className="cursor-pointer text-neutral-600 hover:text-neutral-350"
+            aria-label="Editar"
             onClick={() => onEdit(row.original)}
           >
             <NotePencilIcon className="size-4" />
@@ -139,6 +142,7 @@ export function getProductItemColumns({
           <button
             type="button"
             className="cursor-pointer text-neutral-600 hover:text-neutral-350"
+            aria-label="Eliminar"
             onClick={() => onDelete(row.original.id)}
           >
             <XIcon className="size-4" />

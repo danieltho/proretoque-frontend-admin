@@ -1,8 +1,13 @@
 import * as React from "react"
 
 import { cn } from "@/app/shared/utils/utils"
+import { useFormFieldProps } from "@/app/shared/ui/forms/formFieldContext"
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+  // Inherit id / aria-invalid / aria-describedby from a surrounding
+  // FormFieldCard so the label↔input association and error announcement
+  // happen automatically. Consumer-provided props still win.
+  const fieldProps = useFormFieldProps(props)
   return (
     <input
       type={type}
@@ -13,7 +18,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
         "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
         className
       )}
-      {...props}
+      {...fieldProps}
     />
   )
 }

@@ -82,11 +82,12 @@ export default function ProductFormPage() {
   const itemColumns = useMemo(
     () =>
       getProductItemColumns({
+        t,
         onEdit: handleEditItem,
         onDelete: removeItem,
         onUpdateField: updateItemField,
       }),
-    [removeItem, updateItemField],
+    [t, removeItem, updateItemField],
   )
 
   if (loading) {
@@ -122,15 +123,12 @@ export default function ProductFormPage() {
 
         {/* Form Card */}
         <Card>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* Left column */}
             <div className="flex flex-col gap-4">
-              <FormFieldCard label={t('forms.product.label.name')}>
+              <FormFieldCard label={t('forms.product.label.name')} error={errors.name?.message}>
                 <Input placeholder={t('forms.product.placeholder.name')} {...register('name')} />
-                {errors.name && (
-                  <span className="text-sm text-error-text">{errors.name.message}</span>
-                )}
-              </FormFieldCard>
+            </FormFieldCard>
 
               <FormFieldCard label={t('forms.product.label.description')}>
                 <Textarea
@@ -143,8 +141,8 @@ export default function ProductFormPage() {
 
             {/* Right column */}
             <div className="flex flex-col gap-4">
-              <div className="grid grid-cols-2 gap-4">
-                <FormFieldCard label={t('forms.product.label.category')}>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <FormFieldCard label={t('forms.product.label.category')} error={errors.category_ids?.message}>
                   <FormSearchableSelect<ProductFormData>
                     control={control}
                     name="category_ids"
@@ -152,17 +150,14 @@ export default function ProductFormPage() {
                     options={categoryOptions}
                     placeholder={t('forms.product.placeholder.category')}
                   />
-                  {errors.category_ids && (
-                    <span className="text-sm text-error-text">{errors.category_ids.message}</span>
-                  )}
-                </FormFieldCard>
+            </FormFieldCard>
 
-                <FormFieldCard label={t('forms.product.label.type')}>
+                <FormFieldCard label={t('forms.product.label.type')} error={errors.type?.message}>
                   <Select
                     value={watch('type')}
                     onValueChange={(val) => form.setValue('type', val, { shouldValidate: true })}
                   >
-                    <SelectTrigger className="w-full" aria-invalid={!!errors.type}>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder={t('forms.product.placeholder.type')} />
                     </SelectTrigger>
                     <SelectContent>
@@ -173,26 +168,17 @@ export default function ProductFormPage() {
                       ))}
                     </SelectContent>
                   </Select>
-                  {errors.type && (
-                    <span className="text-sm text-error-text">{errors.type.message}</span>
-                  )}
-                </FormFieldCard>
+            </FormFieldCard>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <FormFieldCard label={t('forms.product.label.price')}>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <FormFieldCard label={t('forms.product.label.price')} error={errors.price?.message}>
                   <Input type="number" step="0.01" placeholder={t('forms.product.placeholder.price')} {...register('price', { valueAsNumber: true })} />
-                  {errors.price && (
-                    <span className="text-sm text-error-text">{errors.price.message}</span>
-                  )}
-                </FormFieldCard>
+            </FormFieldCard>
 
-                <FormFieldCard label={t('forms.product.label.time')}>
+                <FormFieldCard label={t('forms.product.label.time')} error={errors.time?.message}>
                   <Input type="number" placeholder={t('forms.product.placeholder.time')} {...register('time', { valueAsNumber: true })} />
-                  {errors.time && (
-                    <span className="text-sm text-error-text">{errors.time.message}</span>
-                  )}
-                </FormFieldCard>
+            </FormFieldCard>
               </div>
             </div>
           </div>

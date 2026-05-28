@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useWatcher } from 'alova/client'
 import { getBatchColumns } from '../components/batchColumns'
 import {
@@ -24,6 +25,7 @@ export function useOrderAdminBatches({
 }: UseOrderAdminBatchesOptions = {}) {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const routeId = parseRouteId(id)
   const [page, setPage] = useState(1)
 
@@ -47,6 +49,7 @@ export function useOrderAdminBatches({
   const columns = useMemo(
     () =>
       getBatchColumns({
+        t,
         onEdit: (batchId) => navigate(`/batch/${batchId}`),
         onDelete: () => {},
         onRename: handleRename,
@@ -54,7 +57,7 @@ export function useOrderAdminBatches({
         onRetouches,
         onDeliveryOptions,
       }),
-    [navigate, handleRename, onUploadFiles, onRetouches, onDeliveryOptions],
+    [t, navigate, handleRename, onUploadFiles, onRetouches, onDeliveryOptions],
   )
 
   const totalPages = data.pages

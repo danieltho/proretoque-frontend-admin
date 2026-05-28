@@ -46,33 +46,21 @@ export default function ProviderFormPage() {
         />
 
         <Card>
-          <div className="grid grid-cols-2 gap-4">
-            <FormFieldCard label={t('forms.provider.label.username')}>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <FormFieldCard label={t('forms.provider.label.username')} error={errors.username?.message}>
               <Input placeholder={t('forms.provider.placeholder.username')} {...register('username')} />
-              {errors.username && (
-                <span className="text-sm text-error-text">{errors.username.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label={t('forms.provider.label.email')}>
+            <FormFieldCard label={t('forms.provider.label.email')} error={errors.email?.message}>
               <Input type="email" placeholder={t('forms.provider.placeholder.email')} {...register('email')} />
-              {errors.email && (
-                <span className="text-sm text-error-text">{errors.email.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label={t('forms.provider.label.firstname')}>
+            <FormFieldCard label={t('forms.provider.label.firstname')} error={errors.firstname?.message}>
               <Input placeholder={t('forms.provider.placeholder.firstname')} {...register('firstname')} />
-              {errors.firstname && (
-                <span className="text-sm text-error-text">{errors.firstname.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label={t('forms.provider.label.lastname')}>
+            <FormFieldCard label={t('forms.provider.label.lastname')} error={errors.lastname?.message}>
               <Input placeholder={t('forms.provider.placeholder.lastname')} {...register('lastname')} />
-              {errors.lastname && (
-                <span className="text-sm text-error-text">{errors.lastname.message}</span>
-              )}
             </FormFieldCard>
 
             <FormFieldCard label={t('forms.provider.label.company')}>
@@ -80,12 +68,9 @@ export default function ProviderFormPage() {
             </FormFieldCard>
 
             {isNew && (
-              <FormFieldCard label={t('forms.provider.label.password')}>
+              <FormFieldCard label={t('forms.provider.label.password')} error={errors.password?.message}>
                 <Input type="password" placeholder={t('forms.provider.placeholder.password')} {...register('password')} />
-                {errors.password && (
-                  <span className="text-sm text-error-text">{errors.password.message}</span>
-                )}
-              </FormFieldCard>
+            </FormFieldCard>
             )}
           </div>
         </Card>

@@ -14,9 +14,11 @@ function formatCurrency(amount: number | null): string {
 
 interface ProviderColumnsOptions {
   onEdit: (id: number) => void
+  t: (key: string) => string
 }
 
 export function getProviderColumns({
+  t,
   onEdit,
 }: ProviderColumnsOptions): ColumnDef<OrderAdminProvider>[] {
   return [
@@ -46,14 +48,14 @@ export function getProviderColumns({
     },
     {
       accessorKey: 'name',
-      header: () => <span className="text-footer font-medium text-blue-200">NOMBRES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.names')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">{row.original.name}</span>
       ),
     },
     {
       accessorKey: 'date',
-      header: () => <span className="text-footer font-medium text-blue-200">FECHA</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.date')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">
           {formatDateShort(row.original.date)}
@@ -71,14 +73,14 @@ export function getProviderColumns({
     },
     {
       accessorKey: 'total_size',
-      header: () => <span className="text-footer font-medium text-blue-200">TAMAÑO TOTAL</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.totalSize')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">{row.original.total_size}</span>
       ),
     },
     {
       accessorKey: 'retouch_count',
-      header: () => <span className="text-footer font-medium text-blue-200">RETOQUES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.retouches')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">{row.original.retouch_count}</span>
       ),
@@ -96,7 +98,7 @@ export function getProviderColumns({
     },
     {
       id: 'extra_cost',
-      header: () => <span className="text-footer font-medium text-blue-200">COSTO EXTRA</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.extraCost')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">
           {formatCurrency(row.original.extra_cost)}
@@ -105,7 +107,7 @@ export function getProviderColumns({
     },
     {
       accessorKey: 'deadline',
-      header: () => <span className="text-footer font-medium text-blue-200">DEADLINE</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.deadline')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">
           {row.original.deadline ? formatDateShort(row.original.deadline) : '--'}
@@ -114,11 +116,12 @@ export function getProviderColumns({
     },
     {
       id: 'actions',
-      header: () => <span className="text-footer font-medium text-blue-200">ACCIONES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.actions')}</span>,
       cell: ({ row }) => (
         <button
           type="button"
           className="cursor-pointer text-neutral-600 hover:text-neutral-350"
+          aria-label="Editar"
           onClick={() => onEdit(row.original.id)}
         >
           <NotePencilIcon />

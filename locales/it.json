@@ -14,7 +14,18 @@
     "saveSuccess": "[TODO] Guardado correctamente",
     "saveError": "[TODO] Error al guardar",
     "loadError": "[TODO] Error al cargar los datos",
-    "loading": "[TODO] Cargando..."
+    "loading": "[TODO] Cargando...",
+    "createdSuccess": "[TODO] Creado correctamente",
+    "updatedSuccess": "[TODO] Actualizado correctamente",
+    "deletedSuccess": "[TODO] Eliminado correctamente",
+    "requestError": "[TODO] Error en la petición"
+  },
+  "nav": {
+    "categories": "[TODO] Categorías",
+    "products": "[TODO] Productos",
+    "roles": "[TODO] Roles",
+    "profile": "[TODO] Mi perfil",
+    "logout": "[TODO] Cerrar sesión"
   },
   "tables": {
     "empty": "Non abbiamo informazioni da mostrare."
@@ -54,6 +65,40 @@
   "order": {
     "create": "Nuovo ordine",
     "detail": "Dettaglio dell'ordine"
+  },
+  "columns": {
+    "id": "[TODO] ID",
+    "code": "[TODO] CÓDIGO",
+    "name": "[TODO] NOMBRE",
+    "names": "[TODO] NOMBRES",
+    "fullName": "[TODO] NOMBRE Y APELLIDOS",
+    "username": "[TODO] USERNAME",
+    "company": "[TODO] COMPAÑÍA",
+    "email": "[TODO] EMAIL",
+    "customer": "[TODO] CLIENTE",
+    "photoCount": "[TODO] Nº FOTOS",
+    "photos": "[TODO] FOTOS",
+    "size": "[TODO] TAMAÑO",
+    "totalSize": "[TODO] TAMAÑO TOTAL",
+    "createdAt": "[TODO] CREADO",
+    "date": "[TODO] FECHA",
+    "deadline": "[TODO] DEADLINE",
+    "subtotal": "[TODO] SUBTOTAL",
+    "iva": "[TODO] IVA",
+    "total": "[TODO] TOTAL",
+    "price": "[TODO] PRECIO",
+    "totalPrice": "[TODO] PRECIO TOTAL",
+    "extraCost": "[TODO] COSTO EXTRA",
+    "status": "[TODO] ESTADO",
+    "actions": "[TODO] ACCIONES",
+    "type": "[TODO] TIPO",
+    "categories": "[TODO] CATEGORIAS",
+    "roles": "[TODO] ROLES",
+    "membership": "[TODO] MEMBRESÍA",
+    "language": "[TODO] IDIOMA",
+    "time": "[TODO] TIEMPO",
+    "retouches": "[TODO] RETOQUES",
+    "titles": "[TODO] TÍTULOS"
   },
   "forms": {
     "user": {

@@ -6,25 +6,26 @@ import type { User } from '../types/user'
 interface UserColumnsOptions {
   onEdit: (id: number) => void
   onDelete: (id: number) => void
+  t: (key: string) => string
 }
 
-export function getUserColumns({ onEdit, onDelete }: UserColumnsOptions): ColumnDef<User>[] {
+export function getUserColumns({ t, onEdit, onDelete }: UserColumnsOptions): ColumnDef<User>[] {
   return [
     {
       accessorKey: 'id',
-      header: () => <span className="text-footer font-medium text-blue-200">ID</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.id')}</span>,
       cell: ({ row }) => <span className="text-footer text-neutral-600">#{row.original.id}</span>,
       size: 50,
     },
     {
       accessorKey: 'email',
-      header: () => <span className="text-footer font-medium text-blue-200">EMAIL</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.email')}</span>,
       cell: ({ row }) => <span className="text-footer text-neutral-600">{row.original.email}</span>,
     },
     {
       id: 'fullname',
       header: () => (
-        <span className="text-footer font-medium text-blue-200">NOMBRE Y APELLIDOS</span>
+        <span className="text-footer font-medium text-blue-200">{t('columns.fullName')}</span>
       ),
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">
@@ -34,7 +35,7 @@ export function getUserColumns({ onEdit, onDelete }: UserColumnsOptions): Column
     },
     {
       accessorKey: 'role',
-      header: () => <span className="text-footer font-medium text-blue-200">ROLES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.roles')}</span>,
       cell: ({ row }) => (
         <Badge className="rounded-lg bg-blue-200 px-2.5 py-0.5 text-footer font-medium text-white">
           {(row.original.role?.name || '').toUpperCase()}
@@ -43,12 +44,13 @@ export function getUserColumns({ onEdit, onDelete }: UserColumnsOptions): Column
     },
     {
       id: 'actions',
-      header: () => <span className="text-footer font-medium text-blue-200">ACCIONES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.actions')}</span>,
       cell: ({ row }) => (
         <div className="flex items-center gap-2.5">
           <button
             type="button"
             className="cursor-pointer text-neutral-600 hover:text-neutral-350"
+            aria-label="Editar"
             onClick={() => onEdit(row.original.id)}
           >
             <NotePencilIcon />
@@ -56,6 +58,7 @@ export function getUserColumns({ onEdit, onDelete }: UserColumnsOptions): Column
           <button
             type="button"
             className="cursor-pointer text-neutral-600 hover:text-neutral-350"
+            aria-label="Eliminar"
             onClick={() => onDelete(row.original.id)}
           >
             <XIcon />

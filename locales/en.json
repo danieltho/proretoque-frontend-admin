@@ -14,7 +14,18 @@
     "saveSuccess": "Saved successfully",
     "saveError": "Error saving",
     "loadError": "Error loading data",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "createdSuccess": "Created successfully",
+    "updatedSuccess": "Updated successfully",
+    "deletedSuccess": "Deleted successfully",
+    "requestError": "Request error"
+  },
+  "nav": {
+    "categories": "Categories",
+    "products": "Products",
+    "roles": "Roles",
+    "profile": "My profile",
+    "logout": "Sign out"
   },
   "tables": {
     "empty": "We have no information to display."
@@ -54,6 +65,40 @@
   "order": {
     "create": "New order",
     "detail": "Order detail"
+  },
+  "columns": {
+    "id": "ID",
+    "code": "CODE",
+    "name": "NAME",
+    "names": "NAMES",
+    "fullName": "FULL NAME",
+    "username": "USERNAME",
+    "company": "COMPANY",
+    "email": "EMAIL",
+    "customer": "CUSTOMER",
+    "photoCount": "# PHOTOS",
+    "photos": "PHOTOS",
+    "size": "SIZE",
+    "totalSize": "TOTAL SIZE",
+    "createdAt": "CREATED",
+    "date": "DATE",
+    "deadline": "DEADLINE",
+    "subtotal": "SUBTOTAL",
+    "iva": "VAT",
+    "total": "TOTAL",
+    "price": "PRICE",
+    "totalPrice": "TOTAL PRICE",
+    "extraCost": "EXTRA COST",
+    "status": "STATUS",
+    "actions": "ACTIONS",
+    "type": "TYPE",
+    "categories": "CATEGORIES",
+    "roles": "ROLES",
+    "membership": "MEMBERSHIP",
+    "language": "LANGUAGE",
+    "time": "TIME",
+    "retouches": "RETOUCHES",
+    "titles": "TITLES"
   },
   "forms": {
     "user": {

@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { MagnifyingGlassIcon } from '@phosphor-icons/react'
 import { DataTable } from '@/app/components/ui/data-table'
 import { Input } from '@/app/components/ui/input'
@@ -33,15 +34,17 @@ export function ProtocolsTable({
   onDelete,
 }: ProtocolsTableProps) {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const columns = useMemo(
     () =>
       getProtocolColumns({
+        t,
         onEdit: (id) => navigate(`/protocols/${id}`),
         onDuplicate: (id) => navigate(`/protocols/${id}/duplicate`),
         onDelete,
       }),
-    [navigate, onDelete],
+    [t, navigate, onDelete],
   )
 
   return (
