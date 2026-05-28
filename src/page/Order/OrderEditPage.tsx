@@ -26,12 +26,12 @@ export default function OrderEditPage() {
             onBack={() => navigate('/orders')}
             actions={[
               {
-                label: 'Volver',
+                label: t('actions.back'),
                 onClick: () => navigate('/orders'),
                 variant: 'ghost',
               },
               {
-                label: 'Guardar',
+                label: t('actions.save'),
                 onClick: handleSave,
                 variant: 'blue',
               },
@@ -48,11 +48,11 @@ export default function OrderEditPage() {
           />
         </header>
         <Card>
-          <FormFieldCard label="Nombre pedido">
-            <Input placeholder="Pedido de Prueba 1" {...form.register('name')} />
+          <FormFieldCard label={t('forms.order.label.name')}>
+            <Input placeholder={t('forms.order.placeholder.name')} {...form.register('name')} />
           </FormFieldCard>
           <div className="flex items-start gap-5">
-            <FormFieldCard label="Cliente" className="flex-1">
+            <FormFieldCard label={t('forms.order.label.customer')} className="flex-1">
               <FormSearchableSelect
                 control={form.control}
                 name="customer_id"
@@ -62,11 +62,11 @@ export default function OrderEditPage() {
                 hasMore={clientsHook.hasMore}
                 onLoadMore={clientsHook.loadMore}
                 isLoading={clientsHook.loading}
-                placeholder="Selecciona un cliente"
+                placeholder={t('forms.order.placeholder.customer')}
               />
             </FormFieldCard>
 
-            <FormFieldCard label="Deadline" className="flex-1">
+            <FormFieldCard label={t('forms.order.label.deadline')} className="flex-1">
               <Input type="date" {...form.register('deadline')} />
             </FormFieldCard>
           </div>

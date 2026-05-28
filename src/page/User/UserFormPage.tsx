@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useRequest } from 'alova/client'
 import Template from '@/app/components/Template'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
@@ -17,6 +18,7 @@ import { useUserForm } from '@/app/core/user/hooks/useUserForm'
 import { getRolesApi } from '@/app/core/role/api/roleApi'
 
 export default function UserFormPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const { isNew, form, loading, handleSave } = useUserForm()
 
@@ -44,16 +46,16 @@ export default function UserFormPage() {
     <Template>
       <div className="flex flex-col gap-4 font-raleway">
         <TitleSection
-          title={isNew ? 'Nuevo Usuario' : 'Editar Usuario'}
+          title={isNew ? t('forms.user.createTitle') : t('forms.user.editTitle')}
           onBack={() => navigate('/users')}
           actions={[
             {
-              label: 'Volver',
+              label: t('actions.back'),
               onClick: () => navigate('/users'),
               variant: 'ghost',
             },
             {
-              label: 'Guardar',
+              label: t('actions.save'),
               onClick: handleSave,
               variant: 'blue',
             },
@@ -62,17 +64,17 @@ export default function UserFormPage() {
 
         <Card>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <FormFieldCard label="Email" error={errors.email?.message}>
-              <Input type="email" placeholder="email@ejemplo.com" {...register('email')} />
+            <FormFieldCard label={t('forms.user.label.email')} error={errors.email?.message}>
+              <Input type="email" placeholder={t('forms.user.placeholder.email')} {...register('email')} />
             </FormFieldCard>
 
-            <FormFieldCard label="Rol" error={errors.role?.message}>
+            <FormFieldCard label={t('forms.user.label.role')} error={errors.role?.message}>
               <Select
                 value={watch('role')}
                 onValueChange={(val) => setValue('role', val, { shouldValidate: true })}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Seleccione un rol" />
+                  <SelectValue placeholder={t('forms.user.placeholder.role')} />
                 </SelectTrigger>
                 <SelectContent>
                   {roleOptions.map((r) => (
@@ -84,42 +86,42 @@ export default function UserFormPage() {
               </Select>
             </FormFieldCard>
 
-            <FormFieldCard label="Nombre" error={errors.firstname?.message}>
-              <Input placeholder="Nombre" {...register('firstname')} />
+            <FormFieldCard label={t('forms.user.label.firstname')} error={errors.firstname?.message}>
+              <Input placeholder={t('forms.user.placeholder.firstname')} {...register('firstname')} />
             </FormFieldCard>
 
-            <FormFieldCard label="Apellidos" error={errors.lastname?.message}>
-              <Input placeholder="Apellidos" {...register('lastname')} />
+            <FormFieldCard label={t('forms.user.label.lastname')} error={errors.lastname?.message}>
+              <Input placeholder={t('forms.user.placeholder.lastname')} {...register('lastname')} />
             </FormFieldCard>
 
-            <FormFieldCard label="Documento">
-              <Input placeholder="Documento (opcional)" {...register('document')} />
+            <FormFieldCard label={t('forms.user.label.document')}>
+              <Input placeholder={t('forms.user.placeholder.document')} {...register('document')} />
             </FormFieldCard>
 
-            <FormFieldCard label="Dirección">
-              <Input placeholder="Dirección (opcional)" {...register('address')} />
+            <FormFieldCard label={t('forms.user.label.address')}>
+              <Input placeholder={t('forms.user.placeholder.address')} {...register('address')} />
             </FormFieldCard>
 
-            <FormFieldCard label="Fecha de nacimiento">
+            <FormFieldCard label={t('forms.user.label.birth_date')}>
               <Input type="date" {...register('birth_date')} />
             </FormFieldCard>
 
-            <FormFieldCard label="Fecha de contratación">
+            <FormFieldCard label={t('forms.user.label.hire_date')}>
               <Input type="date" {...register('hire_date')} />
             </FormFieldCard>
 
-            <FormFieldCard label="Contraseña" error={errors.password?.message}>
+            <FormFieldCard label={t('forms.user.label.password')} error={errors.password?.message}>
               <Input
                 type="password"
-                placeholder={isNew ? 'Mínimo 6 caracteres' : 'Dejar vacío para no cambiar'}
+                placeholder={t(isNew ? 'forms.user.placeholder.password_new' : 'forms.user.placeholder.password_keep')}
                 {...register('password')}
               />
             </FormFieldCard>
 
-            <FormFieldCard label="Confirmar contraseña" error={errors.password_confirmation?.message}>
+            <FormFieldCard label={t('forms.user.label.password_confirmation')} error={errors.password_confirmation?.message}>
               <Input
                 type="password"
-                placeholder="Confirmar contraseña"
+                placeholder={t('forms.user.placeholder.password_confirmation')}
                 {...register('password_confirmation')}
               />
             </FormFieldCard>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -18,6 +19,7 @@ const restrictionSchema = z.object({
 type RestrictionFormData = z.infer<typeof restrictionSchema>
 
 export default function RoleRestrictionAccessPage() {
+  const { t } = useTranslation()
   const { roleId } = useParams<{ roleId: string }>()
   const navigate = useNavigate()
   const routeId = parseRouteId(roleId)
@@ -58,16 +60,16 @@ export default function RoleRestrictionAccessPage() {
     <Template>
       <div className="flex flex-col gap-4 font-raleway">
         <TitleSection
-          title={loading ? '' : `${roleName} — Restriction Access`}
+          title={loading ? '' : t('forms.role.restrictionAccessTitle', { name: roleName })}
           onBack={() => navigate('/roles')}
           actions={[
             {
-              label: 'Volver',
+              label: t('actions.back'),
               onClick: () => navigate('/roles'),
               variant: 'ghost',
             },
             {
-              label: 'Guardar',
+              label: t('actions.save'),
               onClick: handleSubmit(onSubmit),
               variant: 'blue',
             },

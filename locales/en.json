@@ -99,5 +99,93 @@
     "time": "TIME",
     "retouches": "RETOUCHES",
     "titles": "TITLES"
+  },
+  "forms": {
+    "user": {
+      "createTitle": "New User",
+      "editTitle": "Edit User",
+      "label": {
+        "email": "Email",
+        "role": "Role",
+        "firstname": "First name",
+        "lastname": "Last name",
+        "document": "Document",
+        "address": "Address",
+        "birth_date": "Birth date",
+        "hire_date": "Hire date",
+        "password": "Password",
+        "password_confirmation": "Confirm password"
+      },
+      "placeholder": {
+        "email": "email@example.com",
+        "role": "Select a role",
+        "firstname": "First name",
+        "lastname": "Last name",
+        "document": "Document (optional)",
+        "address": "Address (optional)",
+        "password_new": "At least 6 characters",
+        "password_keep": "Leave empty to keep current",
+        "password_confirmation": "Confirm password"
+      }
+    },
+    "product": {
+      "createTitle": "New Product",
+      "editTitle": "Edit Product",
+      "itemsTitle": "Items",
+      "addItem": "Add",
+      "label": {
+        "name": "Product name",
+        "description": "Description",
+        "category": "Category",
+        "type": "Type",
+        "price": "Price",
+        "time": "Time"
+      },
+      "placeholder": {
+        "name": "Enter product name...",
+        "description": "Write your notes",
+        "category": "Select a category",
+        "type": "Select a type",
+        "price": "$0.00",
+        "time": "0"
+      }
+    },
+    "provider": {
+      "createTitle": "New Provider",
+      "editTitle": "Edit Provider",
+      "label": {
+        "username": "Username",
+        "firstname": "First name",
+        "lastname": "Last name",
+        "email": "Email",
+        "company": "Company",
+        "password": "Password"
+      },
+      "placeholder": {
+        "username": "username",
+        "firstname": "First name",
+        "lastname": "Last name",
+        "email": "email@example.com",
+        "company": "Company",
+        "password": "Password"
+      }
+    },
+    "role": {
+      "restrictionAccessTitle": "{{name}} — Restriction Access",
+      "label": {
+        "only_provider": "Provider only"
+      }
+    },
+    "order": {
+      "label": {
+        "name": "Name",
+        "customer": "Customer",
+        "deadline": "Deadline"
+      },
+      "placeholder": {
+        "name": "Order #1",
+        "customer": "Select a customer"
+      }
+    }
   }
 }
