@@ -44,6 +44,22 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    // host: true binds to 0.0.0.0 so the port mapping reaches the dev server
+    // when running inside a container. No-op when running locally.
+    host: true,
+    port: 5173,
+    strictPort: true,
+    proxy: {
+      // Forward `/api/*` to the backend. BACKEND_URL is read by the dev
+      // server process (not bundled), so the frontend can keep using
+      // same-origin URLs and CORS is sidestepped.
+      '/api': {
+        target: process.env.BACKEND_URL || 'http://localhost:8000',
+        changeOrigin: true,
+      },
+    },
+  },
   build: {
     rollupOptions: {
       output: {

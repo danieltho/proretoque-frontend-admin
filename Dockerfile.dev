@@ -1,0 +1,18 @@
+# Development image for the admin frontend.
+# Boots the Vite dev server (HMR) on 5173 — never use this for production.
+FROM node:20-alpine
+
+# pnpm is pinned via `packageManager` in package.json; corepack honours it.
+RUN corepack enable && corepack prepare pnpm@10.11.1 --activate
+
+WORKDIR /app
+
+# Cache the dependency layer: only re-runs if these two files change.
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+EXPOSE 5173
+
+# --host 0.0.0.0 is required: Vite would otherwise bind to localhost
+# inside the container and the port mapping wouldn't reach it.
+CMD ["pnpm", "dev", "--host", "0.0.0.0"]
