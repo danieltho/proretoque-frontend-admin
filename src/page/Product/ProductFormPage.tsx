@@ -120,15 +120,12 @@ export default function ProductFormPage() {
 
         {/* Form Card */}
         <Card>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* Left column */}
             <div className="flex flex-col gap-4">
-              <FormFieldCard label="Nombre del producto">
+              <FormFieldCard label="Nombre del producto" error={errors.name?.message}>
                 <Input placeholder="Introducir nombre de producto..." {...register('name')} />
-                {errors.name && (
-                  <span className="text-sm text-error-text">{errors.name.message}</span>
-                )}
-              </FormFieldCard>
+            </FormFieldCard>
 
               <FormFieldCard label="Descripcion">
                 <Textarea
@@ -141,8 +138,8 @@ export default function ProductFormPage() {
 
             {/* Right column */}
             <div className="flex flex-col gap-4">
-              <div className="grid grid-cols-2 gap-4">
-                <FormFieldCard label="Categoria">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <FormFieldCard label="Categoria" error={errors.category_ids?.message}>
                   <FormSearchableSelect<ProductFormData>
                     control={control}
                     name="category_ids"
@@ -150,17 +147,14 @@ export default function ProductFormPage() {
                     options={categoryOptions}
                     placeholder="Seleccione una categoria"
                   />
-                  {errors.category_ids && (
-                    <span className="text-sm text-error-text">{errors.category_ids.message}</span>
-                  )}
-                </FormFieldCard>
+            </FormFieldCard>
 
-                <FormFieldCard label="Tipo">
+                <FormFieldCard label="Tipo" error={errors.type?.message}>
                   <Select
                     value={watch('type')}
                     onValueChange={(val) => form.setValue('type', val, { shouldValidate: true })}
                   >
-                    <SelectTrigger className="w-full" aria-invalid={!!errors.type}>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Seleccione un tipo" />
                     </SelectTrigger>
                     <SelectContent>
@@ -171,26 +165,17 @@ export default function ProductFormPage() {
                       ))}
                     </SelectContent>
                   </Select>
-                  {errors.type && (
-                    <span className="text-sm text-error-text">{errors.type.message}</span>
-                  )}
-                </FormFieldCard>
+            </FormFieldCard>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <FormFieldCard label="Precio">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <FormFieldCard label="Precio" error={errors.price?.message}>
                   <Input type="number" step="0.01" placeholder="$0.00" {...register('price', { valueAsNumber: true })} />
-                  {errors.price && (
-                    <span className="text-sm text-error-text">{errors.price.message}</span>
-                  )}
-                </FormFieldCard>
+            </FormFieldCard>
 
-                <FormFieldCard label="Tiempo">
+                <FormFieldCard label="Tiempo" error={errors.time?.message}>
                   <Input type="number" placeholder="0" {...register('time', { valueAsNumber: true })} />
-                  {errors.time && (
-                    <span className="text-sm text-error-text">{errors.time.message}</span>
-                  )}
-                </FormFieldCard>
+            </FormFieldCard>
               </div>
             </div>
           </div>

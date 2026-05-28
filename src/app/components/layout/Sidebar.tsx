@@ -44,7 +44,12 @@ export default function Sidebar() {
         isCollapsed ? 'w-18 px-4' : 'items-end w-52 px-4',
       )}
     >
-      <button type="button" onClick={toggle} className="cursor-pointer">
+      <button
+        type="button"
+        aria-label={isCollapsed ? 'Expandir barra lateral' : 'Replegar barra lateral'}
+        onClick={toggle}
+        className="cursor-pointer"
+      >
         <SidebarSimpleIcon className="shrink-0 text-white" />
       </button>
 

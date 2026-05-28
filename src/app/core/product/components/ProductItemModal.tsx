@@ -120,14 +120,11 @@ export function ProductItemModal({ open, item, onClose, onSave }: ProductItemMod
         <div className="flex gap-4">
           {/* Left section */}
           <div className="flex flex-1 flex-col gap-4">
-            <FormFieldCard label="Nombre del producto">
+            <FormFieldCard label="Nombre del producto" error={errors.name?.message}>
               <Input placeholder="Introducir nombre de producto..." {...register('name')} />
-              {errors.name && (
-                <span className="text-sm text-error-text">{errors.name.message}</span>
-              )}
             </FormFieldCard>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <FormFieldCard label="Descripcion">
                 <Textarea
                   placeholder="Escribe tus observaciones"
@@ -145,7 +142,7 @@ export function ProductItemModal({ open, item, onClose, onSave }: ProductItemMod
               </FormFieldCard>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <FormFieldCard label="Descripcion Proveedores">
                 <Textarea
                   placeholder="Escribe tus observaciones"
@@ -169,27 +166,21 @@ export function ProductItemModal({ open, item, onClose, onSave }: ProductItemMod
 
           {/* Right section */}
           <div className="flex w-48 flex-col gap-4">
-            <FormFieldCard label="Precio">
+            <FormFieldCard label="Precio" error={errors.price?.message}>
               <Input
                 type="number"
                 step="0.01"
                 placeholder="$0.00"
                 {...register('price', { valueAsNumber: true })}
               />
-              {errors.price && (
-                <span className="text-sm text-error-text">{errors.price.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label="Tiempo">
+            <FormFieldCard label="Tiempo" error={errors.duration_task?.message}>
               <Input
                 type="number"
                 placeholder="000"
                 {...register('duration_task', { valueAsNumber: true })}
               />
-              {errors.duration_task && (
-                <span className="text-sm text-error-text">{errors.duration_task.message}</span>
-              )}
               <span className="flex items-center gap-1 text-footer text-neutral-600 opacity-50">
                 <InfoIcon className="size-4" />
                 Introducir tiempo en segundos.
