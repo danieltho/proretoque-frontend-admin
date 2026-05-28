@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { UserIcon, SignOutIcon, ListIcon } from '@phosphor-icons/react'
 import { useAuthStore, isCustomerUser, isAdminUser } from '@/app/stores/authStore'
 import { useSidebarStore } from '@/app/stores/sidebarStore'
@@ -15,6 +16,7 @@ import {
 } from '@/app/components/ui/dropdown-menu'
 
 export default function Header() {
+  const { t } = useTranslation()
   const user = useAuthStore((s) => s.user)
   const { setMobileOpen } = useSidebarStore()
   const navigate = useNavigate()
@@ -65,12 +67,12 @@ export default function Header() {
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => navigate('/profiles')}>
               <UserIcon />
-              Mi perfil
+              {t('nav.profile')}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <SignOutIcon />
-              Cerrar sesión
+              {t('nav.logout')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

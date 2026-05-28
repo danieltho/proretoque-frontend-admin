@@ -14,7 +14,18 @@
     "saveSuccess": "Saved successfully",
     "saveError": "Error saving",
     "loadError": "Error loading data",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "createdSuccess": "Created successfully",
+    "updatedSuccess": "Updated successfully",
+    "deletedSuccess": "Deleted successfully",
+    "requestError": "Request error"
+  },
+  "nav": {
+    "categories": "Categories",
+    "products": "Products",
+    "roles": "Roles",
+    "profile": "My profile",
+    "logout": "Sign out"
   },
   "tables": {
     "empty": "We have no information to display."

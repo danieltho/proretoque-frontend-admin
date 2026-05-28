@@ -14,7 +14,18 @@
     "saveSuccess": "[TODO] Guardado correctamente",
     "saveError": "[TODO] Error al guardar",
     "loadError": "[TODO] Error al cargar los datos",
-    "loading": "[TODO] Cargando..."
+    "loading": "[TODO] Cargando...",
+    "createdSuccess": "[TODO] Creado correctamente",
+    "updatedSuccess": "[TODO] Actualizado correctamente",
+    "deletedSuccess": "[TODO] Eliminado correctamente",
+    "requestError": "[TODO] Error en la petición"
+  },
+  "nav": {
+    "categories": "[TODO] Categorías",
+    "products": "[TODO] Productos",
+    "roles": "[TODO] Roles",
+    "profile": "[TODO] Mi perfil",
+    "logout": "[TODO] Cerrar sesión"
   },
   "tables": {
     "empty": "Nous n'avons aucune information à afficher."
