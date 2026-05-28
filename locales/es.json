@@ -14,7 +14,18 @@
     "saveSuccess": "Guardado correctamente",
     "saveError": "Error al guardar",
     "loadError": "Error al cargar los datos",
-    "loading": "Cargando..."
+    "loading": "Cargando...",
+    "createdSuccess": "Creado correctamente",
+    "updatedSuccess": "Actualizado correctamente",
+    "deletedSuccess": "Eliminado correctamente",
+    "requestError": "Error en la petición"
+  },
+  "nav": {
+    "categories": "Categorías",
+    "products": "Productos",
+    "roles": "Roles",
+    "profile": "Mi perfil",
+    "logout": "Cerrar sesión"
   },
   "tables": {
     "empty": "No tenemos información para mostrar."
