@@ -20,16 +20,18 @@ function formatCurrency(amount: number | null): string {
 interface OrderColumnsOptions {
   onEdit: (id: number) => void
   onDetail: (id: number) => void
+  t: (key: string) => string
 }
 
 export function getOrderColumns({
+  t,
   onEdit,
   onDetail,
 }: OrderColumnsOptions): ColumnDef<OrderAdmin>[] {
   return [
     {
       accessorKey: 'number',
-      header: () => <span className="text-footer font-medium text-blue-200">ID</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.id')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">#{row.original.number}</span>
       ),
@@ -37,7 +39,7 @@ export function getOrderColumns({
     },
     {
       accessorKey: 'name',
-      header: () => <span className="text-footer font-medium text-blue-200">NOMBRE</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.name')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">{row.original.name}</span>
       ),
@@ -45,7 +47,7 @@ export function getOrderColumns({
     },
     {
       accessorKey: 'customer_name',
-      header: () => <span className="text-footer font-medium text-blue-200">CLIENTE</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.customer')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">{row.original.client_name}</span>
       ),
@@ -53,7 +55,7 @@ export function getOrderColumns({
     },
     {
       accessorKey: 'total_file',
-      header: () => <span className="text-footer font-medium text-blue-200">Nº FOTOS</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.photoCount')}</span>,
       cell: ({ row }) => (
         <span className="text-right text-footer text-neutral-600">
           {row.original.total_file}
@@ -63,7 +65,7 @@ export function getOrderColumns({
     },
     {
       accessorKey: 'total_size',
-      header: () => <span className="text-footer font-medium text-blue-200">TAMAñO</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.size')}</span>,
       cell: ({ row }) => (
         <span className="text-right text-footer text-neutral-600">
           {formatFileSize(row.original.total_size ?? 0)}
@@ -73,7 +75,7 @@ export function getOrderColumns({
     },
     {
       accessorKey: 'created_at',
-      header: () => <span className="text-footer font-medium text-blue-200">CREADO</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.createdAt')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">
           {formatDateShort(row.original.created_at)}
@@ -83,7 +85,7 @@ export function getOrderColumns({
     },
     {
       accessorKey: 'deadline',
-      header: () => <span className="text-footer font-bold text-blue-200">DEADLINE</span>,
+      header: () => <span className="text-footer font-bold text-blue-200">{t('columns.deadline')}</span>,
       cell: ({ row }) => (
         <span className="text-footer font-bold text-neutral-600">
           {formatDateShort(row.original.deadline)}
@@ -93,7 +95,7 @@ export function getOrderColumns({
     },
     {
       accessorKey: 'subtotal',
-      header: () => <span className="text-footer font-medium text-blue-200">SUBTOTAL</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.subtotal')}</span>,
       cell: ({ row }) => (
         <span className="text-right text-footer text-neutral-600">
           {formatCurrency(row.original.subtotal)}
@@ -103,7 +105,7 @@ export function getOrderColumns({
     },
     {
       accessorKey: 'iva',
-      header: () => <span className="text-footer font-medium text-blue-200">IVA</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.iva')}</span>,
       cell: ({ row }) => (
         <span className="text-right text-footer text-neutral-600">
           {formatCurrency(row.original.iva)}
@@ -113,7 +115,7 @@ export function getOrderColumns({
     },
     {
       accessorKey: 'total',
-      header: () => <span className="text-footer font-medium text-blue-200">TOTAL</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.total')}</span>,
       cell: ({ row }) => (
         <span className="text-right text-footer font-semibold text-neutral-600">
           {formatCurrency(row.original.total)}
@@ -124,7 +126,7 @@ export function getOrderColumns({
     
     {
       id: 'status',
-      header: () => <span className="text-footer font-medium text-blue-200">ESTADO</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.status')}</span>,
       cell: ({ row }) => (
         <OrderAdminStatusBadge status={row.original.status} date={row.original.status_date} />
       ),
@@ -133,7 +135,7 @@ export function getOrderColumns({
     
     {
       id: 'actions',
-      header: () => <span className="text-footer font-medium text-blue-200">ACCIONES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.actions')}</span>,
       cell: ({ row }) => (
         <div className="flex items-center gap-2.5">
           <button

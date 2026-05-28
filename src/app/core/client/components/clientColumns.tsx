@@ -6,16 +6,18 @@ import { MembershipBadge } from './MembershipBadge'
 interface ClientColumnsOptions {
   onEdit: (id: number) => void
   onDelete: (id: number) => void
+  t: (key: string) => string
 }
 
 export function getClientColumns({
+  t,
   onEdit,
   onDelete,
 }: ClientColumnsOptions): ColumnDef<Client>[] {
   return [
     {
       accessorKey: 'id',
-      header: () => <span className="text-footer font-medium text-blue-200">ID</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.id')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">#{row.original.id}</span>
       ),
@@ -23,14 +25,14 @@ export function getClientColumns({
     },
     {
       accessorKey: 'username',
-      header: () => <span className="text-footer font-medium text-blue-200">USERNAME</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.username')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">{row.original.username}</span>
       ),
     },
     {
       accessorKey: 'email',
-      header: () => <span className="text-footer font-medium text-blue-200">EMAIL</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.email')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">{row.original.email}</span>
       ),
@@ -38,7 +40,7 @@ export function getClientColumns({
     {
       accessorKey: 'firstname',
       header: () => (
-        <span className="text-footer font-medium text-blue-200">NOMBRE Y APELLIDOS</span>
+        <span className="text-footer font-medium text-blue-200">{t('columns.fullName')}</span>
       ),
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">
@@ -48,14 +50,14 @@ export function getClientColumns({
     },
     {
       id: 'membership',
-      header: () => <span className="text-footer font-medium text-blue-200">MEMBRESÍA</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.membership')}</span>,
       cell: ({ row }) => (
         <MembershipBadge name={row.original.membership_tier.name} />
       ),
     },
     {
       id: 'actions',
-      header: () => <span className="text-footer font-medium text-blue-200">ACCIONES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.actions')}</span>,
       cell: ({ row }) => (
         <div className="flex items-center gap-2.5">
           <button
