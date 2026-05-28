@@ -21,7 +21,7 @@ export default function ProviderPage() {
   const { data, loading, error, send } = useWatcher(
     () => getProvidersApi(currentPage, search),
     [currentPage, search],
-    { immediate: true, force: true },
+    { immediate: true },
   )
 
   const providers = data?.providers ?? []

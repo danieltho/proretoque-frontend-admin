@@ -15,7 +15,7 @@ export default function ClientPage() {
   const { data, loading, error, send } = useWatcher(
     () => getClients(currentPage),
     [currentPage],
-    { immediate: true, force: true },
+    { immediate: true },
   )
 
   const clients = data?.customers ?? []

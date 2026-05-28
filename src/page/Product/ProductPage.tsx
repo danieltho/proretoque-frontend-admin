@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { useWatcher } from 'alova/client'
+import { useRequest, useWatcher } from 'alova/client'
 import { PlusCircleIcon } from '@phosphor-icons/react'
 import { getProductsAdminApi, deleteProductAdminApi } from '@/app/core/product/api/productsAdminApi'
 import { getCategoriesAdminApi } from '@/app/core/category/api/categoriesAdminApi'
@@ -18,16 +18,15 @@ export default function ProductPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [search, setSearch] = useState('')
   const [selectedCategories, setSelectedCategories] = useState<number[]>([])
-  const [categoryOptions, setCategoryOptions] = useState<SearchableSelectOption[]>([])
 
-  // Load category options for filter
-  useEffect(() => {
-    getCategoriesAdminApi(1, 100)
-      .send()
-      .then((res) => {
-        setCategoryOptions(res.categories.map((c) => ({ id: c.id, label: c.name })))
-      })
-  }, [])
+  // Load category options for the filter
+  const { data: categoriesData } = useRequest(() => getCategoriesAdminApi(1, 100), {
+    initialData: { categories: [] },
+  })
+  const categoryOptions: SearchableSelectOption[] = categoriesData.categories.map((c) => ({
+    id: c.id,
+    label: c.name,
+  }))
 
   const { data, loading, error, send } = useWatcher(
     () =>
@@ -36,7 +35,7 @@ export default function ProductPage() {
         categories: selectedCategories.length > 0 ? selectedCategories : undefined,
       }),
     [currentPage, search, selectedCategories],
-    { immediate: true, force: true, debounce: [0, 300, 0] },
+    { immediate: true, debounce: [0, 300, 0] },
   )
 
   const products = data?.products ?? []

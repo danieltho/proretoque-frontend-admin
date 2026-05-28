@@ -15,7 +15,7 @@ export default function QuotePage() {
   const { data, loading, error, send } = useWatcher(
     () => getQuotesAdminApi(currentPage, ITEMS_PER_PAGE),
     [currentPage],
-    { immediate: true, force: true },
+    { immediate: true },
   )
 
   const quotes = data?.quotes ?? []

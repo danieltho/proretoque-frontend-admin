@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useRequest } from 'alova/client'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { productSchema, type ProductFormData } from '../schema/productSchema'
@@ -21,7 +22,6 @@ export function useProductForm() {
   const routeId = parseRouteId(id)
   const [loading, setLoading] = useState(!isNew)
   const [items, setItems] = useState<ProductItem[]>([])
-  const [categoryOptions, setCategoryOptions] = useState<SearchableSelectOption[]>([])
 
   const form = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -36,13 +36,13 @@ export function useProductForm() {
   })
 
   // Load category options
-  useEffect(() => {
-    getCategoriesAdminApi(1, 100)
-      .send()
-      .then((res) => {
-        setCategoryOptions(res.categories.map((cat) => ({ id: cat.id, label: cat.name })))
-      })
-  }, [])
+  const { data: categoriesData } = useRequest(() => getCategoriesAdminApi(1, 100), {
+    initialData: { categories: [] },
+  })
+  const categoryOptions: SearchableSelectOption[] = categoriesData.categories.map((cat) => ({
+    id: cat.id,
+    label: cat.name,
+  }))
 
   // Load product data for edit mode
   useEffect(() => {

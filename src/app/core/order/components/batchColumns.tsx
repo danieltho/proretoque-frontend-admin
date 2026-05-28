@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { memo, useState, useRef, useEffect } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
 import {
   NotePencilIcon,
@@ -22,7 +22,13 @@ function formatCurrency(amount: number | null): string {
   }).format(amount / 100)
 }
 
-function EditableNameCell({ value, onSave }: { value: string; onSave: (name: string) => void }) {
+const EditableNameCell = memo(function EditableNameCell({
+  value,
+  onSave,
+}: {
+  value: string
+  onSave: (name: string) => void
+}) {
   const [editing, setEditing] = useState(false)
   const [name, setName] = useState(value)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -73,7 +79,7 @@ function EditableNameCell({ value, onSave }: { value: string; onSave: (name: str
       <PencilSimpleIcon className="size-3.5 text-neutral-400 opacity-0 transition-opacity group-hover:opacity-100" />
     </span>
   )
-}
+})
 
 interface BatchColumnsOptions {
   onEdit: (id: number) => void

@@ -32,7 +32,6 @@ export function useOrderAdminBatches({
     [page],
     {
       immediate: routeId !== null,
-      force: true,
       initialData: { batches: [], count: 0, pages: 1 },
     },
   )

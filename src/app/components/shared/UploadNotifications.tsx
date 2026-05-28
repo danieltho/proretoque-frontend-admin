@@ -10,12 +10,15 @@ import {
 import { getBatchProgressApi } from '@/app/core/order/api/batchesApi'
 
 export default function UploadNotifications() {
-  const { tasks, removeTask, clearCompleted, updateTask } = useUploadStore()
+  const tasks = useUploadStore((s) => s.tasks)
+  const removeTask = useUploadStore((s) => s.removeTask)
+  const clearCompleted = useUploadStore((s) => s.clearCompleted)
 
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
   const activeTasks = tasks.filter((t) => t.status === 'uploading' || t.status === 'processing')
+  const hasProcessingTasks = tasks.some((t) => t.status === 'processing' && t.batchId)
 
   // Polling para cerrar el dropdown al hacer click fuera
   useEffect(() => {
@@ -26,12 +29,16 @@ export default function UploadNotifications() {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
-  // Updatetasks de procesamiento cada 3 segundos
+  // Actualiza el progreso de las tareas en proceso cada 3s. El intervalo lee el
+  // estado vivo del store con getState(), por lo que se mantiene estable y solo
+  // se re-crea cuando aparece/desaparece alguna tarea en proceso (no en cada
+  // actualización de progreso).
   useEffect(() => {
-    const processingTasks = tasks.filter((t) => t.status === 'processing' && t.batchId)
-    if (processingTasks.length === 0) return
+    if (!hasProcessingTasks) return
 
     const interval = setInterval(async () => {
+      const { tasks, updateTask } = useUploadStore.getState()
+      const processingTasks = tasks.filter((t) => t.status === 'processing' && t.batchId)
       for (const task of processingTasks) {
         try {
           const res = await getBatchProgressApi(task.batchId!).send()
@@ -47,7 +54,7 @@ export default function UploadNotifications() {
     }, 3000)
 
     return () => clearInterval(interval)
-  }, [tasks, updateTask])
+  }, [hasProcessingTasks])
 
   return (
     <div className="relative" ref={ref}>

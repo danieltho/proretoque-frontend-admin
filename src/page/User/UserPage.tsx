@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useWatcher } from 'alova/client'
+import { useRequest, useWatcher } from 'alova/client'
 import { PlusCircleIcon } from '@phosphor-icons/react'
 import { getUsersApi, deleteUserApi } from '@/app/core/user/api/userApi'
 import { getRolesApi } from '@/app/core/role/api/roleApi'
@@ -14,15 +14,13 @@ import type { SearchableSelectOption } from '@/app/components/ui/searchable-sele
 export default function UserPage() {
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
-  const [roleOptions, setRoleOptions] = useState<SearchableSelectOption[]>([])
 
-  useEffect(() => {
-    getRolesApi(1)
-      .send()
-      .then((res) => {
-        setRoleOptions(res.roles.map((r) => ({ id: r.name, label: r.name })))
-      })
-  }, [])
+  const { data: rolesData } = useRequest(() => getRolesApi(1), { initialData: { roles: [] } })
+  const roleOptions: SearchableSelectOption[] = rolesData.roles.map((r) => ({
+    id: r.name,
+    label: r.name,
+  }))
+
   const [search, setSearch] = useState('')
   const [selectedRoles, setSelectedRoles] = useState<string[]>([])
 
@@ -33,7 +31,7 @@ export default function UserPage() {
         roles: selectedRoles.length > 0 ? selectedRoles : undefined,
       }),
     [currentPage, search, selectedRoles],
-    { immediate: true, force: true, debounce: [0, 300, 0] },
+    { immediate: true, debounce: [0, 300, 0] },
   )
 
   const users = data?.users ?? []

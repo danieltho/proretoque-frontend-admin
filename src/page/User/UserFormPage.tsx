@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useRequest } from 'alova/client'
 import Template from '@/app/components/Template'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
 import Card from '@/app/shared/ui/Card'
@@ -19,15 +19,9 @@ import { getRolesApi } from '@/app/core/role/api/roleApi'
 export default function UserFormPage() {
   const navigate = useNavigate()
   const { isNew, form, loading, handleSave } = useUserForm()
-  const [roleOptions, setRoleOptions] = useState<{ value: string; label: string }[]>([])
 
-  useEffect(() => {
-    getRolesApi(1)
-      .send()
-      .then((res) => {
-        setRoleOptions(res.roles.map((r) => ({ value: String(r.id), label: r.name })))
-      })
-  }, [])
+  const { data: rolesData } = useRequest(() => getRolesApi(1), { initialData: { roles: [] } })
+  const roleOptions = rolesData.roles.map((r) => ({ value: String(r.id), label: r.name }))
   const {
     register,
     watch,

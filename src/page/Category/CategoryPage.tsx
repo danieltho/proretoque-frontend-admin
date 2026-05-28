@@ -25,7 +25,7 @@ export default function CategoryPage() {
   const { data, loading, error, send } = useWatcher(
     () => getCategoriesAdminApi(currentPage, ITEMS_PER_PAGE),
     [currentPage],
-    { immediate: true, force: true },
+    { immediate: true },
   )
 
   const categories = data?.categories ?? []
