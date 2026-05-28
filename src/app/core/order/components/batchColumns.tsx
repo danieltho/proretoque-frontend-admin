@@ -88,9 +88,11 @@ interface BatchColumnsOptions {
   onUploadFiles?: (batchId: number) => void
   onRetouches?: (batchId: number) => void
   onDeliveryOptions?: (batchId: number) => void
+  t: (key: string) => string
 }
 
 export function getBatchColumns({
+  t,
   onEdit,
   onDelete,
   onRename,
@@ -123,7 +125,7 @@ export function getBatchColumns({
     },
     {
       accessorKey: 'name',
-      header: () => <span className="text-footer font-medium text-blue-200">NOMBRE</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.name')}</span>,
       cell: ({ row }) =>
         onRename ? (
           <EditableNameCell
@@ -136,7 +138,7 @@ export function getBatchColumns({
     },
     {
       accessorKey: 'file_count',
-      header: () => <span className="text-footer font-medium text-blue-200">FOTOS</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.photos')}</span>,
       cell: ({ row }) => {
         const isEmpty = !row.original.file_count
         return onUploadFiles ? (
@@ -156,7 +158,7 @@ export function getBatchColumns({
     },
     {
       accessorKey: 'retouch_count',
-      header: () => <span className="text-footer font-medium text-blue-200">RETOQUES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.retouches')}</span>,
       cell: ({ row }) =>
         onRetouches ? (
           <span
@@ -172,7 +174,7 @@ export function getBatchColumns({
     },
     {
       accessorKey: 'size_count',
-      header: () => <span className="text-footer font-medium text-blue-200">TAMAÑO TOTAL</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.totalSize')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">
           {formatFileSize(row.original.size_count ?? 0)}
@@ -227,7 +229,7 @@ export function getBatchColumns({
     },
     {
       id: 'product_total_price',
-      header: () => <span className="text-footer font-medium text-blue-200">PRECIO TOTAL</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.totalPrice')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">
           {formatCurrency(row.original.product_total_price)}
@@ -236,7 +238,7 @@ export function getBatchColumns({
     },
     {
       accessorKey: 'created_at',
-      header: () => <span className="text-footer font-medium text-blue-200">CREADO</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.createdAt')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">
           {formatDateShort(row.original.created_at)}
@@ -245,7 +247,7 @@ export function getBatchColumns({
     },
     {
       accessorKey: 'deadline',
-      header: () => <span className="text-footer font-medium text-blue-200">DEADLINE</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.deadline')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">
           {row.original.deadline ? formatDateShort(row.original.deadline) : '--'}
@@ -254,7 +256,7 @@ export function getBatchColumns({
     },
     {
       id: 'actions',
-      header: () => <span className="text-footer font-medium text-blue-200">ACCIONES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.actions')}</span>,
       cell: ({ row }) => (
         <div className="flex items-center gap-2.5">
           <button

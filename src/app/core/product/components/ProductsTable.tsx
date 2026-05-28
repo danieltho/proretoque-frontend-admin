@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import { MagnifyingGlassIcon } from '@phosphor-icons/react'
 import { DataTable } from '@/app/components/ui/data-table'
@@ -29,14 +30,16 @@ export function ProductsTable({
   onDelete,
 }: ProductsTableProps) {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const columns = useMemo(
     () =>
       getProductColumns({
+        t,
         onEdit: (id) => navigate(`/products/${id}/edit`),
         onDelete,
       }),
-    [navigate, onDelete],
+    [t, navigate, onDelete],
   )
 
   return (

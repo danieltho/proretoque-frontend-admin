@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { PlusCircleIcon } from '@phosphor-icons/react'
 import Template from '@/app/components/Template'
 import { TitleSection } from '@/app/shared/ui/TitleSection'
@@ -30,6 +31,7 @@ const PRODUCT_TYPES = [
 ]
 
 export default function ProductFormPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const {
     isNew,
@@ -80,11 +82,12 @@ export default function ProductFormPage() {
   const itemColumns = useMemo(
     () =>
       getProductItemColumns({
+        t,
         onEdit: handleEditItem,
         onDelete: removeItem,
         onUpdateField: updateItemField,
       }),
-    [removeItem, updateItemField],
+    [t, removeItem, updateItemField],
   )
 
   if (loading) {

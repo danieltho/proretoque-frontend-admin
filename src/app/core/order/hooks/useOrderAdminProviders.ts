@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useRequest } from 'alova/client'
 import { getProviderColumns } from '../components/providerColumns'
 import { getOrderProvidersApi, addOrderProviderApi, removeOrderProviderApi } from '../api/orderApi'
@@ -8,6 +9,7 @@ import { parseRouteId } from '@/app/shared/utils/routeId'
 export function useOrderAdminProviders() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const routeId = parseRouteId(id)
 
   const { data, loading, send } = useRequest(
@@ -21,9 +23,10 @@ export function useOrderAdminProviders() {
   const columns = useMemo(
     () =>
       getProviderColumns({
+        t,
         onEdit: (providerId) => navigate(`/providers/${providerId}`),
       }),
-    [navigate],
+    [t, navigate],
   )
 
   const providers = data?.providers ?? []

@@ -8,9 +8,11 @@ interface ProtocolColumnsOptions {
   onEdit: (id: number) => void
   onDuplicate: (id: number) => void
   onDelete: (id: number) => void
+  t: (key: string) => string
 }
 
 export function getProtocolColumns({
+  t,
   onEdit,
   onDuplicate,
   onDelete,
@@ -18,7 +20,7 @@ export function getProtocolColumns({
   return [
     {
       accessorKey: 'id',
-      header: () => <span className="text-footer font-medium text-blue-200">ID</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.id')}</span>,
       size: 50,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">#{row.original.id}</span>
@@ -26,17 +28,17 @@ export function getProtocolColumns({
     },
     {
       accessorKey: 'name',
-      header: () => <span className="text-footer font-medium text-blue-200">TÍTULOS</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.titles')}</span>,
       cell: ({ row }) => <span className="text-footer text-neutral-600">{row.original.name}</span>,
     },
     {
       accessorKey: 'code',
-      header: () => <span className="text-footer font-medium text-blue-200">CÓDIGO</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.code')}</span>,
       cell: ({ row }) => <span className="text-footer text-neutral-600">{row.original.code}</span>,
     },
     {
       accessorKey: 'created_at',
-      header: () => <span className="text-footer font-medium text-blue-200">CREADO</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.createdAt')}</span>,
       cell: ({ row }) => (
         <span className="text-footer text-neutral-600">
           {formatDateShort(row.original.created_at)}
@@ -56,12 +58,12 @@ export function getProtocolColumns({
     },
     {
       accessorKey: 'status',
-      header: () => <span className="text-footer font-medium text-blue-200">ESTADO</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.status')}</span>,
       cell: ({ row }) => <ProtocolStatusBadge status={row.original.status} />,
     },
     {
       id: 'actions',
-      header: () => <span className="text-footer font-medium text-blue-200">ACCIONES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.actions')}</span>,
       cell: ({ row }) => (
         <div className="flex items-center gap-2.5">
           <button

@@ -6,28 +6,30 @@ import { CategoryBadge } from './CategoryBadge'
 interface ProductColumnsOptions {
   onEdit: (id: number) => void
   onDelete: (id: number) => void
+  t: (key: string) => string
 }
 
 export function getProductColumns({
+  t,
   onEdit,
   onDelete,
 }: ProductColumnsOptions): ColumnDef<ProductAdmin>[] {
   return [
     {
       accessorKey: 'name',
-      header: () => <span className="text-footer font-medium text-blue-200">NOMBRES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.names')}</span>,
       cell: ({ row }) => <span className="text-footer text-neutral-600">{row.original.name}</span>,
     },
     {
       id: 'type',
-      header: () => <span className="text-footer font-medium text-blue-200">TIPO</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.type')}</span>,
       cell: ({ row }) => (
         <div className="flex flex-wrap items-center gap-1">{row.original.type}</div>
       ),
     },
     {
       id: 'categories',
-      header: () => <span className="text-footer font-medium text-blue-200">CATEGORIAS</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.categories')}</span>,
       cell: ({ row }) => (
         <div className="flex flex-wrap items-center gap-1">
           {row.original.categories.map((cat) => (
@@ -38,7 +40,7 @@ export function getProductColumns({
     },
     {
       id: 'actions',
-      header: () => <span className="text-footer font-medium text-blue-200">ACCIONES</span>,
+      header: () => <span className="text-footer font-medium text-blue-200">{t('columns.actions')}</span>,
 
       cell: ({ row }) => (
         <div className="flex items-center gap-2.5">
