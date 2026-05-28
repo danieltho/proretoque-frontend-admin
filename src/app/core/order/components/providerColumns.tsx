@@ -119,6 +119,7 @@ export function getProviderColumns({
         <button
           type="button"
           className="cursor-pointer text-neutral-600 hover:text-neutral-350"
+          aria-label="Editar"
           onClick={() => onEdit(row.original.id)}
         >
           <NotePencilIcon />

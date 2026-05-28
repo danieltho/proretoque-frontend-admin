@@ -41,6 +41,7 @@ export default function Header() {
         <Button
           variant="ghost"
           size="icon"
+          aria-label="Abrir menú"
           className="md:hidden"
           onClick={() => setMobileOpen(true)}
         >

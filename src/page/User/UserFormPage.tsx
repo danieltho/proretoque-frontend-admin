@@ -61,20 +61,17 @@ export default function UserFormPage() {
         />
 
         <Card>
-          <div className="grid grid-cols-2 gap-4">
-            <FormFieldCard label="Email">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <FormFieldCard label="Email" error={errors.email?.message}>
               <Input type="email" placeholder="email@ejemplo.com" {...register('email')} />
-              {errors.email && (
-                <span className="text-sm text-error-text">{errors.email.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label="Rol">
+            <FormFieldCard label="Rol" error={errors.role?.message}>
               <Select
                 value={watch('role')}
                 onValueChange={(val) => setValue('role', val, { shouldValidate: true })}
               >
-                <SelectTrigger className="w-full" aria-invalid={!!errors.role}>
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Seleccione un rol" />
                 </SelectTrigger>
                 <SelectContent>
@@ -85,23 +82,14 @@ export default function UserFormPage() {
                   ))}
                 </SelectContent>
               </Select>
-              {errors.role && (
-                <span className="text-sm text-error-text">{errors.role.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label="Nombre">
+            <FormFieldCard label="Nombre" error={errors.firstname?.message}>
               <Input placeholder="Nombre" {...register('firstname')} />
-              {errors.firstname && (
-                <span className="text-sm text-error-text">{errors.firstname.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label="Apellidos">
+            <FormFieldCard label="Apellidos" error={errors.lastname?.message}>
               <Input placeholder="Apellidos" {...register('lastname')} />
-              {errors.lastname && (
-                <span className="text-sm text-error-text">{errors.lastname.message}</span>
-              )}
             </FormFieldCard>
 
             <FormFieldCard label="Documento">
@@ -120,28 +108,20 @@ export default function UserFormPage() {
               <Input type="date" {...register('hire_date')} />
             </FormFieldCard>
 
-            <FormFieldCard label="Contraseña">
+            <FormFieldCard label="Contraseña" error={errors.password?.message}>
               <Input
                 type="password"
                 placeholder={isNew ? 'Mínimo 6 caracteres' : 'Dejar vacío para no cambiar'}
                 {...register('password')}
               />
-              {errors.password && (
-                <span className="text-sm text-error-text">{errors.password.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label="Confirmar contraseña">
+            <FormFieldCard label="Confirmar contraseña" error={errors.password_confirmation?.message}>
               <Input
                 type="password"
                 placeholder="Confirmar contraseña"
                 {...register('password_confirmation')}
               />
-              {errors.password_confirmation && (
-                <span className="text-sm text-error-text">
-                  {errors.password_confirmation.message}
-                </span>
-              )}
             </FormFieldCard>
           </div>
         </Card>

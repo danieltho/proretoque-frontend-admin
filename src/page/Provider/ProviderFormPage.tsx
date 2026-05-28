@@ -44,33 +44,21 @@ export default function ProviderFormPage() {
         />
 
         <Card>
-          <div className="grid grid-cols-2 gap-4">
-            <FormFieldCard label="Username">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <FormFieldCard label="Username" error={errors.username?.message}>
               <Input placeholder="username" {...register('username')} />
-              {errors.username && (
-                <span className="text-sm text-error-text">{errors.username.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label="Email">
+            <FormFieldCard label="Email" error={errors.email?.message}>
               <Input type="email" placeholder="email@ejemplo.com" {...register('email')} />
-              {errors.email && (
-                <span className="text-sm text-error-text">{errors.email.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label="Nombre">
+            <FormFieldCard label="Nombre" error={errors.firstname?.message}>
               <Input placeholder="Nombre" {...register('firstname')} />
-              {errors.firstname && (
-                <span className="text-sm text-error-text">{errors.firstname.message}</span>
-              )}
             </FormFieldCard>
 
-            <FormFieldCard label="Apellidos">
+            <FormFieldCard label="Apellidos" error={errors.lastname?.message}>
               <Input placeholder="Apellidos" {...register('lastname')} />
-              {errors.lastname && (
-                <span className="text-sm text-error-text">{errors.lastname.message}</span>
-              )}
             </FormFieldCard>
 
             <FormFieldCard label="Compañía">
@@ -78,12 +66,9 @@ export default function ProviderFormPage() {
             </FormFieldCard>
 
             {isNew && (
-              <FormFieldCard label="Contraseña">
+              <FormFieldCard label="Contraseña" error={errors.password?.message}>
                 <Input type="password" placeholder="Mínimo 6 caracteres" {...register('password')} />
-                {errors.password && (
-                  <span className="text-sm text-error-text">{errors.password.message}</span>
-                )}
-              </FormFieldCard>
+            </FormFieldCard>
             )}
           </div>
         </Card>

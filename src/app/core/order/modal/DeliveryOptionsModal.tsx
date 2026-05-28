@@ -135,7 +135,7 @@ export function DeliveryOptionsModal({
         </div>
 
         {/* Opciones de Entrega */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           <div className="flex flex-col gap-1">
             <Label className="font-raleway text-footer font-medium">Formato</Label>
             <Select value={format} onValueChange={setFormat}>
