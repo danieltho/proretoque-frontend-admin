@@ -5,22 +5,13 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "5173:5173"
-    environment:
-      # Relative URL — every API call goes through Vite's proxy, so the
-      # browser sees same-origin requests and CORS is sidestepped.
-      VITE_API_BASE_URL: /api/v1
-      VITE_BASE_URL: ""
-      # Where vite.config.ts forwards `/api/*`. Override from the host:
-      #   BACKEND_URL=https://staging.api.example.com docker compose up
-      BACKEND_URL: ${BACKEND_URL:-http://host.docker.internal:8000}
-      # Uncomment if HMR doesn't pick up file changes (slow FS, WSL1, etc.).
-      # CHOKIDAR_USEPOLLING: "true"
     volumes:
-      # Bind-mount the repo so edits flow into the container for HMR.
       - .:/app
-      # Anonymous volume shadowing the bind mount so the host's node_modules
-      # (which may have cross-platform binaries) doesn't leak in.
       - /app/node_modules
+    environment:
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL:-http://localhost:8001/api/v1}
+      - VITE_BASE_URL=${VITE_BASE_URL:-http://localhost:8000}
+      - CHOKIDAR_USEPOLLING=true
     # Linux: route host.docker.internal to the host gateway.
     # macOS/Windows Docker Desktop already resolves it natively.
     extra_hosts:

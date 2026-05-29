@@ -1,0 +1,20 @@
+services:
+  admin-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Baked into the bundle: relative so the browser hits the same origin
+        # and nginx proxies /api/* to the backend.
+        VITE_API_BASE_URL: /api/v1
+        VITE_BASE_URL: ${VITE_BASE_URL:-http://localhost:8001}
+    ports:
+      - "8003:80"
+    environment:
+      # localhost:8001 on the host, as seen from inside the container.
+      - BACKEND_URL=${BACKEND_URL:-http://host.docker.internal:8001}
+    # Linux: route host.docker.internal to the host gateway.
+    # macOS/Windows Docker Desktop already resolves it natively.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
